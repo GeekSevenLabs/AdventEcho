@@ -10,8 +10,9 @@ Advent Echo aims to bring the traditional church bulletin board into the digital
 - Highlight departmental updates (e.g., music, youth, Sabbath School)
 - Strengthen communication with a simple, accessible tool
 
-## Features (Planned or Current)
+## Features (Planned or Current) 
 
+- TODO: In progress
 - **Notices**: Create, edit, and delete notices with timestamps and details.
 - **Schedules**: Manage rosters for church activities and roles.
 - **Departments**: Organize content by church ministries (e.g., music, youth).
@@ -19,11 +20,14 @@ Advent Echo aims to bring the traditional church bulletin board into the digital
 - **Responsive Design**: Works seamlessly on desktops, tablets, and phones.
 
 *(Note: Update this section based on your progress or plans!)*
+> [Excalidraw](https://excalidraw.com/#json=y6XlZ-9mA1CWu_sPZO_AK,GEbbj0MhhPdTm6R4yaCIew) 
 
 ## Getting Started
 
+- TODO: In progress
+
 ### Prerequisites
-- TODO:
+- TODO: In progress
 
 ### Installation
 1. Clone the repository:
