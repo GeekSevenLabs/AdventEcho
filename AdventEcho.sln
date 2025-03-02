@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Application", "src\GeekSevenLabs.AdventEcho.Application\GeekSevenLabs.AdventEcho.Application.csproj", "{FF515ACD-2DBE-4345-9FE6-911059BDB880}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Application.Shared", "src\GeekSevenLabs.AdventEcho.Application.Shared\GeekSevenLabs.AdventEcho.Application.Shared.csproj", "{3A9179D4-76EE-4CB7-B15B-8521CFACADEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Domain", "src\GeekSevenLabs.AdventEcho.Domain\GeekSevenLabs.AdventEcho.Domain.csproj", "{6668FC76-400F-4644-8768-9A90F285A466}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Domain.Shared", "src\GeekSevenLabs.AdventEcho.Domain.Shared\GeekSevenLabs.AdventEcho.Domain.Shared.csproj", "{F7BAD462-0C5E-4DC4-8C77-DCE7B016BED3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Infrastructure.DataAccess", "src\GeekSevenLabs.AdventEcho.Infrastructure.DataAccess\GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.csproj", "{1B9AC3E1-FE61-4408-A5E2-CDB6980FAAEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Infrastructure.Identity", "src\GeekSevenLabs.AdventEcho.Infrastructure.Identity\GeekSevenLabs.AdventEcho.Infrastructure.Identity.csproj", "{54E10395-C5C3-40F2-A57F-C79390C8E55E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Infrastructure.Notifications", "src\GeekSevenLabs.AdventEcho.Infrastructure.Notifications\GeekSevenLabs.AdventEcho.Infrastructure.Notifications.csproj", "{FD2710D3-CAD7-458C-826D-E97E289C3194}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E4B1A31-9F91-48F9-8BF6-95346494F376}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Presentation.Web", "src\GeekSevenLabs.AdventEcho.Presentation.Web\GeekSevenLabs.AdventEcho.Presentation.Web.csproj", "{D3D7B6F0-7959-4AD0-A4C7-E4C388F03FCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Presentation.Web.Client", "src\GeekSevenLabs.AdventEcho.Presentation.Web.Client\GeekSevenLabs.AdventEcho.Presentation.Web.Client.csproj", "{E6F32CB0-0950-444B-BD13-6B8312C32322}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{94D7234C-5E24-415B-AC9D-46331D8097A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{0AE59F28-4C2C-47E7-BD9E-2FD83B171339}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{67907B35-290A-4CF0-83BF-E1196837E344}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{10D3953D-645F-467E-A11E-6A6A5D12D9D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF515ACD-2DBE-4345-9FE6-911059BDB880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF515ACD-2DBE-4345-9FE6-911059BDB880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF515ACD-2DBE-4345-9FE6-911059BDB880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF515ACD-2DBE-4345-9FE6-911059BDB880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A9179D4-76EE-4CB7-B15B-8521CFACADEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A9179D4-76EE-4CB7-B15B-8521CFACADEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A9179D4-76EE-4CB7-B15B-8521CFACADEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A9179D4-76EE-4CB7-B15B-8521CFACADEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6668FC76-400F-4644-8768-9A90F285A466}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6668FC76-400F-4644-8768-9A90F285A466}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6668FC76-400F-4644-8768-9A90F285A466}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6668FC76-400F-4644-8768-9A90F285A466}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7BAD462-0C5E-4DC4-8C77-DCE7B016BED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7BAD462-0C5E-4DC4-8C77-DCE7B016BED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7BAD462-0C5E-4DC4-8C77-DCE7B016BED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7BAD462-0C5E-4DC4-8C77-DCE7B016BED3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B9AC3E1-FE61-4408-A5E2-CDB6980FAAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B9AC3E1-FE61-4408-A5E2-CDB6980FAAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B9AC3E1-FE61-4408-A5E2-CDB6980FAAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B9AC3E1-FE61-4408-A5E2-CDB6980FAAEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E10395-C5C3-40F2-A57F-C79390C8E55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E10395-C5C3-40F2-A57F-C79390C8E55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E10395-C5C3-40F2-A57F-C79390C8E55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E10395-C5C3-40F2-A57F-C79390C8E55E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD2710D3-CAD7-458C-826D-E97E289C3194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD2710D3-CAD7-458C-826D-E97E289C3194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD2710D3-CAD7-458C-826D-E97E289C3194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD2710D3-CAD7-458C-826D-E97E289C3194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3D7B6F0-7959-4AD0-A4C7-E4C388F03FCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3D7B6F0-7959-4AD0-A4C7-E4C388F03FCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3D7B6F0-7959-4AD0-A4C7-E4C388F03FCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3D7B6F0-7959-4AD0-A4C7-E4C388F03FCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6F32CB0-0950-444B-BD13-6B8312C32322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6F32CB0-0950-444B-BD13-6B8312C32322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6F32CB0-0950-444B-BD13-6B8312C32322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6F32CB0-0950-444B-BD13-6B8312C32322}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6668FC76-400F-4644-8768-9A90F285A466} = {94D7234C-5E24-415B-AC9D-46331D8097A0}
+		{F7BAD462-0C5E-4DC4-8C77-DCE7B016BED3} = {94D7234C-5E24-415B-AC9D-46331D8097A0}
+		{FF515ACD-2DBE-4345-9FE6-911059BDB880} = {0AE59F28-4C2C-47E7-BD9E-2FD83B171339}
+		{3A9179D4-76EE-4CB7-B15B-8521CFACADEA} = {0AE59F28-4C2C-47E7-BD9E-2FD83B171339}
+		{1B9AC3E1-FE61-4408-A5E2-CDB6980FAAEE} = {67907B35-290A-4CF0-83BF-E1196837E344}
+		{54E10395-C5C3-40F2-A57F-C79390C8E55E} = {67907B35-290A-4CF0-83BF-E1196837E344}
+		{FD2710D3-CAD7-458C-826D-E97E289C3194} = {67907B35-290A-4CF0-83BF-E1196837E344}
+		{D3D7B6F0-7959-4AD0-A4C7-E4C388F03FCD} = {10D3953D-645F-467E-A11E-6A6A5D12D9D7}
+		{E6F32CB0-0950-444B-BD13-6B8312C32322} = {10D3953D-645F-467E-A11E-6A6A5D12D9D7}
+	EndGlobalSection
+EndGlobal
