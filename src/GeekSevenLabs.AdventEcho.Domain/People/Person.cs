@@ -1,9 +1,9 @@
 namespace GeekSevenLabs.AdventEcho.Domain.People;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class Person : Entity<Person>
+public sealed partial class Person : Entity<Person, PersonId>
 {
-    public Person(NameVo name, ContactVo contact, Guid churchId)
+    public Person(NameVo name, ContactVo contact, ChurchId churchId)
     {
         Name = name;
         Contact = contact;
@@ -16,5 +16,5 @@ public sealed partial class Person : Entity<Person>
 
     public NameVo Name { get; private set; }
     public ContactVo Contact { get; private set; }
-    public Guid ChurchId { get; private set; }
+    public ChurchId ChurchId { get; private set; }
 }

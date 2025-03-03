@@ -1,5 +1,3 @@
-
-
 namespace GeekSevenLabs.AdventEcho.Domain.Districts;
 
 public class DistrictValidationContract : Contract<District>
@@ -11,6 +9,6 @@ public class DistrictValidationContract : Contract<District>
     {
         Requires()
             .IsNotNullOrEmpty(district.Name, nameof(District.Name), NameRequiredMessage)
-            .IsNotEmpty(district.PastorId, nameof(District.PastorId), PastorIdRequiredMessage);
+            .IsNotEmpty(district.PastorId.Value, nameof(District.PastorId), PastorIdRequiredMessage);
     }
 }

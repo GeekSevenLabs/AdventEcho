@@ -1,15 +1,28 @@
 namespace GeekSevenLabs.AdventEcho.Domain.Noticies;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class Notice : Entity<Notice>
+public sealed partial class Notice : Entity<Notice, NoticeId>
 {
-    public Notice(string title, string description, PeriodVo period, bool notifyEveryDay, Guid? districtId, Guid? churchId)
+    public Notice(string title, string description, PeriodVo period, bool notifyEveryDay, DistrictId districtId)
     {
         Title = title;
         Description = description;
         Period = period;
         NotifyEveryDay = notifyEveryDay;
         DistrictId = districtId;
+        ChurchId = null;
+
+        AddNotifications(period);
+        AddNotificationsAndThrow(new NoticeValidationContract(this));
+    }
+    
+    public Notice(string title, string description, PeriodVo period, bool notifyEveryDay, ChurchId churchId)
+    {
+        Title = title;
+        Description = description;
+        Period = period;
+        NotifyEveryDay = notifyEveryDay;
+        DistrictId = null;
         ChurchId = churchId;
 
         AddNotifications(period);
@@ -22,7 +35,6 @@ public sealed partial class Notice : Entity<Notice>
     public PeriodVo Period { get; private set; }
     public bool NotifyEveryDay { get; private set; }
 
-    public Guid? DistrictId { get; private set; }
-    
-    public Guid? ChurchId { get; private set; }
+    public DistrictId? DistrictId { get; private set; }
+    public ChurchId? ChurchId { get; private set; }
 }

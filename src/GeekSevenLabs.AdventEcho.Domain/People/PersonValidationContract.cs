@@ -11,6 +11,6 @@ public class PersonValidationContract : Contract<Person>
         Requires()
             .IsNotNull(person.Name, nameof(Person.Name), NameIsRequiredMessage)
             .IsNotNull(person.Contact, nameof(Person.Contact), ContactIsRequiredMessage)
-            .IsNotEmpty(person.ChurchId, nameof(Person.ChurchId), ChurchIdIsRequiredMessage);
+            .IsNotEmpty(person.ChurchId.Value, nameof(Person.ChurchId), ChurchIdIsRequiredMessage);
     }
 }
