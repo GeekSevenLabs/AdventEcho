@@ -8,7 +8,7 @@ public sealed partial class Church : Entity<Church>
         Name = name;
         DistrictId = districtId;
         
-        Validate(new ChurchValidationContract(this));
+        AddNotificationsAndThrow(new ChurchValidationContract(this));
     }
 
     public string Name { get; private set; }
@@ -19,6 +19,6 @@ public sealed partial class Church : Entity<Church>
         Name = name;
         DistrictId = districtId;
         
-        Validate(new ChurchValidationContract(this));
+        AddNotificationsAndThrow(new ChurchValidationContract(this));
     }
 }

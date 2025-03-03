@@ -6,7 +6,7 @@ public abstract class Entity<TEntity> : Notifiable<Notification>
 {
     public Guid Id { get; protected set; }
     
-    protected virtual void Validate(Contract<TEntity> contract)
+    protected virtual void AddNotificationsAndThrow(Contract<TEntity> contract)
     {
         AddNotifications(contract);
         
@@ -18,5 +18,11 @@ public abstract class Entity<TEntity> : Notifiable<Notification>
         {
             throw new DomainException(notifications);
         }
+    }
+
+    protected void AddNotifications(ValueObject? valueObject)
+    {
+        if(valueObject is null) return;
+        AddNotifications(valueObject.Notifications);
     }
 }
