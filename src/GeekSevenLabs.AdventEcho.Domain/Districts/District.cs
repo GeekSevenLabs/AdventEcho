@@ -8,7 +8,7 @@ public sealed partial class District : Entity<District>
         Name = name;
         PastorId = pastorId;
         
-        Validate(new DistrictValidationContract(this));
+        AddNotificationsAndThrow(new DistrictValidationContract(this));
     }
 
     public string Name { get; private set; }
@@ -20,6 +20,6 @@ public sealed partial class District : Entity<District>
     {
         Name = name;
         PastorId = pastorId;
-        Validate(new DistrictValidationContract(this));
+        AddNotificationsAndThrow(new DistrictValidationContract(this));
     }
 }
