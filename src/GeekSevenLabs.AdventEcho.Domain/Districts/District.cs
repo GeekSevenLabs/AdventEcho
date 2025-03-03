@@ -1,3 +1,5 @@
+using GeekSevenLabs.AdventEcho.Domain.People;
+
 namespace GeekSevenLabs.AdventEcho.Domain.Districts;
 
 [HasPrivateEmptyConstructor]
