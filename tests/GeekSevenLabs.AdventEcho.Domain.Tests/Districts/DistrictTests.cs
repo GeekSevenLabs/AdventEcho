@@ -9,7 +9,7 @@ public class DistrictTests
     {
         // Arrange
         const string name = "District 1";
-        var pastorId = Guid.NewGuid();
+        var pastorId = PersonId.New();
 
         // Act
         var district = new District(name, pastorId);
@@ -23,7 +23,7 @@ public class DistrictTests
     {
         // Arrange
         const string name = "";
-        var pastorId = Guid.NewGuid();
+        var pastorId = PersonId.New();
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new District(name, pastorId));
@@ -37,7 +37,7 @@ public class DistrictTests
     {
         // Arrange
         const string name = "District 1";
-        var pastorId = Guid.Empty;
+        var pastorId = PersonId.Empty;
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new District(name, pastorId));
@@ -51,7 +51,7 @@ public class DistrictTests
     {
         // Arrange
         const string name = "";
-        var pastorId = Guid.Empty;
+        var pastorId = PersonId.Empty;
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new District(name, pastorId));
@@ -66,12 +66,12 @@ public class DistrictTests
     {
         // Arrange
         const string name = "District 1";
-        var pastorId = Guid.NewGuid();
+        var pastorId = PersonId.New();
         
         var district = new District(name, pastorId);
         
         const string newName = "District 2";
-        var newPastorId = Guid.NewGuid();
+        var newPastorId = PersonId.New();
 
         // Act
         district.Update(newName, newPastorId);

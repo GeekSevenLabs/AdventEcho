@@ -1,9 +1,13 @@
+using GeekSevenLabs.AdventEcho.Domain.Churches;
+
 namespace GeekSevenLabs.AdventEcho.Domain.Districts;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class District : Entity<District>
+public sealed partial class District : Entity<District, DistrictId>
 {
-    public District(string name, Guid pastorId)
+    private readonly List<Church> _churches = new();
+    
+    public District(string name, PersonId pastorId)
     {
         Name = name;
         PastorId = pastorId;
@@ -12,11 +16,11 @@ public sealed partial class District : Entity<District>
     }
 
     public string Name { get; private set; }
-    public Guid PastorId { get; private set; }
+    public PersonId PastorId { get; private set; }
 
-    public void ChangePastor(Guid pastorId) => PastorId = pastorId;
-
-    public void Update(string name, Guid pastorId)
+    public IReadOnlyList<Church> Churches => _churches.AsReadOnly();
+    
+    public void Update(string name, PersonId pastorId)
     {
         Name = name;
         PastorId = pastorId;

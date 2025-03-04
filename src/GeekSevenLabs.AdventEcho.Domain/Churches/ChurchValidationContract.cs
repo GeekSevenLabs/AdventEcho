@@ -13,6 +13,6 @@ public class ChurchValidationContract : Contract<Church>
             .IsNotNullOrEmpty(church.Name, nameof(Church.Name), NameRequiredMessage)
             .IsGreaterOrEqualsThan(church.Name, 3, nameof(Church.Name), NameIsLassThanThreeCharactersMessage)
             
-            .IsNotEmpty(church.DistrictId, nameof(Church.DistrictId), DistrictIdRequiredMessage);
+            .IsNotEmpty(church.DistrictId.Value, nameof(Church.DistrictId), DistrictIdRequiredMessage);
     }
 }

@@ -9,7 +9,7 @@ public class ChurchTests
     {
         // Arrange
         const string name = "";
-        var districtId = Guid.NewGuid();
+        var districtId = DistrictId.New();
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new Church(name, districtId));
@@ -23,7 +23,7 @@ public class ChurchTests
     {
         // Arrange
         const string name = "Ch";
-        var districtId = Guid.NewGuid();
+        var districtId = DistrictId.New();
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new Church(name, districtId));
@@ -37,7 +37,7 @@ public class ChurchTests
     {
         // Arrange
         const string name = "Church Name";
-        var districtId = Guid.Empty;
+        var districtId = DistrictId.Empty;
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new Church(name, districtId));
@@ -51,7 +51,7 @@ public class ChurchTests
     {
         // Arrange
         const string name = "";
-        var districtId = Guid.Empty;
+        var districtId = DistrictId.Empty;
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new Church(name, districtId));
@@ -65,7 +65,7 @@ public class ChurchTests
     {
         // Arrange 
         const string name = "Church Name";
-        var districtId = Guid.NewGuid();
+        var districtId = DistrictId.New();
         
         // Act
         var church = new Church(name, districtId);

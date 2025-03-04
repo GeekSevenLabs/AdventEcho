@@ -9,7 +9,7 @@ public class PersonTests
     {
         // Arrange
         var contact = new ContactVo("email@domain.com", "12345678900");
-        var churchId = Guid.NewGuid();
+        var churchId = ChurchId.New();
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new Person(null!, contact, churchId));
@@ -23,7 +23,7 @@ public class PersonTests
     {
         // Arrange
         var name = new NameVo("Jhon", "Doe");
-        var churchId = Guid.NewGuid();
+        var churchId = ChurchId.New();
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new Person(name, null!, churchId));
@@ -38,7 +38,7 @@ public class PersonTests
         // Arrange
         var name = new NameVo("Jhon", "Doe");
         var contact = new ContactVo("email@domain.com", "12345678900");
-        var churchId = Guid.Empty;
+        var churchId = ChurchId.Empty;
 
         // Act
         var exception = Assert.Throws<DomainException>(() => new Person(name, contact, churchId));
@@ -54,7 +54,7 @@ public class PersonTests
         // Arrange 
         var name = new NameVo("Jhon", "Doe");
         var contact = new ContactVo("email@domain.com", "12345678900");
-        var churchId = Guid.NewGuid();
+        var churchId = ChurchId.New();
 
         // Act
         var person = new Person(name, contact, churchId);

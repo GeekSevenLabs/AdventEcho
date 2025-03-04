@@ -1,9 +1,11 @@
+using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Extensions;
+using GeekSevenLabs.AdventEcho.Infrastructure.Identity;
+using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Contexts;
+using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using GeekSevenLabs.AdventEcho.Presentation.Web.Components;
 using GeekSevenLabs.AdventEcho.Presentation.Web.Components.Account;
-using GeekSevenLabs.AdventEcho.Presentation.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents()
     .AddAuthenticationStateSerialization();
+
+builder.Services.AddAdventEchoInfrastructureServices(builder.Configuration);
+builder.Services.AddAdventEchoIdentityInfrastructureServices(builder.Configuration);
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
@@ -25,14 +30,11 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
+builder.Services
+    .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AdventEchoIdentityDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using GeekSevenLabs.AdventEcho.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using GeekSevenLabs.AdventEcho.Presentation.Web.Components.Account.Pages;
 using GeekSevenLabs.AdventEcho.Presentation.Web.Components.Account.Pages.Manage;
-using GeekSevenLabs.AdventEcho.Presentation.Web.Data;
 
 namespace Microsoft.AspNetCore.Routing;
 

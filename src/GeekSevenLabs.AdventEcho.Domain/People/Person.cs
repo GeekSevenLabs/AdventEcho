@@ -1,9 +1,14 @@
+using GeekSevenLabs.AdventEcho.Domain.Schedules;
+
 namespace GeekSevenLabs.AdventEcho.Domain.People;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class Person : Entity<Person>
+public sealed partial class Person : Entity<Person, PersonId>
 {
-    public Person(NameVo name, ContactVo contact, Guid churchId)
+    private readonly List<ScheduledPerson> _scheduledPeople = [];
+    private readonly List<ScheduleDay> _scheduleDays = [];
+    
+    public Person(NameVo name, ContactVo contact, ChurchId churchId)
     {
         Name = name;
         Contact = contact;
@@ -16,5 +21,9 @@ public sealed partial class Person : Entity<Person>
 
     public NameVo Name { get; private set; }
     public ContactVo Contact { get; private set; }
-    public Guid ChurchId { get; private set; }
+    public ChurchId ChurchId { get; private set; }
+    
+    public IReadOnlyList<ScheduledPerson> ScheduledPeople => _scheduledPeople.AsReadOnly();
+    public IReadOnlyList<ScheduleDay> ScheduleDays => _scheduleDays.AsReadOnly();
+    
 }

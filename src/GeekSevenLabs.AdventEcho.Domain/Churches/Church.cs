@@ -1,9 +1,11 @@
+using GeekSevenLabs.AdventEcho.Domain.Districts;
+
 namespace GeekSevenLabs.AdventEcho.Domain.Churches;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class Church : Entity<Church>
+public sealed partial class Church : Entity<Church, ChurchId>
 {
-    public Church(string name, Guid districtId)
+    public Church(string name, DistrictId districtId)
     {
         Name = name;
         DistrictId = districtId;
@@ -12,9 +14,11 @@ public sealed partial class Church : Entity<Church>
     }
 
     public string Name { get; private set; }
-    public Guid DistrictId { get; private set; }
+    public DistrictId DistrictId { get; private set; }
 
-    public void Update(string name, Guid districtId)
+    public District District { get; private set; } = null!;
+
+    public void Update(string name, DistrictId districtId)
     {
         Name = name;
         DistrictId = districtId;

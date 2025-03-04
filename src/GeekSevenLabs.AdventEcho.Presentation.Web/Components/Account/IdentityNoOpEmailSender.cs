@@ -1,6 +1,6 @@
+using GeekSevenLabs.AdventEcho.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using GeekSevenLabs.AdventEcho.Presentation.Web.Data;
 
 namespace GeekSevenLabs.AdventEcho.Presentation.Web.Components.Account;
 
