@@ -8,11 +8,11 @@ namespace GeekSevenLabs.AdventEcho.Infrastructure.Identity.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddAdventEchoInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddAdventEchoIdentityInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContextFactory<AdventEchoIdentityDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("AdventEchoIdentityDbContextConnection"));
+            options.UseSqlServer(configuration.GetConnectionString("AdventEchoIdentityConnection"));
         });
         
         // Repositories

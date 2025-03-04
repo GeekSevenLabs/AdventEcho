@@ -1,5 +1,7 @@
+using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Extensions;
 using GeekSevenLabs.AdventEcho.Infrastructure.Identity;
 using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Contexts;
+using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using GeekSevenLabs.AdventEcho.Presentation.Web.Components;
@@ -12,6 +14,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents()
     .AddAuthenticationStateSerialization();
+
+builder.Services.AddAdventEchoInfrastructureServices(builder.Configuration);
+builder.Services.AddAdventEchoIdentityInfrastructureServices(builder.Configuration);
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();

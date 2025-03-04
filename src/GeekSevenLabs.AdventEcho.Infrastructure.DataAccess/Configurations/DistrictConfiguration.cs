@@ -23,5 +23,10 @@ internal class DistrictConfiguration : IEntityTypeConfiguration<District>
             .HasOne<Person>()
             .WithOne()
             .HasForeignKey<District>(district => district.PastorId);
+
+        builder
+            .HasMany(district => district.Churches)
+            .WithOne(church => church.District)
+            .HasForeignKey(church => church.DistrictId);
     }
 }

@@ -15,7 +15,7 @@ internal class ScheduleDayConfiguration : IEntityTypeConfiguration<ScheduleDay>
         builder.Property(day => day.EventId).IsRequired(false);
         
         builder
-            .HasOne<Schedule>()
+            .HasOne(day => day.Schedule)
             .WithMany(schedule => schedule.Days)
             .HasForeignKey(day => day.ScheduleId);
         

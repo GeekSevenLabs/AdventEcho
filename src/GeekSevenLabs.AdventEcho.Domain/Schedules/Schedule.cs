@@ -2,7 +2,6 @@ using GeekSevenLabs.AdventEcho.Domain.Shared.Enums;
 
 namespace GeekSevenLabs.AdventEcho.Domain.Schedules;
 
-
 [HasPrivateEmptyConstructor]
 public sealed partial class Schedule : Entity<Schedule, ScheduleId>
 {

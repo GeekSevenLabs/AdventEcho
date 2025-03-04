@@ -20,8 +20,9 @@ internal class ChurchConfiguration : IEntityTypeConfiguration<Church>
             .IsRequired();
         
         builder
-            .HasOne<District>()
-            .WithMany()
-            .HasForeignKey(church => church.DistrictId);
+            .HasOne(church => church.District)
+            .WithMany(district => district.Churches)
+            .HasForeignKey(church => church.DistrictId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

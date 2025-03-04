@@ -1,3 +1,4 @@
+using Flunt.Notifications;
 using GeekSevenLabs.AdventEcho.Domain;
 using GeekSevenLabs.AdventEcho.Domain.Churches;
 using GeekSevenLabs.AdventEcho.Domain.Districts;
@@ -24,6 +25,8 @@ public class AdventEchoDbContext(DbContextOptions<AdventEchoDbContext> options) 
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Ignore<Notification>();
+        
         modelBuilder.ApplyConfiguration(new ChurchConfiguration());
         modelBuilder.ApplyConfiguration(new DistrictConfiguration());
         modelBuilder.ApplyConfiguration(new NoticeConfiguration());

@@ -28,8 +28,9 @@ internal class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
             .HasForeignKey(schedule => schedule.ChurchId);
         
         builder
-            .OwnsMany(schedule => schedule.Days)
-            .HasOne<Schedule>();
+            .HasMany(schedule => schedule.Days)
+            .WithOne(day => day.Schedule)
+            .HasForeignKey(day => day.ScheduleId);
 
     }
 }

@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContextFactory<AdventEchoDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("AdventEchoDbContextConnection"));
+            options.UseSqlServer(configuration.GetConnectionString("AdventEchoConnection"));
         });
 
         // Suporte services
