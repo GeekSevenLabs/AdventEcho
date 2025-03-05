@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Resend;
 
 namespace GeekSevenLabs.AdventEcho.Infrastructure.Identity.Extensions;
 
@@ -33,6 +34,18 @@ public static class ServiceCollectionExtensions
         // Services
         services.AddTransient<IEmailSender, EmailSender>();
         services.AddSingleton<IEmailSender<ApplicationUser>, AdventEchoEmailSender>();
-        services.Configure<AuthMessageSenderOptions>(o => o.SendGridKey = configuration["SendGridKey"]);
+        
+        services.Configure<AuthMessageSenderOptions>(o =>
+        {
+            o.SendGridKey = configuration["SendGridKey"];
+        });
+
+        services.AddOptions();
+        services.AddHttpClient<ResendClient>();
+        services.Configure<ResendClientOptions>(o =>
+        {
+            o.ApiToken = configuration["ResendKey"]!;
+        });
+        services.AddTransient<IResend, ResendClient>();
     }
 }
