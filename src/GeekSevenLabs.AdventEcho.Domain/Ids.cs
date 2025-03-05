@@ -8,3 +8,7 @@ namespace GeekSevenLabs.AdventEcho.Domain;
 [StronglyTypedId] public readonly partial struct ScheduleDayId;
 [StronglyTypedId] public readonly partial struct ScheduleEventId;
 [StronglyTypedId] public readonly partial struct ScheduleId;
+[StronglyTypedId] public readonly partial struct ScheduledPersonId;
+
+    
+
