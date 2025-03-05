@@ -1,0 +1,27 @@
+@inherits EchoComponentBase
+
+<MudTextField
+    Value="Value"
+    ValueChanged="ValueChanged"
+    For="ValueExpression"
+    
+    InputType="InputType"
+    Label="@Label"
+    Placeholder="@Placeholder"
+    
+    Class="@Class"
+    Style="@Style"
+    UserAttributes="AdditionalAttributes"
+
+    Variant="Variant.Outlined"/>
+
+@code 
+{
+    [Parameter, EditorRequired] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public Expression<Func<string>>? ValueExpression { get; set; }
+    
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public InputType InputType { get; set; }
+    [Parameter, EditorRequired] public required string Label { get; set; }
+}

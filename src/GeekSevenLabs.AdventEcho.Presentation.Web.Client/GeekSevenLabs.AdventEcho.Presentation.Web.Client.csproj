@@ -21,4 +21,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Common\GeekSevenLabs.AdventEcho.Common.csproj" />
+    </ItemGroup>
+
 </Project>

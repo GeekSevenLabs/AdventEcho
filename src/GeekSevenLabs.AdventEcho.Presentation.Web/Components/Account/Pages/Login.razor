@@ -10,67 +10,88 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Log in</PageTitle>
+<EchoPage Title="Login" MaxWidth="EchoMaxWidth.Small" HiddenBars>
+    <Content>
 
-<h1>Log in</h1>
-<div class="row">
-    <div class="col-lg-6">
-        <section>
-            <StatusMessage Message="@errorMessage"/>
+        <section class="tw|flex tw|flex-col tw|gap-4">
+            <MudStack Spacing="0">
+                <MudText Color="Color.Primary" Typo="Typo.h4" Class="tw|font-thin">Hello,</MudText>
+                <MudText Color="Color.Primary" Typo="Typo.h5" Class="tw|font-bold">Welcome!</MudText>
+            </MudStack>
+
+            <MudStack>
+                <StatusMessage Message="@_errorMessage"/>
+            </MudStack>
+
             <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
                 <DataAnnotationsValidator/>
-                <h2>Use a local account to log in.</h2>
-                <hr/>
-                <ValidationSummary class="text-danger" role="alert"/>
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
-                    <label for="Input.Email" class="form-label">Email</label>
-                    <ValidationMessage For="() => Input.Email" class="text-danger"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password"/>
-                    <label for="Input.Password" class="form-label">Password</label>
-                    <ValidationMessage For="() => Input.Password" class="text-danger"/>
-                </div>
-                <div class="checkbox mb-3">
-                    <label class="form-label">
-                        <InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input"/>
-                        Remember me
-                    </label>
-                </div>
-                <div>
-                    <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a href="Account/ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
+
+                <MudStack Spacing="4">
+
+                    <MudText>
+                        Por favor, entre com suas credenciais.
+                    </MudText>
+
+                    <MudStaticTextField
+                        For="@(() => Input.Email)" @bind-Value="Input.Email"
+                        Label="Email" Placeholder="name@example.com"
+                        Variant="Variant.Outlined"
+                        UserAttributes="@(new Dictionary<string, object?> { { "autocomplete", "username" }, { "aria-required", "true" } })"/>
+
+                    <MudStaticTextField
+                        For="@(() => Input.Password)" @bind-Value="Input.Password"
+                        Label="Senha" InputType="InputType.Password" Placeholder="password"
+                        Variant="Variant.Outlined"
+                        UserAttributes="@(new Dictionary<string, object?> { { "autocomplete", "current-password" }, { "aria-required", "true" } })"/>
+
+                    <MudStaticCheckBox
+                        For="@(() => Input.RememberMe)"
+                        Color="Color.Primary"
+                        @bind-Value="Input.RememberMe">Lembre-se de mim
+                    </MudStaticCheckBox>
+
+                    <ValidationSummary/>
+
+                    <MudStaticButton
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        FormAction="FormAction.Submit">
+                        Entrar
+                    </MudStaticButton>
+
+                </MudStack>
             </EditForm>
+
+            <MudDivider/>
+
+            <MudStack Spacing="0">
+                <MudLink Href="Account/ForgotPassword">
+                    Ops, esqueci minha senha
+                </MudLink>
+                <MudLink Href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">
+                    Sou novo por aqui, quero me cadastrar
+                </MudLink>
+                <MudLink Href="Account/ResendEmailConfirmation">
+                    Reenviar e-mail de confirmação
+                </MudLink>
+            </MudStack>
+
+            <MudStack>
+                <ExternalLoginPicker/>
+            </MudStack>
+            
         </section>
-    </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr/>
-            <ExternalLoginPicker/>
-        </section>
-    </div>
-</div>
 
-@code {
-    private string? errorMessage;
+    </Content>
+</EchoPage>
 
-    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
+@code
+{
+    private string? _errorMessage;
+
+    [CascadingParameter] public required HttpContext HttpContext { get; set; }
     [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
-
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -86,7 +107,7 @@
     {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+        var result = await SignInManager.PasswordSignInAsync(Input!.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
@@ -96,7 +117,7 @@
         {
             RedirectManager.RedirectTo(
                 "Account/LoginWith2fa",
-                new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
+                new Dictionary<string, object?> { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
         }
         else if (result.IsLockedOut)
         {
@@ -105,7 +126,7 @@
         }
         else
         {
-            errorMessage = "Error: Invalid login attempt.";
+            _errorMessage = "Error: Invalid login attempt.";
         }
     }
 

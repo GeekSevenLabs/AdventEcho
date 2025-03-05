@@ -1,5 +1,8 @@
 using GeekSevenLabs.AdventEcho.Domain;
 using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Contexts;
+using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +31,8 @@ public static class ServiceCollectionExtensions
         // services.AddScoped<IQuotationQueries, QuotationQueries>();
         
         // Services
-        // services.AddScoped<IPricingService, PricingService>();
+        services.AddTransient<IEmailSender, EmailSender>();
+        services.AddSingleton<IEmailSender<ApplicationUser>, AdventEchoEmailSender>();
+        services.Configure<AuthMessageSenderOptions>(o => o.SendGridKey = configuration["SendGridKey"]);
     }
 }
