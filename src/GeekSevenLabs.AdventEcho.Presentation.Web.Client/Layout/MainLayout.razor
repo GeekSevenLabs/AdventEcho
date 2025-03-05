@@ -1,9 +1,81 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
 
-@Body
+@inject NavigationManager NavigationManager
+
+@* Required *@
+<MudThemeProvider IsDarkMode />
+<MudPopoverProvider />
+@* Needed for dialogs *@
+<MudDialogProvider />
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" />
+        <MudText Typo="Typo.h5" Class="ml-3">Advent Echo</MudText>
+        <MudSpacer />
+        
+        <MudMenu>
+            <ActivatorContent>
+                @* <MudAvatar> *@
+                @*     <MudImage Src="images/toiletvisit.jpg" /> *@
+                @* </MudAvatar> *@
+                <MudIconButton Icon="@Icons.Material.Filled.AccountBox" Color="Color.Inherit" Edge="Edge.End" />
+            </ActivatorContent>
+            <ChildContent>
+                <form action="Account/Logout" method="post">
+                    <AntiforgeryToken/>
+                    <input type="hidden" name="ReturnUrl" value="@_currentUrl"/>
+                    <MudButton ButtonType="ButtonType.Submit">
+                        <MudIcon Icon="@Icons.Material.Filled.Logout" Color="Color.Info" Class="mr-3"></MudIcon> Logout
+                    </MudButton>
+                </form>
+                @* <MudMenuItem Label="Profile" /> *@
+                @* <MudMenuItem Label="Theme" /> *@
+                @* <MudMenuItem Label="Usage" /> *@
+            </ChildContent>
+        </MudMenu>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavigationMenu/>
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code 
+{
+    private bool _drawerOpen = true;
+    private string? _currentUrl;
+
+    void DrawerToggle() => _drawerOpen = !_drawerOpen;
+
+    protected override void OnInitialized()
+    {
+        _currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+    
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        _currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}
+
+
+

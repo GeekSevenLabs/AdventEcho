@@ -1,14 +1,10 @@
-using GeekSevenLabs.AdventEcho.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace GeekSevenLabs.AdventEcho.Presentation.Web.Components.Account;
+namespace GeekSevenLabs.AdventEcho.Infrastructure.Identity.Services;
 
-// Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
-internal sealed class IdentityNoOpEmailSender : IEmailSender<ApplicationUser>
+public class AdventEchoEmailSender(IEmailSender emailSender) : IEmailSender<ApplicationUser>
 {
-    private readonly IEmailSender emailSender = new NoOpEmailSender();
-
     public Task SendConfirmationLinkAsync(ApplicationUser user, string email, string confirmationLink) =>
         emailSender.SendEmailAsync(email, "Confirm your email",
             $"Please confirm your account by <a href='{confirmationLink}'>clicking here</a>.");
