@@ -1,8 +1,22 @@
 ﻿@page "/Account/AccessDenied"
 
-<PageTitle>Access denied</PageTitle>
+<EchoPage Title="Acesso negado" MaxWidth="EchoMaxWidth.Small" HiddenBars >
+    <Content>
+        <section class="tw|flex tw|flex-col tw|gap-4">
+            <MudStack Spacing="0">
+                <MudText Color="Color.Primary" Typo="Typo.h4" Class="tw|font-thin">
+                    :/ Access denied
+                </MudText>
+                <MudText Color="Color.Primary" Typo="Typo.h5" Class="tw|font-bold">
+                    We are watching you
+                </MudText>
+            </MudStack>
 
-<header>
-    <h1 class="text-danger">Access denied</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+            <MudStack>
+                <StatusMessage Item="@(new AlertItem(Severity.Error, "Você não tem acesso a esse recurso!"))"/>
+            </MudStack>
+            
+            
+        </section>
+    </Content>
+</EchoPage>
