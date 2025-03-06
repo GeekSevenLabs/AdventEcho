@@ -7,6 +7,7 @@ public sealed partial class ScheduleEvent : Entity<ScheduleEvent, ScheduleEventI
     {
         Title = title;
         Description = description;
+        AddNotificationsAndThrow(new ScheduleEventValidationContract(this));
     }
 
     public string Title { get; private set; }
