@@ -33,3 +33,41 @@ Advent Echo aims to bring the traditional church bulletin board into the digital
 1. Clone the repository:
    ```bash
    git clone https://github.com/geeksevenlabs/advent-echo.git
+
+   Aqui está uma seção para adicionar ao seu **README** explicando como rodar os scripts em **Linux/macOS (Bash)** e **Windows (PowerShell)**.  
+
+## Running Entity Framework Migrations
+
+You can use the provided scripts to create and apply database migrations for different contexts.
+
+### **For Linux/macOS (Bash)**
+1. Open a terminal.
+2. Navigate to the project root folder.
+3. Run the script:  
+   ```sh
+   chmod +x create-migration.sh  # Only needed the first time
+   ./create-migration.sh
+   ```
+4. Follow the on-screen prompts:
+   - Choose the database context (`AdventEchoIdentityDbContext` or `AdventEchoDbContext`).
+   - Enter the migration name.
+   - Confirm if you want to update the database.
+
+### **For Windows (PowerShell)**
+1. Open **PowerShell**.
+2. Navigate to the project root folder.
+3. If it's your first time running scripts, allow execution with:  
+   ```powershell
+   Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+   Press `Y` and `Enter`.
+4. Run the script:  
+   ```powershell
+   .\create-migration.ps1
+   ```
+5. Follow the on-screen prompts:
+   - Choose the database context (`AdventEchoIdentityDbContext` or `AdventEchoDbContext`).
+   - Enter the migration name.
+   - Confirm if you want to update the database.
+
+These scripts simplify the migration process by guiding you through context selection, migration creation, and database updates. 🚀
