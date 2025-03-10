@@ -9,6 +9,7 @@ public sealed partial class ScheduleDayAssignment : Entity<ScheduleDayAssignment
     {
         Name = name;
         ForScheduleType = forScheduleType;
+        AddNotificationsAndThrow(new ScheduleDayAssignmentValidationContract(this));
     }
 
     public string Name { get; private set; }
