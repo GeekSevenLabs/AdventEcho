@@ -8,18 +8,12 @@
 
     <ItemGroup>
         <PackageReference Include="Cblx.Blocks.SourceGenerators.EmptyConstructor" Version="0.11.0"/>
-        <PackageReference Include="Flunt" Version="2.0.5"/>
         <PackageReference Include="Menso.Tools.Exceptions" Version="1.1.1"/>
-        
-        <!--  TODO:  For TypedId (Thinking about using this at the domain layer)    -->
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2"/>
-        <PackageReference Include="StronglyTypedId" Version="1.0.0-beta08"/>
-        <PackageReference Include="StronglyTypedId.Templates" Version="1.0.0-beta08"/>
-        <!--  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||    -->
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Domain.Shared\GeekSevenLabs.AdventEcho.Domain.Shared.csproj"/>
+        <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Kernel\GeekSevenLabs.AdventEcho.Kernel.csproj" />
     </ItemGroup>
 
 </Project>

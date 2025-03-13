@@ -6,8 +6,11 @@ public record ContactVo : ValueObject
     {
         Email = email;
         Phone = phone;
-        
-        AddNotifications(new ContactVoValidationContract(this));
+
+        // .IsNotNullOrEmpty(contact.Email, nameof(contact.Email), EmailRequiredMessage)
+        // .IsEmail(contact.Email, nameof(contact.Email), EmailInvalidMessage)
+        // .IsNotNullOrEmpty(contact.Phone, nameof(contact.Phone), PhoneRequiredMessage)
+        // .Matches(contact.Phone, "^[0-9]{11}$", nameof(contact.Phone), PhoneInvalidMessage);
     }
 
     public string Email { get; private set; }

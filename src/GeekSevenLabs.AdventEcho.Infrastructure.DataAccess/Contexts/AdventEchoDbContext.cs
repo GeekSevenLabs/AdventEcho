@@ -1,15 +1,15 @@
-using Flunt.Notifications;
-using GeekSevenLabs.AdventEcho.Domain;
 using GeekSevenLabs.AdventEcho.Domain.Churches;
 using GeekSevenLabs.AdventEcho.Domain.Districts;
 using GeekSevenLabs.AdventEcho.Domain.Noticies;
 using GeekSevenLabs.AdventEcho.Domain.People;
 using GeekSevenLabs.AdventEcho.Domain.Schedules;
+using GeekSevenLabs.AdventEcho.Domain.Shared;
 using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Configurations;
+using GeekSevenLabs.AdventEcho.Kernel.Data;
 
 namespace GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Contexts;
 
-public class AdventEchoDbContext(DbContextOptions<AdventEchoDbContext> options) : DbContext(options), IAdventEchoUnitOfWork
+public class AdventEchoDbContext(DbContextOptions<AdventEchoDbContext> options) : DbContext(options), IUnitOfWork
 {
     public required DbSet<District> Districts { get; init; }
     public required DbSet<Church> Churches { get; init; }
@@ -24,8 +24,6 @@ public class AdventEchoDbContext(DbContextOptions<AdventEchoDbContext> options) 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Ignore<Notification>();
         
         modelBuilder.ApplyConfiguration(new ChurchConfiguration());
         modelBuilder.ApplyConfiguration(new DistrictConfiguration());
@@ -52,5 +50,9 @@ public class AdventEchoDbContext(DbContextOptions<AdventEchoDbContext> options) 
         configurationBuilder.Properties<ScheduleId>().HaveConversion<ScheduleId.EfCoreValueConverter>();
     }
     
-    public new Task SaveChangesAsync(CancellationToken cancellationToken = default) => base.SaveChangesAsync(cancellationToken);
+    public async Task<bool> CommitAsync(CancellationToken cancellationToken = default)
+    {
+        var rows =  await SaveChangesAsync(cancellationToken);
+        return rows > 0;
+    }
 }

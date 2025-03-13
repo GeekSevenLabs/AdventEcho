@@ -7,7 +7,7 @@ public record PeriodVo : ValueObject
         StartIn = startIn;
         EndIn = endIn;
         
-        AddNotifications(new PeriodVoValidationContract(this));
+        // Validations here
     }
 
     public DateTimeOffset StartIn { get; private set; }

@@ -13,12 +13,11 @@
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.2"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.2"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.2"/>
-        <PackageReference Include="Extensions.MudBlazor.StaticInput" Version="3.2.0" />
+        <PackageReference Include="Extensions.MudBlazor.StaticInput" Version="3.2.0"/>
     </ItemGroup>
-    
+
     <ItemGroup>
-        <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Infrastructure.DataAccess\GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.csproj" />
-        <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Infrastructure.Identity\GeekSevenLabs.AdventEcho.Infrastructure.Identity.csproj" />
+        <ProjectReference Include="..\GeekSevenLabs.AdventEcho.IoC\GeekSevenLabs.AdventEcho.IoC.csproj"/>
         <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Presentation.Web.Client\GeekSevenLabs.AdventEcho.Presentation.Web.Client.csproj"/>
     </ItemGroup>
 

@@ -3,7 +3,7 @@ using GeekSevenLabs.AdventEcho.Domain.People;
 namespace GeekSevenLabs.AdventEcho.Domain.Schedules;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class ScheduleDay : Entity<ScheduleDay, ScheduleDayId>
+public sealed partial class ScheduleDay : Entity<ScheduleDayId>
 {
     public List<ScheduledPerson> _scheduledPeople = [];
     public List<Person> _people = [];

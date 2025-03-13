@@ -5,7 +5,7 @@
 
 <EchoContainer Class="@CssClass" Style="@Style" AdditionalAttributes="AdditionalAttributes" MaxWidth="MaxWidth">
 
-    @if (!HiddenBars)
+    @if (!HiddenBars && (Action != null || BackHref.IsNotNullOrWhiteSpace() || Title.IsNotNullOrWhiteSpace()))
     {
         <MudPaper>
             <MudToolBar>
@@ -25,7 +25,7 @@
         @Content
     </MudPaper>
 
-    @if (!HiddenBars)
+    @if (!HiddenBars && BottomAction != null)
     {
         <MudPaper>
             <MudToolBar>

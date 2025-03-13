@@ -3,7 +3,7 @@ using GeekSevenLabs.AdventEcho.Domain.Schedules;
 namespace GeekSevenLabs.AdventEcho.Domain.People;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class Person : Entity<Person, PersonId>
+public sealed partial class Person : Entity<PersonId>
 {
     private readonly List<ScheduledPerson> _scheduledPeople = [];
     private readonly List<ScheduleDay> _scheduleDays = [];
@@ -14,9 +14,9 @@ public sealed partial class Person : Entity<Person, PersonId>
         Contact = contact;
         ChurchId = churchId;
 
-        AddNotifications(name);
-        AddNotifications(contact);
-        AddNotificationsAndThrow(new PersonValidationContract(this));
+        // .IsNotNull(person.Name, nameof(Person.Name), NameIsRequiredMessage)
+        // .IsNotNull(person.Contact, nameof(Person.Contact), ContactIsRequiredMessage)
+        // .IsNotEmpty(person.ChurchId.Value, nameof(Person.ChurchId), ChurchIdIsRequiredMessage);
     }
 
     public NameVo Name { get; private set; }

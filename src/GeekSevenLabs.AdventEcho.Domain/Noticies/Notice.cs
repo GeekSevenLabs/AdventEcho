@@ -1,7 +1,7 @@
 namespace GeekSevenLabs.AdventEcho.Domain.Noticies;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class Notice : Entity<Notice, NoticeId>
+public sealed partial class Notice : Entity<NoticeId>
 {
     public Notice(string title, string description, PeriodVo period, bool notifyEveryDay, DistrictId districtId)
     {
@@ -12,8 +12,11 @@ public sealed partial class Notice : Entity<Notice, NoticeId>
         DistrictId = districtId;
         ChurchId = null;
 
-        AddNotifications(period);
-        AddNotificationsAndThrow(new NoticeValidationContract(this));
+        // .IsNotNullOrEmpty(notice.Title, nameof(notice.Title), TitleIsRequired)
+        // .IsNotNullOrEmpty(notice.Description, nameof(notice.Description), DescriptionIsRequired)
+        // .IsNotNull(notice.Period, nameof(notice.Period), PeriodIsRequired)
+        // .IsTrue(notice.DistrictId.HasValue || notice.ChurchId.HasValue, nameof(notice.DistrictId), DistrictIdOrChurchIdIsRequired)
+        // .IsFalse(notice is { DistrictId: not null, ChurchId: not null }, nameof(notice.DistrictId), DistrictIdOrChurchIdNotBoth);
     }
     
     public Notice(string title, string description, PeriodVo period, bool notifyEveryDay, ChurchId churchId)
@@ -25,8 +28,11 @@ public sealed partial class Notice : Entity<Notice, NoticeId>
         DistrictId = null;
         ChurchId = churchId;
 
-        AddNotifications(period);
-        AddNotificationsAndThrow(new NoticeValidationContract(this));
+        // .IsNotNullOrEmpty(notice.Title, nameof(notice.Title), TitleIsRequired)
+        // .IsNotNullOrEmpty(notice.Description, nameof(notice.Description), DescriptionIsRequired)
+        // .IsNotNull(notice.Period, nameof(notice.Period), PeriodIsRequired)
+        // .IsTrue(notice.DistrictId.HasValue || notice.ChurchId.HasValue, nameof(notice.DistrictId), DistrictIdOrChurchIdIsRequired)
+        // .IsFalse(notice is { DistrictId: not null, ChurchId: not null }, nameof(notice.DistrictId), DistrictIdOrChurchIdNotBoth);
     }
 
     public string Title { get; private set; }

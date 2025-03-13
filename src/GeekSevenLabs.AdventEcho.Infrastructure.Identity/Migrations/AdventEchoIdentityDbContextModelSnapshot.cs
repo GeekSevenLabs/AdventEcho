@@ -115,6 +115,44 @@ namespace GeekSevenLabs.AdventEcho.Infrastructure.Identity.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b9a02c61-28ee-4b6e-acfb-fbd0b7d66639",
+                            Name = "Developer",
+                            NormalizedName = "DEVELOPER"
+                        },
+                        new
+                        {
+                            Id = "c87aab47-2814-45d0-84e4-c824887e780e",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "e98609b7-2d43-4fca-b041-b50d619ac490",
+                            Name = "Pastor",
+                            NormalizedName = "PASTOR"
+                        },
+                        new
+                        {
+                            Id = "5ed933c0-8472-4f02-a17c-3d9eca44ac20",
+                            Name = "Elder",
+                            NormalizedName = "ELDER"
+                        },
+                        new
+                        {
+                            Id = "8b00570d-7b91-4412-8f31-d200171806f8",
+                            Name = "Director",
+                            NormalizedName = "DIRECTOR"
+                        },
+                        new
+                        {
+                            Id = "3bf8bd1f-0db0-4462-b114-0d0900125eb6",
+                            Name = "Member",
+                            NormalizedName = "MEMBER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

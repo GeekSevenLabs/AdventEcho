@@ -1,3 +1,5 @@
+using GeekSevenLabs.AdventEcho.Domain.Shared;
+
 namespace GeekSevenLabs.AdventEcho.Domain.Schedules;
 
 [HasPrivateEmptyConstructor]
