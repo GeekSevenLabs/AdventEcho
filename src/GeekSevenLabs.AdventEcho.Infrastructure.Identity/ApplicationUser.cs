@@ -1,4 +1,5 @@
 using GeekSevenLabs.AdventEcho.Domain;
+using GeekSevenLabs.AdventEcho.Domain.Shared;
 using Microsoft.AspNetCore.Identity;
 
 namespace GeekSevenLabs.AdventEcho.Infrastructure.Identity;

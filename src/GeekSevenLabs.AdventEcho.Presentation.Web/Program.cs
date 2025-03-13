@@ -2,6 +2,7 @@ using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Extensions;
 using GeekSevenLabs.AdventEcho.Infrastructure.Identity;
 using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Contexts;
 using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Extensions;
+using GeekSevenLabs.AdventEcho.IoC.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using GeekSevenLabs.AdventEcho.Presentation.Web.Components;
@@ -14,14 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents()
-    .AddAuthenticationStateSerialization();
+    .AddAuthenticationStateSerialization(options => options.SerializeAllClaims = true);
 
 builder.Services.AddAdventEchoInfrastructureServices(builder.Configuration);
 builder.Services.AddAdventEchoIdentityInfrastructureServices(builder.Configuration);
+builder.Services.AddAdventEchoApplicationServices();
 
 builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddScoped<IdentityUserAccessor>();
+
 builder.Services.AddScoped<IdentityRedirectManager>();
+builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddAuthentication(options =>
@@ -35,6 +38,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services
     .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AdventEchoIdentityDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
@@ -58,7 +62,6 @@ else
 }
 
 app.UseHttpsRedirection();
-
 
 app.UseAntiforgery();
 

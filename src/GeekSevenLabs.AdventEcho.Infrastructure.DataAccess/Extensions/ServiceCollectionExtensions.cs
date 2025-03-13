@@ -1,5 +1,5 @@
-using GeekSevenLabs.AdventEcho.Domain;
 using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Contexts;
+using GeekSevenLabs.AdventEcho.Kernel.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
         });
 
         // Suporte services
-        services.AddScoped<IAdventEchoUnitOfWork>(sp => sp.GetRequiredService<AdventEchoDbContext>());
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<AdventEchoDbContext>());
         
         // Repositories
         // services.AddScoped<IRawMaterialRepository, RawMaterialRepository>();

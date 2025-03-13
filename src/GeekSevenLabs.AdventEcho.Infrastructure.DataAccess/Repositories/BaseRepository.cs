@@ -1,5 +1,5 @@
-using GeekSevenLabs.AdventEcho.Domain;
 using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Contexts;
+using GeekSevenLabs.AdventEcho.Kernel;
 
 namespace GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Repositories;
 

@@ -3,7 +3,7 @@ using GeekSevenLabs.AdventEcho.Domain.Shared.Enums;
 namespace GeekSevenLabs.AdventEcho.Domain.Schedules;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class Schedule : Entity<Schedule, ScheduleId>
+public sealed partial class Schedule : Entity<ScheduleId>
 {
     public readonly List<ScheduleDay> _days = []; 
     

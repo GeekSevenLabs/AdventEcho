@@ -3,16 +3,17 @@ using GeekSevenLabs.AdventEcho.Domain.Churches;
 namespace GeekSevenLabs.AdventEcho.Domain.Districts;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class District : Entity<District, DistrictId>
+public sealed partial class District : Entity<DistrictId>, IAggregateRoot
 {
-    private readonly List<Church> _churches = new();
+    private readonly List<Church> _churches = [];
     
     public District(string name, PersonId pastorId)
     {
         Name = name;
         PastorId = pastorId;
-        
-        AddNotificationsAndThrow(new DistrictValidationContract(this));
+
+        // .IsNotNullOrEmpty(district.Name, nameof(District.Name), NameRequiredMessage)
+        // .IsNotEmpty(district.PastorId.Value, nameof(District.PastorId), PastorIdRequiredMessage);
     }
 
     public string Name { get; private set; }
@@ -24,6 +25,8 @@ public sealed partial class District : Entity<District, DistrictId>
     {
         Name = name;
         PastorId = pastorId;
-        AddNotificationsAndThrow(new DistrictValidationContract(this));
+        
+        // .IsNotNullOrEmpty(district.Name, nameof(District.Name), NameRequiredMessage)
+        // .IsNotEmpty(district.PastorId.Value, nameof(District.PastorId), PastorIdRequiredMessage);
     }
 }

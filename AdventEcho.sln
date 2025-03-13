@@ -20,6 +20,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E4B1A31-9F91-48F9-8BF6-95346494F376}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
+		MigrationsTools.sh = MigrationsTools.sh
+		MigrationsTools.ps1 = MigrationsTools.ps1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Presentation.Web", "src\GeekSevenLabs.AdventEcho.Presentation.Web\GeekSevenLabs.AdventEcho.Presentation.Web.csproj", "{D3D7B6F0-7959-4AD0-A4C7-E4C388F03FCD}"
@@ -39,6 +41,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commons", "Commons", "{6DE33A26-CD90-4AD8-ACF7-C3FA9E03B8FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Common", "src\GeekSevenLabs.AdventEcho.Common\GeekSevenLabs.AdventEcho.Common.csproj", "{FF18EBA3-9FB3-4FE2-BD70-D3CD805E8A64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.IoC", "src\GeekSevenLabs.AdventEcho.IoC\GeekSevenLabs.AdventEcho.IoC.csproj", "{295E456B-F56C-42E9-9D3E-898E67F29F76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{FCDA11B3-91CE-499B-98FF-845C3D7CED7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.AdventEcho.Kernel", "src\GeekSevenLabs.AdventEcho.Kernel\GeekSevenLabs.AdventEcho.Kernel.csproj", "{E7AFA9CE-9C96-45EB-9A7C-C49EE99C8606}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +101,14 @@ Global
 		{FF18EBA3-9FB3-4FE2-BD70-D3CD805E8A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF18EBA3-9FB3-4FE2-BD70-D3CD805E8A64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF18EBA3-9FB3-4FE2-BD70-D3CD805E8A64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{295E456B-F56C-42E9-9D3E-898E67F29F76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{295E456B-F56C-42E9-9D3E-898E67F29F76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{295E456B-F56C-42E9-9D3E-898E67F29F76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{295E456B-F56C-42E9-9D3E-898E67F29F76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7AFA9CE-9C96-45EB-9A7C-C49EE99C8606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7AFA9CE-9C96-45EB-9A7C-C49EE99C8606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7AFA9CE-9C96-45EB-9A7C-C49EE99C8606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7AFA9CE-9C96-45EB-9A7C-C49EE99C8606}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6668FC76-400F-4644-8768-9A90F285A466} = {94D7234C-5E24-415B-AC9D-46331D8097A0}
@@ -106,5 +122,10 @@ Global
 		{E6F32CB0-0950-444B-BD13-6B8312C32322} = {10D3953D-645F-467E-A11E-6A6A5D12D9D7}
 		{2A20FCFB-F7AA-4E9E-AEE3-D002FF8F18BA} = {94D7234C-5E24-415B-AC9D-46331D8097A0}
 		{FF18EBA3-9FB3-4FE2-BD70-D3CD805E8A64} = {6DE33A26-CD90-4AD8-ACF7-C3FA9E03B8FE}
+		{295E456B-F56C-42E9-9D3E-898E67F29F76} = {10D3953D-645F-467E-A11E-6A6A5D12D9D7}
+		{67907B35-290A-4CF0-83BF-E1196837E344} = {FCDA11B3-91CE-499B-98FF-845C3D7CED7A}
+		{94D7234C-5E24-415B-AC9D-46331D8097A0} = {FCDA11B3-91CE-499B-98FF-845C3D7CED7A}
+		{0AE59F28-4C2C-47E7-BD9E-2FD83B171339} = {FCDA11B3-91CE-499B-98FF-845C3D7CED7A}
+		{E7AFA9CE-9C96-45EB-9A7C-C49EE99C8606} = {6DE33A26-CD90-4AD8-ACF7-C3FA9E03B8FE}
 	EndGlobalSection
 EndGlobal

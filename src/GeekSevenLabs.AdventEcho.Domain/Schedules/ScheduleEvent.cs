@@ -1,7 +1,7 @@
 namespace GeekSevenLabs.AdventEcho.Domain.Schedules;
 
 [HasPrivateEmptyConstructor]
-public sealed partial class ScheduleEvent : Entity<ScheduleEvent, ScheduleEventId>
+public sealed partial class ScheduleEvent : Entity<ScheduleEventId>
 {
     public ScheduleEvent(string title, string description)
     {
