@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Application.Shared\GeekSevenLabs.AdventEcho.Application.Shared.csproj" />
+      <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Common\GeekSevenLabs.AdventEcho.Common.csproj" />
       <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Domain\GeekSevenLabs.AdventEcho.Domain.csproj" />
       <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Kernel\GeekSevenLabs.AdventEcho.Kernel.csproj" />
     </ItemGroup>

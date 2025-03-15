@@ -13,5 +13,9 @@
     <PackageReference Include="StronglyTypedId.Templates" Version="1.0.0-beta08"/>
     <!--  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||    -->
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Common\GeekSevenLabs.AdventEcho.Common.csproj" />
+  </ItemGroup>
 
 </Project>

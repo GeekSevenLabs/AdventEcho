@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using GeekSevenLabs.AdventEcho.Presentation.Web.Components;
 using GeekSevenLabs.AdventEcho.Presentation.Web.Components.Account;
+using GeekSevenLabs.AdventEcho.Presentation.Web.Endpoints;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,9 +18,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents()
     .AddAuthenticationStateSerialization(options => options.SerializeAllClaims = true);
 
-builder.Services.AddAdventEchoInfrastructureServices(builder.Configuration);
-builder.Services.AddAdventEchoIdentityInfrastructureServices(builder.Configuration);
-builder.Services.AddAdventEchoApplicationServices();
+builder.Services.AddAdventEchoServices(builder.Configuration);
 
 builder.Services.AddCascadingAuthenticationState();
 
@@ -47,6 +46,8 @@ builder.Services
 builder.Services.AddMudServices();
 
 var app = builder.Build();
+
+app.MapAdventEchoEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

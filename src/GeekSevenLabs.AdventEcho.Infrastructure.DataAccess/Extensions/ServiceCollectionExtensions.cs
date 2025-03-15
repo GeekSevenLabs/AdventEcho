@@ -1,4 +1,8 @@
+using GeekSevenLabs.AdventEcho.Application.Districts;
+using GeekSevenLabs.AdventEcho.Domain.Districts;
 using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Contexts;
+using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Queries;
+using GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.Repositories;
 using GeekSevenLabs.AdventEcho.Kernel.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,16 +22,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<AdventEchoDbContext>());
         
         // Repositories
-        // services.AddScoped<IRawMaterialRepository, RawMaterialRepository>();
-        // services.AddScoped<IProductRepository, ProductRepository>();
-        // services.AddScoped<ICustomerRepository, CustomerRepository>();
-        // services.AddScoped<IQuotationRepository, QuotationRepository>();
+        services.AddScoped<IDistrictRepository, DistrictRepository>();
         
         // Queries
-        // services.AddScoped<IRawMaterialQueries, RawMaterialQueries>();
-        // services.AddScoped<IProductQueries, ProductQueries>();
-        // services.AddScoped<ICustomerQueries, CustomerQueries>();
-        // services.AddScoped<IQuotationQueries, QuotationQueries>();
+        services.AddScoped<IDistrictQueries, DistrictQueries>();
         
         // Services
         // services.AddScoped<IPricingService, PricingService>();

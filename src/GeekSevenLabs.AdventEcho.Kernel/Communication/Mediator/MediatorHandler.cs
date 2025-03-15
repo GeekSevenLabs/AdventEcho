@@ -9,4 +9,5 @@ public class MediatorHandler(IMediator mediator) : IMediatorHandler
 
     public async Task<Result> SendCommand(ICommand command) => await mediator.Send(command);
     public async Task<Result<TResponse>> SendCommand<TResponse>(ICommand<TResponse> command) => await mediator.Send(command);
+    public async Task<Result<TResponse>> SendQuery<TResponse>(IQuery<TResponse> queryCommand) => await mediator.Send(queryCommand);
 }

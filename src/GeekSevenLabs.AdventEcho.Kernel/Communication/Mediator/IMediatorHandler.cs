@@ -12,5 +12,8 @@ public interface IMediatorHandler
     Task<Result> SendCommand(ICommand command);
     Task<Result<TResponse>> SendCommand<TResponse>(ICommand<TResponse> command);
     
+    // Queries
+    Task<Result<TResponse>> SendQuery<TResponse>(IQuery<TResponse> queryCommand);
+    
     // Thinking about adding a method to publish notifications
 }

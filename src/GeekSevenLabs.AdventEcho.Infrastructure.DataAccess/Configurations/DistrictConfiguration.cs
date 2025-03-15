@@ -20,7 +20,7 @@ internal class DistrictConfiguration : IEntityTypeConfiguration<District>
             .IsRequired();
 
         builder
-            .HasOne<Person>()
+            .HasOne(district => district.Pastor)
             .WithOne()
             .HasForeignKey<District>(district => district.PastorId);
 

@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Application\GeekSevenLabs.AdventEcho.Application.csproj" />
         <ProjectReference Include="..\GeekSevenLabs.AdventEcho.Domain\GeekSevenLabs.AdventEcho.Domain.csproj"/>
     </ItemGroup>
 

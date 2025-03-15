@@ -1,3 +1,4 @@
-using GeekSevenLabs.AdventEcho.Application.Shared.Districts;
+using GeekSevenLabs.AdventEcho.Application.Shared.Districts.Editor;
+
 namespace GeekSevenLabs.AdventEcho.Application.Districts.Create;
-public sealed class CreateDistrictCommand : CreateDistrictRequest, ICommand<DistrictId>;
+public sealed class CreateDistrictCommand : EditorDistrictRequest, ICommand<DistrictId>;

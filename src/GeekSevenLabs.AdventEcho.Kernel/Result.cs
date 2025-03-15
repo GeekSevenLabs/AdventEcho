@@ -2,33 +2,21 @@ namespace GeekSevenLabs.AdventEcho.Kernel;
 
 public class Result
 {
-    public bool Success { get; set; }
+    public bool Success => Type == ResultType.Success;
     
-    public bool Failure => !Success;
+    public ResultType Type { get; private init; }
+    public string Error { get; private init; } = string.Empty;
     
-    public string? Error { get; }
-    public IDictionary<string, string[]> Errors { get; }
     
-    protected Result(bool success, string? error = null)
-    {
-        Success = success;
-        Error = error;
-        Errors = new Dictionary<string, string[]>();
-    }
+    public static Result Ok() => new() { Type = ResultType.Success };
+    public static Result NotFound(string error = "Not found") => new() { Type = ResultType.NotFound, Error = error };
+    public static Result Forbidden() => new() { Type = ResultType.Forbidden };
+    public static Result Fail(string error) => new() { Type = ResultType.Fail, Error = error };
     
-    protected Result(bool success, IDictionary<string, string[]> errors)
-    {
-        Success = success;
-        Errors = errors;
-    }
-    
-    public static Result Ok() => new(true);
-    public static Result Fail(string error) => new(false, error);
-    public static Result Fail(IDictionary<string, string[]> errors) => new(false, errors);
-    
-    public static Result<T> Ok<T>(T value) => new(value, true, string.Empty);
-    public static Result<T> Fail<T>(string error) => new(default, false, error);
-    public static Result<T> Fail<T>(IDictionary<string, string[]> errors) => new(default, false, errors);
+    public static Result<T> Ok<T>(T value) => new() { Type = ResultType.Success, Value = value };
+    public static Result<T> NotFound<T>(string error = "Not found") => new() { Type = ResultType.NotFound, Error = error };
+    public static Result<T> Forbidden<T>() => new() { Type = ResultType.Forbidden };
+    public static Result<T> Fail<T>(string error) => new() { Type = ResultType.Fail, Error = error };
     
     // Convert value to result
     public static Result<T> FromValue<T>(T? value) => value != null ? Ok(value) : Fail<T>("Provided value is null.");
@@ -36,12 +24,16 @@ public class Result
 
 public class Result<T> : Result
 {
-    public T? Value { get; }
-    
-    internal Result(T? value, bool ok, string error) : base(ok, error) => Value = value;
-
-    internal Result(T? value, bool ok, IDictionary<string, string[]> errors) : base(ok, errors) => Value = value;
+    public  T? Value { get; init; }
 
     public static implicit operator Result<T>(T value) => FromValue(value);
     public static implicit operator T?(Result<T> result) => result.Value;
+}
+
+public enum ResultType
+{
+    Success,
+    NotFound,
+    Forbidden,
+    Fail
 }
