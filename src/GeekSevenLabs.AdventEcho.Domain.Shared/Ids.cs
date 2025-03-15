@@ -1,12 +1,17 @@
-using StronglyTypedIds;
+using GeekSevenLabs.AdventEcho.Common;
 
 namespace GeekSevenLabs.AdventEcho.Domain.Shared;
 
-[StronglyTypedId] public readonly partial struct ChurchId;
-[StronglyTypedId] public readonly partial struct DistrictId;
-[StronglyTypedId] public readonly partial struct NoticeId;
-[StronglyTypedId] public readonly partial struct PersonId;
-[StronglyTypedId] public readonly partial struct ScheduleDayAssignmentId;
-[StronglyTypedId] public readonly partial struct ScheduleDayId;
-[StronglyTypedId] public readonly partial struct ScheduleEventId;
-[StronglyTypedId] public readonly partial struct ScheduleId;
+[StronglyTypedId] public readonly partial struct ChurchId : ITypedId;
+[StronglyTypedId] public readonly partial struct DistrictId : ITypedId;
+[StronglyTypedId] public readonly partial struct NoticeId : ITypedId;
+
+[StronglyTypedId]
+public readonly partial struct PersonId : ITypedId
+{
+    public static implicit operator Guid(PersonId id) => id.Value;
+}
+[StronglyTypedId] public readonly partial struct ScheduleDayAssignmentId : ITypedId;
+[StronglyTypedId] public readonly partial struct ScheduleDayId : ITypedId;
+[StronglyTypedId] public readonly partial struct ScheduleEventId : ITypedId;
+[StronglyTypedId] public readonly partial struct ScheduleId : ITypedId;

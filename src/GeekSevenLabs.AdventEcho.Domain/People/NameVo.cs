@@ -4,8 +4,8 @@ public record NameVo : ValueObject
 {
     public NameVo(string first, string last)
     {
-        First = first;
-        Last = last;
+        First = first.TrimEnd();
+        Last = last.TrimStart();
 
         // .IsNotNullOrEmpty(name.First, nameof(NameVo.First), FirstNameIsRequired)
         // .IsGreaterOrEqualsThan(name.First, 3, nameof(NameVo.First), FirstNameMinLength)
@@ -18,4 +18,6 @@ public record NameVo : ValueObject
 
     public string First { get; private init; }
     public string Last { get; private init; }
+    
+    public string FullName => $"{First} {Last}";
 }

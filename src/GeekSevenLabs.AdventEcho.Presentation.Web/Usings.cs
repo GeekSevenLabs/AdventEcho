@@ -1,0 +1,1 @@
+global using GeekSevenLabs.AdventEcho.Presentation.Web.Extensions;
