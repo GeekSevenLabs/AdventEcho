@@ -26,6 +26,10 @@ public static class StringsRoles
     public const string MemberId = "3bf8bd1f-0db0-4462-b114-0d0900125eb6";
     public static readonly string MemberNormalized = Member.ToUpper();
     
+    public const string Person = nameof(Member);
+    public const string PersonId = "43b9c0e7-0918-42bd-a019-c86dd94c0323";
+    public static readonly string PersonNormalized = Person.ToUpper();
+    
     public static string Combine(params string[] roles)
     {
         return string.Join(",", roles);

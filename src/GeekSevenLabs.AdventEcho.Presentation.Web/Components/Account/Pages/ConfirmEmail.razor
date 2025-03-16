@@ -38,7 +38,7 @@
 @code {
     private AlertItem? _alert;
 
-    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromQuery] private string? UserId { get; set; }
 
@@ -66,11 +66,11 @@
                 new AlertItem(Severity.Success, "Muito obrigado por confirmar seu e-mail.") : 
                 new AlertItem(Severity.Error, "Ops! Algo deu errado ao confirmar seu e-mail.");
             
-            // when success, attach role "Member" to user
+            // when success, attach role "Person" to user
             if (result.Succeeded)
             {
                 Logger.LogInformation("User confirmed email and added to role Member.");
-                await UserManager.AddToRoleAsync(user, StringsRoles.Member);
+                await UserManager.AddToRoleAsync(user, StringsRoles.Person);
             }
         }
     }

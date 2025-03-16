@@ -1,3 +1,4 @@
+using GeekSevenLabs.AdventEcho.Application.Services;
 using GeekSevenLabs.AdventEcho.Domain;
 using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Contexts;
 using GeekSevenLabs.AdventEcho.Infrastructure.Identity.Services;
@@ -32,13 +33,12 @@ public static class ServiceCollectionExtensions
         // services.AddScoped<IQuotationQueries, QuotationQueries>();
         
         // Services
+        services.AddScoped<IUserContext, UserContext>();
+        
         services.AddTransient<IEmailSender, EmailSender>();
         services.AddSingleton<IEmailSender<ApplicationUser>, AdventEchoEmailSender>();
         
-        services.Configure<AuthMessageSenderOptions>(o =>
-        {
-            o.SendGridKey = configuration["SendGridKey"];
-        });
+        services.Configure<AuthMessageSenderOptions>(o => { o.SendGridKey = configuration["SendGridKey"]; });
 
         services.AddOptions();
         services.AddHttpClient<ResendClient>();
@@ -46,6 +46,7 @@ public static class ServiceCollectionExtensions
         {
             o.ApiToken = configuration["ResendKey"]!;
         });
+        
         services.AddTransient<IResend, ResendClient>();
     }
 }

@@ -8,9 +8,10 @@ public sealed partial class Person : Entity<PersonId>
     private readonly List<ScheduledPerson> _scheduledPeople = [];
     private readonly List<ScheduleDay> _scheduleDays = [];
     
-    public Person(NameVo name, ContactVo contact, ChurchId churchId)
+    public Person(NameVo name, DocumentVo document, ContactVo contact, ChurchId churchId)
     {
         Name = name;
+        Document = document;
         Contact = contact;
         ChurchId = churchId;
 
@@ -21,7 +22,9 @@ public sealed partial class Person : Entity<PersonId>
 
     public NameVo Name { get; private set; }
     public ContactVo Contact { get; private set; }
-    public ChurchId ChurchId { get; private set; }
+    public DocumentVo Document { get; private set; }
+    
+    public ChurchId? ChurchId { get; private set; }
     
     public IReadOnlyList<ScheduledPerson> ScheduledPeople => _scheduledPeople.AsReadOnly();
     public IReadOnlyList<ScheduleDay> ScheduleDays => _scheduleDays.AsReadOnly();

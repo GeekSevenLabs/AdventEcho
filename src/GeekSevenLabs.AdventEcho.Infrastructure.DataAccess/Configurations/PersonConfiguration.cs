@@ -36,9 +36,15 @@ internal class PersonConfiguration : IEntityTypeConfiguration<Person>
                 .IsRequired();
         });
         
-        builder
-            .Property(person => person.ChurchId)
-            .IsRequired();
+        builder.ComplexProperty(person => person.Document, documentBuilder =>
+        {
+            documentBuilder.Property(document => document.Type).IsRequired();
+            documentBuilder.Property(document => document.Number).HasMaxLength(20).IsRequired();
+        });
+        
+        builder.HasIndex(person => person.Document.Number).IsUnique();
+        
+        builder.Property(person => person.ChurchId).IsRequired(false);
         
         builder
             .HasOne<Church>()

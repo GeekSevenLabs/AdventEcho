@@ -4,6 +4,7 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Text
 @using System.Text.Encodings.Web
+@using GeekSevenLabs.AdventEcho.Application.People
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 
@@ -14,6 +15,7 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject IPersonQueries PersonQueries
 
 <EchoPage Title="Register" MaxWidth="EchoMaxWidth.Small" HiddenBars>
     <Content>
@@ -33,20 +35,35 @@
 
                 <MudStack Spacing="4">
                     <MudText Typo="Typo.body1" GutterBottom="true">Preencha as informações para criar uma conta.</MudText>
+
+                    <MudStaticTextField For="@(() => Input.FirstName)" @bind-Value="Input.FirstName"
+                                        Label="Nome" Placeholder="Ellen"
+                                        Variant="Variant.Outlined" Immediate
+                                        UserAttributes="@(new Dictionary<string, object?> { { "autocomplete", "first-name" }, { "aria-required", "true" } })"/>
+
+                    <MudStaticTextField For="@(() => Input.LastName)" @bind-Value="Input.LastName"
+                                        Label="Sobrenome" Placeholder="Gould White"
+                                        Variant="Variant.Outlined" Immediate
+                                        UserAttributes="@(new Dictionary<string, object?> { { "autocomplete", "last-name" }, { "aria-required", "true" } })"/>
+
+                    <MudStaticTextField For="@(() => Input.PhoneNumber)" @bind-Value="Input.PhoneNumber"
+                                        Label="Número/Whatsapp" Placeholder="(00) 0 0000-0000" Immediate
+                                        Variant="Variant.Outlined" Mask="@(new PatternMask("(00) 0 0000-0000"))"
+                                        UserAttributes="@(new Dictionary<string, object?> { { "autocomplete", "phone-number" }, { "aria-required", "true" } })"/>
                     
                     <MudStaticTextField For="@(() => Input.Email)" @bind-Value="Input.Email"
                                         Label="Email" Placeholder="name@example.com"
-                                        Variant="Variant.Outlined"
+                                        Variant="Variant.Outlined" Immediate
                                         UserAttributes="@(new Dictionary<string, object?> { { "autocomplete", "username" }, { "aria-required", "true" } })"/>
 
                     <MudStaticTextField For="@(() => Input.Password)" @bind-Value="Input.Password"
                                         Label="Senha" InputType="InputType.Password" Placeholder="password"
-                                        Variant="Variant.Outlined"
+                                        Variant="Variant.Outlined" Immediate
                                         UserAttributes="@(new Dictionary<string, object?> { { "autocomplete", "new-password" }, { "aria-required", "true" } })"/>
 
                     <MudStaticTextField For="@(() => Input.ConfirmPassword)" @bind-Value="Input.ConfirmPassword"
                                         Label="Confirmar senha" InputType="InputType.Password" Placeholder="confirm password"
-                                        Variant="Variant.Outlined"
+                                        Variant="Variant.Outlined" Immediate
                                         UserAttributes="@(new Dictionary<string, object?> { { "autocomplete", "new-password" }, { "aria-required", "true" } })"/>
 
                     <ValidationSummary/>
@@ -76,11 +93,11 @@
     </Content>
 </EchoPage>
 
-@code {
+@code 
+{
     private IEnumerable<IdentityError>? _identityErrors;
 
     [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
-
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
     private string? Message => _identityErrors is null ? null : $"Error: {string.Join(", ", _identityErrors.Select(error => error.Description))}";
@@ -90,8 +107,8 @@
         var user = CreateUser();
 
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-        var emailStore = GetEmailStore();
-        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+        await GetEmailStore().SetEmailAsync(user, Input.Email, CancellationToken.None);
+        
         var result = await UserManager.CreateAsync(user, Input.Password);
 
         if (!result.Succeeded)
@@ -104,10 +121,13 @@
 
         var userId = await UserManager.GetUserIdAsync(user);
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+        
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        
         var callbackUrl = NavigationManager.GetUriWithQueryParameters(
             NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
+            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl }
+        );
 
         await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
@@ -119,6 +139,7 @@
         }
 
         await SignInManager.SignInAsync(user, isPersistent: false);
+        
         RedirectManager.RedirectTo(ReturnUrl);
     }
 
@@ -126,7 +147,7 @@
     {
         try
         {
-            return Activator.CreateInstance<ApplicationUser>();
+            return new ApplicationUser();
         }
         catch
         {
@@ -147,20 +168,34 @@
 
     private sealed class InputModel
     {
-        [Required]
+        [Required(ErrorMessage = "Nome é obrigatório.")]
+        [DataType(DataType.Text)]
+        public string FirstName { get; set; } = "";
+        
+        [Required(ErrorMessage = "Sobrenome é obrigatório.")]
+        [DataType(DataType.Text)]
+        public string LastName { get; set; } = "";
+        
+        [Required(ErrorMessage = "Número de celular é obrigatório.")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^(?:(^\+\d{2})?)(?:([1-9]{2})|([0-9]{3})?)(\d{4,5})(\d{4})$", ErrorMessage = "O número de celular é inválido.")]
+        public string PhoneNumber { get; set; } = "";
+        
+        [Required(ErrorMessage = "Email é obrigatório.")]
         [EmailAddress]
+        [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         public string Email { get; set; } = "";
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Senha é obrigatória.")]
+        [StringLength(100, ErrorMessage = "Senha deve ter pelo menos {0} e no máximo {1}", MinimumLength = 8)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Senha")]
         public string Password { get; set; } = "";
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [DataType(DataType.Password, ErrorMessage = "")]
+        [Display(Name = "Confirmação de senha")]
+        [Compare("Password", ErrorMessage = "As senhas não conferem.")]
         public string ConfirmPassword { get; set; } = "";
     }
 
