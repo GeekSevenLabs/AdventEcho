@@ -7,18 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GeekSevenLabs.AdventEcho.Infrastructure.Identity.Contexts;
 
-public class AdventEchoIdentityDbContext(DbContextOptions<AdventEchoIdentityDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+public class AdventEchoIdentityDbContext(DbContextOptions<AdventEchoIdentityDbContext> options) 
+    : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
 {
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        modelBuilder
-            .Entity<ApplicationUser>()
-            .Property(e => e.PersonId)
-            .IsRequired(false);
-        
         SeedRoles(modelBuilder);
     }
 
@@ -39,7 +34,8 @@ public class AdventEchoIdentityDbContext(DbContextOptions<AdventEchoIdentityDbCo
             new IdentityRole { Id = StringsRoles.PastorId, Name = StringsRoles.Pastor, NormalizedName = StringsRoles.PastorNormalized },
             new IdentityRole { Id = StringsRoles.ElderId, Name = StringsRoles.Elder, NormalizedName = StringsRoles.ElderNormalized },
             new IdentityRole { Id = StringsRoles.DirectorId, Name = StringsRoles.Director, NormalizedName = StringsRoles.DirectorNormalized },
-            new IdentityRole { Id = StringsRoles.MemberId, Name = StringsRoles.Member, NormalizedName = StringsRoles.MemberNormalized }
+            new IdentityRole { Id = StringsRoles.MemberId, Name = StringsRoles.Member, NormalizedName = StringsRoles.MemberNormalized },
+            new IdentityRole { Id = StringsRoles.PersonId, Name = StringsRoles.Person, NormalizedName = StringsRoles.PersonNormalized }
         );
     }
 }

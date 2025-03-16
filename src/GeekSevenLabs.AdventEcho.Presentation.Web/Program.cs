@@ -36,7 +36,10 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services
-    .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddIdentityCore<ApplicationUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+    })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AdventEchoIdentityDbContext>()
     .AddSignInManager()
