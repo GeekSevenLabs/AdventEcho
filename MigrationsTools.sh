@@ -11,16 +11,16 @@ read -p "Enter the number of the desired option: " CONTEXT_OPTION
 # Set variables based on choice
 if [[ "$CONTEXT_OPTION" == "1" ]]; then
   CONTEXT="AdventEchoIdentityDbContext"
-  PROJECT="src/GeekSevenLabs.AdventEcho.Infrastructure.Identity/GeekSevenLabs.AdventEcho.Infrastructure.Identity.csproj"
+  PROJECT="src/Services/Identity/Infrastructure/AdventEcho.Identity.Infrastructure.csproj"
+  STARTUP_PROJECT="src/Presentation/Identity/AdventEcho.Presentation.Identity.csproj"
 elif [[ "$CONTEXT_OPTION" == "2" ]]; then
   CONTEXT="AdventEchoDbContext"
-  PROJECT="src/GeekSevenLabs.AdventEcho.Infrastructure.DataAccess/GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.csproj"
+  PROJECT="src/AdventEcho.Infrastructure.DataAccess/GeekSevenLabs.AdventEcho.Infrastructure.DataAccess.csproj"
+  STARTUP_PROJECT="src/Presentation/Identity/AdventEcho.Presentation.Identity.csproj"
 else
   echo "Invalid option. Exiting..."
   exit 1
 fi
-
-STARTUP_PROJECT="src/GeekSevenLabs.AdventEcho.Presentation.Web/GeekSevenLabs.AdventEcho.Presentation.Web.csproj"
 
 # Ask for the migration name
 read -p "Enter the migration name: " MIGRATION_NAME
