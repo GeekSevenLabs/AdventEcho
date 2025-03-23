@@ -1,18 +1,15 @@
 using System.Text;
-using AdventEcho.Identity.Application;
-using AdventEcho.Identity.Application.Shared;
+using AdventEcho.Identity.Application.Extensions;
 using AdventEcho.Identity.Infrastructure.Extensions;
 using AdventEcho.Identity.Infrastructure.Models;
 using AdventEcho.Identity.Infrastructure.Options;
 using AdventEcho.Kernel.Extensions;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Resend;
 
 namespace AdventEcho.Identity.IoC;
 
@@ -23,29 +20,44 @@ public static class DependencyInjection
         // Configurations
         services.AddConfigurations(configuration);
         
-        // Db Context
+        // Infrastructure
         services.AddAdventEchoIdentityInfrastructure(configuration);
+        
+        // Applications
+        services.AddAdventEchoIdentityApplicationServices();
 
+        // Resend
+        services.AddResend();
+        
         // Identity
         services.AddIdentity();
         
         // Authentication and Authorization
         services.AddAuthenticationSchemas(configuration);
         services.AddAuthorization();
-        
-        // Services
-        services.AddTransient<IEmailSender<User>, EmailSenderFake>();
-        services.AddScoped<IAccountService, AccountService>();
     }
 
     private static void AddConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddOptions();
+
         var domainConfiguration = configuration.GetSection(AdventEchoIdentityDomainsConfiguration.SectionName).Get<AdventEchoIdentityDomainsConfiguration>().Required();
         
         services.Configure<AdventEchoIdentityDomainsConfiguration>(options =>
         {
             options.ApiIdentity = domainConfiguration.ApiIdentity;
         });
+        
+        services.Configure<ResendClientOptions>(o =>
+        {
+            o.ApiToken = configuration["ResendKey"]!;
+        });
+    }
+    
+    private static void AddResend(this IServiceCollection services)
+    {
+        services.AddHttpClient<ResendClient>();
+        services.AddTransient<IResend, ResendClient>();
     }
     
     private static void AddIdentity(this IServiceCollection services)
@@ -62,7 +74,7 @@ public static class DependencyInjection
                 options.SignIn.RequireConfirmedEmail = true;
             })
             .AddRoles<Role>()
-            .AddAdventEchoStores()
+            .AddAdventEchoIdentityDbContextStores()
             .AddSignInManager()
             .AddDefaultTokenProviders();
     }
@@ -70,8 +82,7 @@ public static class DependencyInjection
     private static void AddAuthenticationSchemas(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtConfiguration = configuration.GetSection(AdventEchoIdentityJwtConfiguration.SectionName).Get<AdventEchoIdentityJwtConfiguration>();
-
-        services.AddOptions();
+        
         services.Configure<AdventEchoIdentityJwtConfiguration>(config =>
         {
             config.Audiences = jwtConfiguration.Required().Audiences;
@@ -99,24 +110,4 @@ public static class DependencyInjection
                 };
             });
     } 
-}
-
-//TODO: Remove this class and implement the real email sender
-file class EmailSenderFake : IEmailSender<User>
-{
-    public Task SendConfirmationLinkAsync(User user, string email, string confirmationLink)
-    {
-        Console.WriteLine($"EMAIL CONFIRMATION ::: {email}:{confirmationLink}");
-        return Task.CompletedTask;
-    }
-
-    public Task SendPasswordResetLinkAsync(User user, string email, string resetLink)
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
-    {
-        return Task.CompletedTask;
-    }
 }

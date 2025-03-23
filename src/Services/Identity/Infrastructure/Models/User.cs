@@ -16,7 +16,7 @@ public sealed class User : IdentityUser<Guid>, IUser
     public ICollection<UserLogin> Logins { get; private set; } = [];
     public ICollection<UserToken> Tokens { get; private set; } = [];
     public ICollection<UserRole> UserRoles { get; private set; } = [];
-    public string? Name { get; private set; } = null!;
+    public string? Name { get; private set; }
 }
 
 public sealed class Role : IdentityRole<Guid>

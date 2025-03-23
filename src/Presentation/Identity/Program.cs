@@ -1,6 +1,7 @@
 using AdventEcho.Identity.IoC;
 using AdventEcho.Kernel.Server.Endpoints;
 using AdventEcho.Kernel.Server.Extensions;
+using AdventEcho.Kernel.Server.Validations;
 using AdventEcho.Presentation.Identity.Documentations;
 using AdventEcho.Presentation.Identity.Endpoints;
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Kernel Server
 builder.Services.AddAdventEchoServerDocumentation(options =>
 {
+    options.AddOperationTransformer<UseFluentValidatorRulesOperationTransformer>();
     options.AddDocumentTransformer<IdentityOpenApiDocumentTransformer>();
 });
 

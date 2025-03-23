@@ -11,5 +11,15 @@ public static class StringExtensions
         Throw.When.Null(value, $"{paramName} is required");
         return value;
     }
+
+    public static InvalidOperationException ToInvalidOperationException(this string message)
+    {
+        return new InvalidOperationException(message);
+    }
+
+    public static ArgumentNullException ToArgumentNullException(this string message)
+    {
+        return new ArgumentNullException(message, (Exception?)null);
+    }
     
 }

@@ -1,4 +1,4 @@
-using AdventEcho.Identity.Application.Shared;
+using AdventEcho.Identity.Application.Register;
 using AdventEcho.Identity.Application.Shared.Register;
 using AdventEcho.Kernel.Server.Endpoints;
 using AdventEcho.Kernel.Server.Extensions;
@@ -6,7 +6,7 @@ using AdventEcho.Kernel.Server.Validations;
 
 namespace AdventEcho.Presentation.Identity.Endpoints;
 
-public class RegisterUserEndpoint : IEndpoint
+public abstract class RegisterUserEndpoint : IEndpoint
 {
     public static IEndpointRouteBuilder Map(IEndpointRouteBuilder endpoints)
     {
@@ -14,15 +14,15 @@ public class RegisterUserEndpoint : IEndpoint
             .MapPost("/", RegisterUserAsync)
             .UseValidationFor<RegisterUserRequest>()
             .WithName("RegisterUser")
-            .WithDescription("Register a new user.")
-            .WithSummary("Register a new user.");
-        
+            .WithSummary("Register a new user.")
+            .WithDescription("Register a new user with the provided information. After registration, the user will receive an email to confirm the registration.")
+            .AddCommonProduces();
         
         return endpoints;
     }
     
-    private static async Task<IResult> RegisterUserAsync(RegisterUserRequest request, IAccountService accountService)
+    private static async Task<IResult> RegisterUserAsync(RegisterUserRequest request, IRegisterUserHandler handler)
     {
-        return await accountService.RegisterAsync(request).ProcessResult();
+        return await handler.Handle(request).ProcessResult();
     }
 }

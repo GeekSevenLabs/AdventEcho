@@ -3,7 +3,9 @@ using System.Security.Claims;
 using System.Text;
 using AdventEcho.Identity.Application;
 using AdventEcho.Identity.Application.Shared;
+using AdventEcho.Identity.Application.Tokens;
 using AdventEcho.Kernel.Extensions;
+using AdventEcho.Kernel.Messages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,7 +16,7 @@ internal class TokenService(UserManager<User> userManager, IOptions<AdventEchoId
 {
     private readonly AdventEchoIdentityJwtConfiguration _options = options.Value;
     
-    public async Task<JwtToken> GenerateToken(IUser user)
+    public async Task<Result<JwtTokens>> GenerateTokensAsync(IUser user)
     {
         var currentUser = (User)user;
         var claims = await GetClaims(currentUser);
@@ -28,15 +30,24 @@ internal class TokenService(UserManager<User> userManager, IOptions<AdventEchoId
             notBefore: validIn,
             signingCredentials: CreateSigningCredentials());
 
-        return new JwtToken
+        var accessToken = new JwtToken
         {
             Value = new JwtSecurityTokenHandler().WriteToken(token),
             Expires = expiresIn,
             ValidIn = validIn
         };
+        
+        var refreshToken = await GenerateRefreshToken(currentUser, accessToken);
+        
+        return new JwtTokens(accessToken, refreshToken);
+    }
+    
+    public Task<Result<JwtTokens>> RefreshTokenAsync(IUser user, JwtToken refreshToken)
+    {
+        throw new NotImplementedException();
     }
 
-    public async Task<JwtToken> GenerateRefreshToken(IUser user, JwtToken accessToken)
+    private async Task<JwtToken> GenerateRefreshToken(IUser user, JwtToken accessToken)
     {
         var currentUser = (User)user;
         var claims = await GetClaims(currentUser, addUserClaims: false);
@@ -85,4 +96,5 @@ internal class TokenService(UserManager<User> userManager, IOptions<AdventEchoId
 
         return claims;
     }
+    
 }

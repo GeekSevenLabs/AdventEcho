@@ -1,81 +1,117 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace AdventEcho.Kernel.Messages;
+
+/*
+ * Caution: This is a simple implementation of the Result pattern.
+ * For more advanced scenarios, consider using a library.
+ * This implementation was created just to learn the pattern.
+ */
+
 
 public class Result
 {
-    public required ResultType Type { get; init; }
-    public Dictionary<string, string[]> Errors { get; init; } = [];
-
-
-    public static Result Fail(string error)
+    private readonly Exception? _error;
+    
+    private Result(Exception error)
     {
-        var result = new Result { Type = ResultType.Fail };
-        result.Errors.Add(nameof(ResultType.Fail), [error]);
-        return result;
+        IsSuccess = false;
+        _error = error;
+    }   
+    
+    private Result()
+    {
+        IsSuccess = true;
+        _error = null;
     }
     
-    public static Result<TValue> Fail<TValue>(string error)
-    {
-        var result = new Result<TValue> { Type = ResultType.Fail };
-        result.Errors.Add(nameof(ResultType.Fail), [error]);
-        return result;
-    }
+    [MemberNotNullWhen(false, nameof(_error))]
+    private bool IsSuccess { get; }
     
-    public static Result Fail(string[] error)
+    public Result Switch(Action onSuccess, Action<Exception> onFailure)
     {
-        var result = new Result { Type = ResultType.Fail };
-        result.Errors.Add(nameof(ResultType.Fail), error);
-        return result;
-    }
-    
-    public static Result<TValue> Fail<TValue>(string[] error)
-    {
-        var result = new Result<TValue> { Type = ResultType.Fail };
-        result.Errors.Add(nameof(ResultType.Fail), error);
-        return result;
-    }
-    
-    public static Result Fail(Dictionary<string, string[]> error)
-    {
-        return new Result
+        if (IsSuccess)
         {
-            Type = ResultType.Fail,
-            Errors = error
-        };
-    }
-    
-    public static Result<TValue> Fail<TValue>(Dictionary<string, string[]> error)
-    {
-        return new Result<TValue>
-        {
-            Type = ResultType.Fail,
-            Errors = error
-        };
-    }
+            onSuccess();
+            return this;
+        }
 
-    public static Result Ok()
-    {
-        return new Result { Type = ResultType.Ok };
+        onFailure(_error);
+        return this;
     }
     
-    public static Result<TValue> Ok<TValue>(TValue value)
+    public void Match(Action onSuccess, Action<Exception> onFailure)
     {
-        return new Result<TValue> { Type = ResultType.Ok, Value = value};
+        if (IsSuccess)
+        {
+            onSuccess();
+        }
+        else
+        {
+            onFailure(_error);
+        }
     }
     
-    // Convert value to result
-    public static Result<T> FromValue<T>(T? value) => value != null ? Ok(value) : Fail<T>("Provided value is null.");
+    public TReturn Match<TReturn>(Func<TReturn> onSuccess, Func<Exception, TReturn> onFailure)
+    {
+        return IsSuccess ? onSuccess() : onFailure(_error);
+    }
+    
+    public static Result Success() => new();
+    public static Result Fail(Exception error) => new(error);
+    
+    public static implicit operator Result(Exception error) => Fail(error);
 }
 
-public class Result<T> : Result
+public class Result<T>
 {
-    public  T? Value { get; init; }
+    // We don't expose these publicly
+    private readonly T? _value;
+    private readonly Exception? _error;
+    
+    // Success constructor
+    private Result(T value)
+    {
+        IsSuccess = true;
+        _value = value;
+        _error = null;
+    }
 
-    public static implicit operator Result<T>(T value) => FromValue(value);
-    public static implicit operator T?(Result<T> result) => result.Value;
-}
+    // Failure constructor
+    private Result(Exception error)
+    {
+        IsSuccess = false;
+        _value = default;
+        _error = error;
+    }
 
-public enum ResultType
-{
-    Ok = 1,
-    Fail = 11
+    [MemberNotNullWhen(true, nameof(_value))]
+    [MemberNotNullWhen(false, nameof(_error))]
+    private bool IsSuccess { get; }
+    
+    public Result<TReturn> Switch<TReturn>(Func<T, TReturn> onSuccess, Func<Exception, Exception> onFailure)
+    {
+        if (IsSuccess)
+        {
+            return onSuccess(_value);
+        }
+
+        var err = onFailure(_error);
+        return Result<TReturn>.Fail(err);
+    }
+    
+    public TReturn Match<TReturn>(Func<T, TReturn> onSuccess, Func<Exception, TReturn> onFailure)
+    {
+        return IsSuccess ? onSuccess(_value) : onFailure(_error);
+    }
+    
+
+    // Helper methods for constructing the `Result<T>`
+    public static Result<T> Success(T value) => new(value);
+    public static Result<T> Fail(Exception error) => new(error);
+    
+    
+    // Allow converting a T directly into Result<T>
+    public static implicit operator Result<T>(T value) => Success(value);
+    public static implicit operator Result<T>(Exception error) => Fail(error);
 }
