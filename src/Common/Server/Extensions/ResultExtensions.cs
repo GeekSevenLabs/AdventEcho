@@ -11,8 +11,8 @@ public static class ResultExtensions
         
         return result.Type switch
         {
-            ResultType.Success => Results.Ok(),
-            ResultType.Failure => Results.ValidationProblem(result.Errors),
+            ResultType.Ok => Results.Ok(),
+            ResultType.Fail => Results.ValidationProblem(result.Errors),
             _ => Results.BadRequest()
         };
     }

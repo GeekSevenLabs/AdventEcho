@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AdventEcho.Identity.Application;
+using AdventEcho.Identity.Application.Shared;
 using AdventEcho.Kernel.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -11,35 +12,77 @@ namespace AdventEcho.Identity.Infrastructure.Services;
 
 internal class TokenService(UserManager<User> userManager, IOptions<AdventEchoIdentityJwtConfiguration> options) : ITokenService
 {
-    public async Task<string> GenerateToken(IUser user)
+    private readonly AdventEchoIdentityJwtConfiguration _options = options.Value;
+    
+    public async Task<JwtToken> GenerateToken(IUser user)
     {
         var currentUser = (User)user;
-        var config = options.Value;
+        var claims = await GetClaims(currentUser);
+        var (validIn, expiresIn) = _options.GetAccessTokenLifetime();
         
+        var token = new JwtSecurityToken(
+            issuer: _options.Issuer,
+            audience: _options.Audiences.First(),
+            claims: claims,
+            expires: expiresIn,
+            notBefore: validIn,
+            signingCredentials: CreateSigningCredentials());
+
+        return new JwtToken
+        {
+            Value = new JwtSecurityTokenHandler().WriteToken(token),
+            Expires = expiresIn,
+            ValidIn = validIn
+        };
+    }
+
+    public async Task<JwtToken> GenerateRefreshToken(IUser user, JwtToken accessToken)
+    {
+        var currentUser = (User)user;
+        var claims = await GetClaims(currentUser, addUserClaims: false);
+        var (validIn, expiresIn) = _options.GetRefreshTokenLifetime(accessToken.Expires);
+        
+        var token = new JwtSecurityToken(
+            issuer: _options.Issuer,
+            audience: _options.Audiences.First(),
+            claims: claims,
+            expires: expiresIn,
+            notBefore: validIn,
+            signingCredentials: CreateSigningCredentials());
+        
+        return new JwtToken
+        {
+            Value = new JwtSecurityTokenHandler().WriteToken(token),
+            Expires = expiresIn,
+            ValidIn = validIn
+        };
+    }
+
+    private SigningCredentials CreateSigningCredentials()
+    {
+        var config = options.Value;
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Secret));
+        return new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+    }
+    
+    private async Task<IEnumerable<Claim>> GetClaims(User user, bool addUserClaims = true)
+    {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, user.Name.Required()),
+            new(ClaimTypes.NameIdentifier, user.Name.Required()),
             new(JwtRegisteredClaimNames.Sub, user.Name.Required()),
             new(JwtRegisteredClaimNames.Email, user.Email.Required()),
             new(JwtRegisteredClaimNames.Jti, user.Id.Required().ToString())
         };
 
-        var roles = await userManager.GetRolesAsync(currentUser);
+        if (!addUserClaims) { return claims; }
+        
+        var roles = await userManager.GetRolesAsync(user);
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        var userClaims = await userManager.GetClaimsAsync(currentUser);
+        var userClaims = await userManager.GetClaimsAsync(user);
         claims.AddRange(userClaims);
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Secret));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: config.Issuer,
-            audience: config.Audiences.First(),
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: credentials);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return claims;
     }
 }

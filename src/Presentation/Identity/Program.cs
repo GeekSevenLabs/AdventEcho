@@ -1,4 +1,3 @@
-using AdventEcho.Identity.Infrastructure.Models;
 using AdventEcho.Identity.IoC;
 using AdventEcho.Kernel.Server.Endpoints;
 using AdventEcho.Kernel.Server.Extensions;
@@ -18,7 +17,7 @@ builder.Services.AddAdventEchoIdentity(builder.Configuration);
 
 var app = builder.Build();
 
-app.MapAccountEndpoints();
+app.MapAdventEchoIdentityVersionOneEndpoints();
 
 app.UseHttpsRedirection();
 

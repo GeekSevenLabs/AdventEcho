@@ -7,13 +7,30 @@ using Microsoft.Extensions.Options;
 
 namespace AdventEcho.Identity.Infrastructure.Services;
 
-internal class UserManagerInternal(
-    UserManager<User> userManager, 
+internal class UserServiceInternal(
+    UserManager<User> userManager,
+    SignInManager<User> signInManager,
     IUserStore<User> userStore,
-    ILogger<UserManagerInternal> logger,
+    ILogger<UserServiceInternal> logger,
     IOptions<AdventEchoIdentityDomainsConfiguration> options,
-    IEmailSender<User> emailSender) : IUserManager
+    IEmailSender<User> emailSender) : IUserService
 {
+    public async Task<IUser?> FindByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await userManager.FindByEmailAsync(email); 
+    }
+
+    public async Task<Result<IUser>> LoginAsync(IUser user, string password, CancellationToken cancellationToken = default)
+    {
+        var result = await signInManager.CheckPasswordSignInAsync((User)user, password, false);
+        
+        if(result.IsLockedOut) return Result.Fail<IUser>("User account is locked out.");
+        if(result.IsNotAllowed) return Result.Fail<IUser>("User account is not allowed.");
+        if(result.RequiresTwoFactor) return Result.Fail<IUser>("User account requires two factor authentication.");
+        
+        return Result.Ok(user);
+    }
+
     public async Task<Result> RegisterAsync(string name, string email, string password, CancellationToken cancellationToken = default)
     {
         var user = new User(name);
@@ -27,7 +44,7 @@ internal class UserManagerInternal(
         if (!result.Succeeded)
         {
             var errors = result.Errors.ToDictionary(error => error.Code, error => new[] { error.Description });
-            return Result.Failure(errors);
+            return Result.Fail(errors);
         }
         
         logger.LogInformation("User account created for {email} and password set.", email);
@@ -41,6 +58,6 @@ internal class UserManagerInternal(
         
         await emailSender.SendConfirmationLinkAsync(user, email, callbackUrl);
         
-        return Result.Success();
+        return Result.Ok();
     }
 }

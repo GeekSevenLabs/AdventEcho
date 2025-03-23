@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IUserManager, UserManagerInternal>();
+        services.AddScoped<IUserService, UserServiceInternal>();
     }
 
     public static IdentityBuilder AddAdventEchoStores(this IdentityBuilder builder)
