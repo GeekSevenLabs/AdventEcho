@@ -1,0 +1,59 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "AdventEcho Identity API",
+    "description": "API for User identity management",
+    "version": "v1"
+  },
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "Health Check"
+        ],
+        "summary": "Check to see if the advent echo identity service is running.",
+        "operationId": "HealthCheck",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HealthCheckResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "name": "X-ApiKey",
+        "in": "header"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Health Check"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <UserSecretsId>9b371cc6-206d-44b4-9c9f-8c97fd294cc6</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- OPEN API DOCUMENTATION -->
+        <PackageReference Include="FluentValidation" Version="11.11.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3"/>
+        <PackageReference Include="Scalar.AspNetCore" Version="2.0.36"/>
+
+        <!-- DEPENDENCY INJECTION -->
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>
+    </ItemGroup>
+
+</Project>
