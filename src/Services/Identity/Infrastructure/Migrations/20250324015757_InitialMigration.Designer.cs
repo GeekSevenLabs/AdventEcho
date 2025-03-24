@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdventEcho.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(AdventEchoIdentityDbContext))]
-    [Migration("20250324013454_Teste")]
-    partial class Teste
+    [Migration("20250324015757_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

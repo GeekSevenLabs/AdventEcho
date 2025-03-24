@@ -11,7 +11,13 @@ var identityDb = dbServer
 
 var identityApi = builder
     .AddProject<Projects.AdventEcho_Presentation_Identity>(Names.Projects.AdventEchoIdentity)
-    .WithReference(identityDb);
+    .WithReference(identityDb)
+    .WaitFor(identityDb);
+
+var worker = builder
+    .AddProject<Projects.AdventEcho_Orchestrator_Workers>(Names.Projects.AdventEchoOrchestratorWorkers)
+    .WithReference(identityDb)
+    .WaitFor(identityDb);
 
 // builder.AddProject<Projects.AdventEcho_Orchestrator_Web>("webfrontend")
 //     .WithExternalHttpEndpoints()

@@ -20,6 +20,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Presentation\Identity\AdventEcho.Presentation.Identity.csproj"/>
+        <ProjectReference Include="..\Workers\AdventEcho.Orchestrator.Workers.csproj" />
     </ItemGroup>
 
 </Project>

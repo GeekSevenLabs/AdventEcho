@@ -5,6 +5,7 @@ public static class Names
    public static class Projects
    {
       public const string AdventEchoIdentity = nameof(AdventEchoIdentity);
+      public const string AdventEchoOrchestratorWorkers = nameof(AdventEchoOrchestratorWorkers);
    }
    
    public static class DataBases
