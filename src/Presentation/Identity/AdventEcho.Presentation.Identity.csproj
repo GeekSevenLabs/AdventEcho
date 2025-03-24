@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Common\Server\AdventEcho.Kernel.Server.csproj"/>
+        <ProjectReference Include="..\..\Orchestrator\ServiceDefaults\AdventEcho.Orchestrator.ServiceDefaults.csproj" />
         <ProjectReference Include="..\..\Services\Identity\IoC\AdventEcho.Identity.IoC.csproj"/>
     </ItemGroup>
 
@@ -26,6 +27,14 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Properties\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
 </Project>

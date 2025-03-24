@@ -7,13 +7,13 @@ namespace AdventEcho.Kernel.Server.Extensions;
 
 public static class OpenApiExtensions
 {
-    public static void AddAdventEchoServerDocumentation(this IServiceCollection services, Action<OpenApiOptions> options)
+    public static void AddAdventEchoOpenApi(this IServiceCollection services, Action<OpenApiOptions> options)
     {
         services.AddEndpointsApiExplorer();
         services.AddOpenApi(options);
     }
     
-    public static void MapAdventEchoServerDocumentation(this WebApplication app)
+    public static void MapAdventEchoOpenApi(this WebApplication app)
     {
         app.MapOpenApi();
         app.MapScalarApiReference();
