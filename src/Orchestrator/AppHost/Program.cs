@@ -1,4 +1,4 @@
-using AdventEcho.Orchestrator.AppHost;
+using AdventEcho.Kernel.Infrastructure;
 
 var builder = DistributedApplication.CreateBuilder(args);
 

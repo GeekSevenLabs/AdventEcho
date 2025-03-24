@@ -1,12 +1,10 @@
 ﻿using AdventEcho.Identity.Application.Shared.Register;
-using AdventEcho.Identity.Application.Tokens;
 using AdventEcho.Identity.Domain.Users.Services;
 using AdventEcho.Kernel.Extensions;
 
 namespace AdventEcho.Identity.Application.Register;
 
-
-internal sealed class RegisterUserHandler(ITokenService tokenService, IUserService userService) : IRegisterUserHandler
+internal sealed class RegisterUserHandler(IUserService userService) : IRegisterUserHandler
 {
     public async Task<Result> Handle(RegisterUserRequest request, CancellationToken cancellationToken = default)
     {
@@ -24,8 +22,3 @@ internal sealed class RegisterUserHandler(ITokenService tokenService, IUserServi
         return result;
     }
 }
-
-public interface IRegisterUserHandler
-{
-    Task<Result> Handle(RegisterUserRequest request, CancellationToken cancellationToken = default);
-} 

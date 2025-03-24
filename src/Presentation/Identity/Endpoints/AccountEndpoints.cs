@@ -13,6 +13,8 @@ public static class AccountEndpoints
             .WithDescription("Endpoints for managing accounts.")
             .WithTags("Account");
             
-        group.MapEndpoint<RegisterUserEndpoint>();
+        group
+            .MapEndpoint<RegisterUserEndpoint>()
+            .MapEndpoint<ConfirmUserEmailEndpoint>();
     }
 }

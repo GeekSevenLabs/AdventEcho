@@ -48,8 +48,26 @@ internal class UserService(
         
         return Result.Success();
     }
-    
-    
+
+    public async Task<Result> ConfirmEmailAsync(Guid userId, string token, CancellationToken cancellationToken = default)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        
+        if (user is null) return "This operation is invalid.".ToInvalidOperationException();
+        
+        var result = await userManager.ConfirmEmailAsync(user, token);
+        
+        if (!result.Succeeded)
+        {
+            return result.Errors.ToValidationException();
+        }
+        
+        logger.LogInformation("User account confirmed for {email}.", user.Email);
+        
+        return Result.Success();
+    }
+
+
     // public async Task<IUser?> FindByEmailAsync(string email, CancellationToken cancellationToken = default)
     // {
     //     return await userManager.FindByEmailAsync(email); 
