@@ -2,10 +2,10 @@ using AdventEcho.Identity.Application.Tokens;
 using AdventEcho.Identity.Domain.Users.Services;
 using AdventEcho.Identity.Infrastructure.Contexts;
 using AdventEcho.Identity.Infrastructure.Services;
+using AdventEcho.Kernel.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
 {
     public static void AddAdventEchoIdentityInfrastructure(this WebApplicationBuilder builder)
     {
-        builder.AddSqlServerDbContext<AdventEchoIdentityDbContext>("AdventEchoIdentityDataBase");
+        builder.AddSqlServerDbContext<AdventEchoIdentityDbContext>(Names.DataBases.AdventEchoIdentityDataBase);
 
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IUserService, UserService>();

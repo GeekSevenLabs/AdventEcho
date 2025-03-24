@@ -1,4 +1,5 @@
 using AdventEcho.Identity.Infrastructure.Contexts;
+using AdventEcho.Kernel.Infrastructure;
 using AdventEcho.Orchestrator.ServiceDefaults;
 using AdventEcho.Orchestrator.Workers;
 
@@ -10,7 +11,7 @@ builder.Services.AddHostedService<Worker>();
 
 builder.Services.AddOpenTelemetry().WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
 
-builder.AddSqlServerDbContext<AdventEchoIdentityDbContext>("AdventEchoIdentityDataBase");
+builder.AddSqlServerDbContext<AdventEchoIdentityDbContext>(Names.DataBases.AdventEchoIdentityDataBase);
 
 var host = builder.Build();
 host.Run();

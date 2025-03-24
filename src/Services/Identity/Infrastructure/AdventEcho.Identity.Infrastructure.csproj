@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\Infrastructure\AdventEcho.Kernel.Infrastructure.csproj" />
         <ProjectReference Include="..\..\..\Common\Kernel\AdventEcho.Kernel.csproj" />
         <ProjectReference Include="..\Application\AdventEcho.Identity.Application.csproj"/>
     </ItemGroup>

@@ -1,4 +1,6 @@
-﻿using AdventEcho.Identity.Application.Register;
+﻿using AdventEcho.Identity.Application.ConfirmEmail;
+using AdventEcho.Identity.Application.Register;
+using AdventEcho.Identity.Application.Shared.ConfirmEmail;
 using AdventEcho.Identity.Application.Shared.Register;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,5 +14,8 @@ public static class ServiceCollectionExtensions
         // Handlers
         services.AddScoped<IRegisterUserHandler, RegisterUserHandler>();
         services.AddScoped<IValidator<RegisterUserRequest>, RegisterUserValidator>();
+
+        services.AddScoped<IConfirmUserEmailHandler, ConfirmUserEmailHandler>();
+        services.AddScoped<IValidator<ConfirmUserEmailRequest>, ConfirmUserEmailValidator>();
     }
 }

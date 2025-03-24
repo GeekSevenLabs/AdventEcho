@@ -19,6 +19,7 @@
     
 
     <ItemGroup>
+        <ProjectReference  Include="..\..\Common\Infrastructure\AdventEcho.Kernel.Infrastructure.csproj" IsAspireProjectResource="false" />
         <ProjectReference Include="..\..\Presentation\Identity\AdventEcho.Presentation.Identity.csproj"/>
         <ProjectReference Include="..\Workers\AdventEcho.Orchestrator.Workers.csproj" />
     </ItemGroup>

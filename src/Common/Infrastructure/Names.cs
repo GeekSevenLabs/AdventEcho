@@ -1,4 +1,4 @@
-﻿namespace AdventEcho.Orchestrator.AppHost;
+﻿namespace AdventEcho.Kernel.Infrastructure;
 
 public static class Names
 {
