@@ -5,6 +5,7 @@ using AdventEcho.Identity.Infrastructure.Models;
 using AdventEcho.Identity.Infrastructure.Options;
 using AdventEcho.Kernel.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,42 +16,42 @@ namespace AdventEcho.Identity.IoC;
 
 public static class DependencyInjection
 {
-    public static void AddAdventEchoIdentity(this IServiceCollection services, IConfiguration configuration)
+    public static void AddAdventEchoIdentity(this WebApplicationBuilder builder)
     {
         // Configurations
-        services.AddConfigurations(configuration);
+        builder.AddConfigurations();
         
         // Infrastructure
-        services.AddAdventEchoIdentityInfrastructure(configuration);
+        builder.AddAdventEchoIdentityInfrastructure();
         
         // Applications
-        services.AddAdventEchoIdentityApplicationServices();
+        builder.Services.AddAdventEchoIdentityApplicationServices();
 
         // Resend
-        services.AddResend();
+        builder.Services.AddResend();
         
         // Identity
-        services.AddIdentity();
+        builder.Services.AddIdentity();
         
         // Authentication and Authorization
-        services.AddAuthenticationSchemas(configuration);
-        services.AddAuthorization();
+        builder.Services.AddAuthenticationSchemas(builder.Configuration);
+        builder.Services.AddAuthorization();
     }
 
-    private static void AddConfigurations(this IServiceCollection services, IConfiguration configuration)
+    private static void AddConfigurations(this WebApplicationBuilder builder)
     {
-        services.AddOptions();
+        builder.Services.AddOptions();
 
-        var domainConfiguration = configuration.GetSection(AdventEchoIdentityDomainsConfiguration.SectionName).Get<AdventEchoIdentityDomainsConfiguration>().Required();
+        var domainConfiguration = builder.Configuration.GetSection(AdventEchoIdentityDomainsConfiguration.SectionName).Get<AdventEchoIdentityDomainsConfiguration>().Required();
         
-        services.Configure<AdventEchoIdentityDomainsConfiguration>(options =>
+        builder.Services.Configure<AdventEchoIdentityDomainsConfiguration>(options =>
         {
             options.ApiIdentity = domainConfiguration.ApiIdentity;
         });
         
-        services.Configure<ResendClientOptions>(o =>
+        builder.Services.Configure<ResendClientOptions>(o =>
         {
-            o.ApiToken = configuration["ResendKey"]!;
+            o.ApiToken = builder.Configuration["ResendKey"]!;
         });
     }
     

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-AdventEcho.Orchestrator.Workers-f907e2a1-a729-468e-9078-6da55f8e9f6a</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Identity\Infrastructure\AdventEcho.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\ServiceDefaults\AdventEcho.Orchestrator.ServiceDefaults.csproj" />
+  </ItemGroup>
+</Project>

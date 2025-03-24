@@ -12,6 +12,8 @@ public class IdentityOpenApiDocumentTransformer : IOpenApiDocumentTransformer
         document.Info.Description = "API for User identity management";
         document.Info.Version = "v1";
 
+        document.Servers = [];
+        
         document.Components ??= new OpenApiComponents();
         document.Components.SecuritySchemes = new Dictionary<string, OpenApiSecurityScheme>
         {
