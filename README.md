@@ -33,8 +33,7 @@ Advent Echo aims to bring the traditional church bulletin board into the digital
 1. Clone the repository:
    ```bash
    git clone https://github.com/geeksevenlabs/advent-echo.git
-
-   Aqui está uma seção para adicionar ao seu **README** explicando como rodar os scripts em **Linux/macOS (Bash)** e **Windows (PowerShell)**.  
+   ``` 
 
 ## Running Entity Framework Migrations
 
