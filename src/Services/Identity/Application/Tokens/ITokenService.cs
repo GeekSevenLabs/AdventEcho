@@ -1,4 +1,5 @@
 using AdventEcho.Identity.Application.Shared;
+using AdventEcho.Identity.Domain.Users;
 
 namespace AdventEcho.Identity.Application.Tokens;
 

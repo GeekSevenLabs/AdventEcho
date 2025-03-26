@@ -1,5 +1,5 @@
 using System.Web;
-using AdventEcho.Identity.Application;
+using AdventEcho.Identity.Domain.Users;
 using AdventEcho.Identity.Domain.Users.Services;
 using AdventEcho.Identity.Infrastructure.Extensions;
 using AdventEcho.Kernel.Extensions;
@@ -67,20 +67,17 @@ internal class UserService(
         return Result.Success();
     }
 
+    public async Task<Result<IUser>> CheckPasswordSignInAsync(string email, string password, CancellationToken cancellationToken = default)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user is null) return "This operation is invalid.".ToInvalidOperationException();
 
-    // public async Task<IUser?> FindByEmailAsync(string email, CancellationToken cancellationToken = default)
-    // {
-    //     return await userManager.FindByEmailAsync(email); 
-    // }
-    //
-    // public async Task<Result<IUser>> LoginAsync(IUser user, string password, CancellationToken cancellationToken = default)
-    // {
-    //     var result = await signInManager.CheckPasswordSignInAsync((User)user, password, false);
-    //     
-    //     if(result.IsLockedOut) return "User account is locked out.".ToInvalidOperationException();
-    //     if(result.IsNotAllowed) return "User account is not allowed.".ToInvalidOperationException();
-    //     if(result.RequiresTwoFactor) return "User account requires two factor authentication.".ToInvalidOperationException();
-    //     
-    //     return (User)user;
-    // }
+        var result = await signInManager.CheckPasswordSignInAsync(user, password, false);
+
+        if (result.IsLockedOut) return "User account is locked out.".ToInvalidOperationException();
+        if (result.IsNotAllowed) return "User account is not allowed.".ToInvalidOperationException();
+        if (result.RequiresTwoFactor) return "User account requires two factor authentication.".ToInvalidOperationException();
+
+        return user;
+    }
 }

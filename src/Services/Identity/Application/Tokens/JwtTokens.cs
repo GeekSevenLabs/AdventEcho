@@ -2,4 +2,4 @@
 
 namespace AdventEcho.Identity.Application.Tokens;
 
-public class JwtTokens(JwtToken Access, JwtToken Refresh);
+public record JwtTokens(JwtToken Access, JwtToken Refresh);

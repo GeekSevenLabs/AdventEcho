@@ -23,6 +23,6 @@ public abstract class RegisterUserEndpoint : IEndpoint
     
     private static async Task<IResult> RegisterUserAsync(RegisterUserRequest request, IRegisterUserHandler handler)
     {
-        return await handler.Handle(request).ProcessResult();
+        return await handler.HandleAsync(request).ProcessResult();
     }
 }

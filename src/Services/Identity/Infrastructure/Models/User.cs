@@ -1,4 +1,4 @@
-using AdventEcho.Identity.Application;
+using AdventEcho.Identity.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace AdventEcho.Identity.Infrastructure.Models;

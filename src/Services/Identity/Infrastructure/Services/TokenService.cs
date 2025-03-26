@@ -1,9 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AdventEcho.Identity.Application;
 using AdventEcho.Identity.Application.Shared;
 using AdventEcho.Identity.Application.Tokens;
+using AdventEcho.Identity.Domain.Users;
 using AdventEcho.Kernel.Extensions;
 using AdventEcho.Kernel.Messages;
 using Microsoft.AspNetCore.Identity;
