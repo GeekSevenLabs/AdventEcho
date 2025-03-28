@@ -3,7 +3,7 @@ using AdventEcho.Kernel.Infrastructure;
 var builder = DistributedApplication.CreateBuilder(args);
 
 var dbServer = builder
-    .AddSqlServer(Names.DataBases.AdventEchoDbServer)
+    .AddSqlServer(Names.DataBases.AdventEchoDataBaseVolume)
     .WithDataVolume(Names.DataBases.AdventEchoIdentityDataBase);
 
 var identityDb = dbServer

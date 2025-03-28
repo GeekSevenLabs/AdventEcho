@@ -14,18 +14,18 @@ public class AdventEchoIdentityJwtConfiguration
     public required string Issuer { get; set; }
     public required string[] Audiences { get; set; } = [];
 
-    public required int AccessTokenLifetime { get; set; }
-    public required int RefreshTokenLifetime { get; set; }
+    public required int ExpireInMinutes { get; set; }
+    public required int RefreshTokenExpireInMinutes { get; set; }
 
-    public (DateTime ValidIn, DateTime ExpiresIn) GetAccessTokenLifetime()
+    public (DateTime ValidIn, DateTime Expires) GetAccessTokenLifetime()
     {
-        return (DateTime.UtcNow, DateTime.Now.AddMinutes(AccessTokenLifetime));
+        return (DateTime.UtcNow, DateTime.UtcNow.AddMinutes(ExpireInMinutes));
     }
 
-    public (DateTime ValidIn, DateTime ExpiresIn) GetRefreshTokenLifetime(DateTime accessTokenExpiration)
+    public (DateTime ValidIn, DateTime Expires) GetRefreshTokenLifetime(DateTime accessTokenExpiration)
     {
         var validIn = accessTokenExpiration.AddMinutes(-5);
-        var expires = validIn.AddMinutes(RefreshTokenLifetime);
+        var expires = validIn.AddMinutes(RefreshTokenExpireInMinutes);
         return (validIn, expires);
     }
 }

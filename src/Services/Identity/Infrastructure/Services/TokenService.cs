@@ -1,9 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AdventEcho.Identity.Application.Shared;
-using AdventEcho.Identity.Application.Tokens;
+using AdventEcho.Identity.Application.Services.Tokens;
+using AdventEcho.Identity.Application.Shared.Accounts;
 using AdventEcho.Identity.Domain.Users;
+using AdventEcho.Kernel.Application.Shared;
 using AdventEcho.Kernel.Extensions;
 using AdventEcho.Kernel.Messages;
 using Microsoft.AspNetCore.Identity;
@@ -20,20 +21,20 @@ internal class TokenService(UserManager<User> userManager, IOptions<AdventEchoId
     {
         var currentUser = (User)user;
         var claims = await GetClaims(currentUser);
-        var (validIn, expiresIn) = _options.GetAccessTokenLifetime();
+        var (validIn, expires) = _options.GetAccessTokenLifetime();
         
         var token = new JwtSecurityToken(
             issuer: _options.Issuer,
             audience: _options.Audiences.First(),
             claims: claims,
-            expires: expiresIn,
+            expires: expires,
             notBefore: validIn,
             signingCredentials: CreateSigningCredentials());
 
         var accessToken = new JwtToken
         {
             Value = new JwtSecurityTokenHandler().WriteToken(token),
-            Expires = expiresIn,
+            Expires = expires,
             ValidIn = validIn
         };
         
@@ -41,16 +42,11 @@ internal class TokenService(UserManager<User> userManager, IOptions<AdventEchoId
         
         return new JwtTokens(accessToken, refreshToken);
     }
-    
-    public Task<Result<JwtTokens>> RefreshTokenAsync(IUser user, JwtToken refreshToken)
-    {
-        throw new NotImplementedException();
-    }
 
     private async Task<JwtToken> GenerateRefreshToken(IUser user, JwtToken accessToken)
     {
         var currentUser = (User)user;
-        var claims = await GetClaims(currentUser, addUserClaims: false);
+        var claims = await GetClaims(currentUser, forRefreshTokens: true);
         var (validIn, expiresIn) = _options.GetRefreshTokenLifetime(accessToken.Expires);
         
         var token = new JwtSecurityToken(
@@ -76,17 +72,27 @@ internal class TokenService(UserManager<User> userManager, IOptions<AdventEchoId
         return new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
     }
     
-    private async Task<IEnumerable<Claim>> GetClaims(User user, bool addUserClaims = true)
+    private async Task<IEnumerable<Claim>> GetClaims(User user, bool forRefreshTokens = false)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Name.Required()),
-            new(JwtRegisteredClaimNames.Sub, user.Name.Required()),
-            new(JwtRegisteredClaimNames.Email, user.Email.Required()),
+            new(AdventEchoClaims.UserId, user.Id.Required().ToString()),
             new(JwtRegisteredClaimNames.Jti, user.Id.Required().ToString())
         };
 
-        if (!addUserClaims) { return claims; }
+        if (forRefreshTokens)
+        {
+            claims.Add(new Claim(AdventEchoClaims.RefreshToken, AdventEchoClaims.RefreshToken));
+            return claims;
+        }
+        
+        claims.AddRange([
+            new Claim(ClaimTypes.NameIdentifier, user.Name.Required()),
+            new Claim(ClaimTypes.Name, user.Name.Required()),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Name.Required()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email.Required())
+        ]);
         
         var roles = await userManager.GetRolesAsync(user);
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

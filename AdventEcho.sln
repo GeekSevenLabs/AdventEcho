@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Global", "1. Global", "{
 		Arch.Draft.excalidraw = Arch.Draft.excalidraw
 		package.json = package.json
 		tailwind.config.js = tailwind.config.js
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Services", "3. Services", "{FCDA11B3-91CE-499B-98FF-845C3D7CED7A}"

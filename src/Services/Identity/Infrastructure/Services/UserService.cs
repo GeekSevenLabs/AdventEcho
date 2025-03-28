@@ -4,6 +4,7 @@ using AdventEcho.Identity.Domain.Users.Services;
 using AdventEcho.Identity.Infrastructure.Extensions;
 using AdventEcho.Kernel.Extensions;
 using AdventEcho.Kernel.Messages;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -79,5 +80,11 @@ internal class UserService(
         if (result.RequiresTwoFactor) return "User account requires two factor authentication.".ToInvalidOperationException();
 
         return user;
+    }
+
+    public async Task<Result<IUser>> GetUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var usarIdentity = await userManager.FindByIdAsync(userId.ToString());
+        return usarIdentity ?? Result<IUser>.Fail("This operation is invalid.".ToInvalidOperationException());
     }
 }

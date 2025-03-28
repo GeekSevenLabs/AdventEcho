@@ -1,9 +1,10 @@
-﻿using AdventEcho.Identity.Application.ConfirmEmail;
-using AdventEcho.Identity.Application.Login;
-using AdventEcho.Identity.Application.Register;
-using AdventEcho.Identity.Application.Shared.ConfirmEmail;
-using AdventEcho.Identity.Application.Shared.Login;
-using AdventEcho.Identity.Application.Shared.Register;
+﻿using AdventEcho.Identity.Application.Accounts.ConfirmEmail;
+using AdventEcho.Identity.Application.Accounts.Login;
+using AdventEcho.Identity.Application.Accounts.Refresh;
+using AdventEcho.Identity.Application.Accounts.Register;
+using AdventEcho.Identity.Application.Shared.Accounts.ConfirmEmail;
+using AdventEcho.Identity.Application.Shared.Accounts.Login;
+using AdventEcho.Identity.Application.Shared.Accounts.Register;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,12 +16,14 @@ public static class ServiceCollectionExtensions
     {
         // Handlers
         services.AddScoped<IRegisterUserHandler, RegisterUserHandler>();
-        services.AddScoped<IValidator<RegisterUserRequest>, RegisterUserValidator>();
+        services.AddSingleton<IValidator<RegisterUserRequest>, RegisterUserValidator>();
 
         services.AddScoped<IConfirmUserEmailHandler, ConfirmUserEmailHandler>();
-        services.AddScoped<IValidator<ConfirmUserEmailRequest>, ConfirmUserEmailValidator>();
+        services.AddSingleton<IValidator<ConfirmUserEmailRequest>, ConfirmUserEmailValidator>();
 
         services.AddScoped<IUserLoginHandler, UserLoginHandler>();
-        services.AddScoped<IValidator<LoginRequest>, LoginValidator>();
+        services.AddSingleton<IValidator<LoginRequest>, LoginValidator>();
+
+        services.AddScoped<IRefreshLoginHandler, RefreshLoginHandler>();
     }
 }

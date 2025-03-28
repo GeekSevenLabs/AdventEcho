@@ -89,6 +89,8 @@ public static class DependencyInjection
             config.Audiences = jwtConfiguration.Required().Audiences;
             config.Issuer = jwtConfiguration.Required().Issuer;
             config.Secret = jwtConfiguration.Required().Secret;
+            config.ExpireInMinutes = jwtConfiguration.Required().ExpireInMinutes;
+            config.RefreshTokenExpireInMinutes = jwtConfiguration.Required().RefreshTokenExpireInMinutes;
         });
         
         services
@@ -99,6 +101,7 @@ public static class DependencyInjection
             })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
+                options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,

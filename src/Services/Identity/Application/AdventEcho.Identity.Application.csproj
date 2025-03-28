@@ -10,4 +10,8 @@
         <ProjectReference Include="..\Application.Shared\AdventEcho.Identity.Application.Shared.csproj" />
         <ProjectReference Include="..\Domain\AdventEcho.Identity.Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
 </Project>

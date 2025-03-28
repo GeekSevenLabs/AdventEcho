@@ -1,3 +1,5 @@
+using AdventEcho.Presentation.Identity.Endpoints.Accounts;
+
 namespace AdventEcho.Presentation.Identity.Endpoints;
 
 public static class Endpoints

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -17,8 +18,21 @@ public static class HealthCheckEndpoint
             .AllowAnonymous();
     }
     
-    private class HealthCheckResponse
+    public static void MapHealthCheckAuthorized(this IEndpointRouteBuilder endpoints)
     {
+        endpoints
+            .MapGet("/health-auth", (HttpContext context) => TypedResults.Ok(new HealthCheckResponse(context.User.Identity?.Name)))
+            .WithName("HealthCheckAuthorized")
+            .WithDisplayName("Health Check Authorized")
+            .WithSummary("Check to see if the advent echo identity service is running with authorization.")
+            .WithTags("Health Check")
+            .RequireAuthorization();
+    }
+    
+    private class HealthCheckResponse(string? userName = null)
+    {
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? UserName { get; set; } = userName;
         public bool Success { get; set; } = true;
         public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
     }

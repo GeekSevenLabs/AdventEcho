@@ -3,14 +3,10 @@ using AdventEcho.Identity.IoC;
 using AdventEcho.Kernel.Server.Endpoints;
 using AdventEcho.Kernel.Server.Extensions;
 using AdventEcho.Kernel.Server.Validations;
-using AdventEcho.Orchestrator.ServiceDefaults;
 using AdventEcho.Presentation.Identity.Documentations;
 using AdventEcho.Presentation.Identity.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add service defaults & Aspire client integrations.
-builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
@@ -30,6 +26,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    await app.ApplyMigrationsAsync();
 }
 
 app.MapAdventEchoIdentityVersionOneEndpoints();
@@ -44,6 +41,7 @@ app.MapAdventEchoOpenApi();
 
 var v1Group = app.MapGroup("/v1");
 v1Group.MapHealthCheck();
+v1Group.MapHealthCheckAuthorized();
 
 
-app.Run();
+await app.RunAsync();

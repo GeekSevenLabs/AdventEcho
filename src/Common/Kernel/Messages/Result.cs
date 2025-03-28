@@ -104,15 +104,20 @@ public class Result<T>
     {
         return IsSuccess ? onSuccess(_value) : onFailure(_error);
     }
-    
     public async Task<TReturn> MatchAsync<TReturn>(Func<T, Task<TReturn>> onSuccess, Func<Exception, Task<TReturn>> onFailure)
     {
         return IsSuccess ? await onSuccess(_value) : await onFailure(_error);
     }
-    
     public async Task<TReturn> MatchAsync<TReturn>(Func<T, Task<TReturn>> onSuccess, Func<Exception, TReturn> onFailure)
     {
         return IsSuccess ? await onSuccess(_value) : onFailure(_error);
+    }
+    
+    public bool IsFail([NotNullWhen(false)] out T? value, [NotNullWhen(true)] out Exception? error)
+    {
+        value = _value;
+        error = _error;
+        return !IsSuccess;
     }
 
     // Helper methods for constructing the `Result<T>`

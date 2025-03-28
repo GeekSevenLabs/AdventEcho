@@ -12,7 +12,7 @@ public static class Names
    {
       public const string AdventEchoDbServer = nameof(AdventEchoDbServer);
       public const string AdventEchoDataBaseVolume = nameof(AdventEchoDataBaseVolume);
-      
+     
       public const string AdventEchoIdentityDataBase = nameof(AdventEchoIdentityDataBase);
    }
 }
