@@ -1,6 +1,4 @@
-﻿using AdventEcho.Kernel.Messages;
-
-namespace AdventEcho.Identity.Domain.Users.Services;
+﻿namespace AdventEcho.Identity.Application.Services.Users;
 
 public interface IUserService
 {

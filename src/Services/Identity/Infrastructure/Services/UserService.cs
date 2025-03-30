@@ -1,10 +1,10 @@
 using System.Web;
-using AdventEcho.Identity.Domain.Users;
-using AdventEcho.Identity.Domain.Users.Services;
+using AdventEcho.Identity.Application;
+using AdventEcho.Identity.Application.Services.Users;
 using AdventEcho.Identity.Infrastructure.Extensions;
 using AdventEcho.Kernel.Extensions;
+using AdventEcho.Kernel.Infrastructure.Options;
 using AdventEcho.Kernel.Messages;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,10 +16,10 @@ internal class UserService(
     SignInManager<User> signInManager,
     IUserStore<User> userStore,
     ILogger<UserService> logger,
-    IOptions<AdventEchoIdentityDomainsConfiguration> options,
+    IOptions<AdventEchoIdentityDomainsOption> options,
     IEmailSender<User> emailSender) : IUserService
 {
-    private readonly AdventEchoIdentityDomainsConfiguration _domainConfigs = options.Value;
+    private readonly AdventEchoIdentityDomainsOption _domainConfigs = options.Value;
     
     
     public async Task<Result> RegisterAsync(string name, string email, string password, CancellationToken cancellationToken = default)
@@ -43,7 +43,7 @@ internal class UserService(
         
         code = HttpUtility.UrlEncode(code);
         
-        var callbackUrl = $"{_domainConfigs.ApiIdentity}/account/confirm-email?userId={userId}&code={code}";
+        var callbackUrl = $"{_domainConfigs.Web}/account/confirm-email?userId={userId}&code={code}";
         
         await emailSender.SendConfirmationLinkAsync(user, email, callbackUrl);
         
@@ -78,7 +78,7 @@ internal class UserService(
         if (result.IsLockedOut) return "User account is locked out.".ToInvalidOperationException();
         if (result.IsNotAllowed) return "User account is not allowed.".ToInvalidOperationException();
         if (result.RequiresTwoFactor) return "User account requires two factor authentication.".ToInvalidOperationException();
-
+        
         return user;
     }
 

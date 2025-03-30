@@ -1,8 +1,9 @@
+using AdventEcho.Identity.Application.Services.Cookies;
 using AdventEcho.Identity.Application.Services.Tokens;
-using AdventEcho.Identity.Domain.Users.Services;
+using AdventEcho.Identity.Application.Services.Users;
 using AdventEcho.Identity.Infrastructure.Contexts;
 using AdventEcho.Identity.Infrastructure.Services;
-using AdventEcho.Kernel.Infrastructure;
+using AdventEcho.Kernel.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -24,9 +25,11 @@ public static class ServiceCollectionExtensions
         });
 
         builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<ICookieService, CookieService>();
+        builder.Services.AddScoped<ICacheService, CacheService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddTransient<IEmailSender, EmailSender>();
-        builder.Services.AddSingleton<IEmailSender<User>, IdentityEmailSender>();
+        builder.Services.AddTransient<IEmailSender<User>, IdentityEmailSender>();
     }
 
     public static IdentityBuilder AddAdventEchoIdentityDbContextStores(this IdentityBuilder builder)

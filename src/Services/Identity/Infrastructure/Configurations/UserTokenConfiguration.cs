@@ -8,8 +8,8 @@ internal class UserTokenConfiguration : IEntityTypeConfiguration<UserToken>
         builder.HasKey(userToken => new { userToken.UserId, userToken.LoginProvider, userToken.Name });
 
         // Limit the size of the composite key columns due to common DB restrictions
-        builder.Property(userToken => userToken.LoginProvider).HasMaxLength(AdventEchoIdentityConfiguration.MaxKeyLength);
-        builder.Property(userToken => userToken.Name).HasMaxLength(AdventEchoIdentityConfiguration.MaxKeyLength);
+        builder.Property(userToken => userToken.LoginProvider).HasMaxLength(AdventEchoIdentityOption.Db.MaxKeyLength);
+        builder.Property(userToken => userToken.Name).HasMaxLength(AdventEchoIdentityOption.Db.MaxKeyLength);
 
         // Maps to the AspNetUserTokens table
         builder.ToTable("UserTokens");

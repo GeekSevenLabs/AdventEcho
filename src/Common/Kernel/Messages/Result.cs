@@ -61,6 +61,12 @@ public class Result
     public static Result Fail(Exception error) => new(error);
     
     public static implicit operator Result(Exception error) => Fail(error);
+
+    public bool IsFail([NotNullWhen(true)] out Exception? error)
+    {
+        error = _error;
+        return !IsSuccess;
+    }
 }
 
 public class Result<T>
@@ -89,15 +95,26 @@ public class Result<T>
     [MemberNotNullWhen(false, nameof(_error))]
     private bool IsSuccess { get; }
     
-    public Result<TReturn> Switch<TReturn>(Func<T, TReturn> onSuccess, Func<Exception, Exception> onFailure)
+    public void Switch(Action<T> onSuccess, Action<Exception> onFailure)
     {
         if (IsSuccess)
         {
-            return onSuccess(_value);
+            onSuccess(_value);
+            return;
         }
 
-        var err = onFailure(_error);
-        return Result<TReturn>.Fail(err);
+        onFailure(_error);
+    }
+    
+    public async Task SwitchAsync(Func<T, Task> onSuccess, Action<Exception> onFailure)
+    {
+        if (IsSuccess)
+        {
+            await onSuccess(_value);
+            return;
+        }
+
+        onFailure(_error);
     }
     
     public TReturn Match<TReturn>(Func<T, TReturn> onSuccess, Func<Exception, TReturn> onFailure)

@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUserLoginHandler, UserLoginHandler>();
         services.AddSingleton<IValidator<LoginRequest>, LoginValidator>();
-
+        
         services.AddScoped<IRefreshLoginHandler, RefreshLoginHandler>();
     }
 }

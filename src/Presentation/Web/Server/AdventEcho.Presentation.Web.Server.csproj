@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.3" />
+        <ProjectReference Include="..\..\..\Common\Infrastructure\AdventEcho.Kernel.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\..\Common\Server\AdventEcho.Kernel.Server.csproj" />
+        <ProjectReference Include="..\Client\AdventEcho.Presentation.Web.Client.csproj"/>
+    </ItemGroup>
+
+</Project>

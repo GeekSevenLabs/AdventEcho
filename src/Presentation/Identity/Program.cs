@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddProblemDetails();
 
+
+
 // Kernel Server
 builder.Services.AddAdventEchoOpenApi(options =>
 {
@@ -19,7 +21,7 @@ builder.Services.AddAdventEchoOpenApi(options =>
 });
 
 // Identity IoC
-builder.AddAdventEchoIdentity();
+builder.AddAdventEchoSecurity();
 
 var app = builder.Build();
 
@@ -30,15 +32,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapAdventEchoIdentityVersionOneEndpoints();
+app.UseAdventEchoSecurity();
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-// Kernel Server
+// Kernel Server Endpoints
 app.MapAdventEchoOpenApi();
-
 var v1Group = app.MapGroup("/v1");
 v1Group.MapHealthCheck();
 v1Group.MapHealthCheckAuthorized();

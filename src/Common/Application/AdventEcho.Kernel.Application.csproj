@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
+  </ItemGroup>
+
 </Project>

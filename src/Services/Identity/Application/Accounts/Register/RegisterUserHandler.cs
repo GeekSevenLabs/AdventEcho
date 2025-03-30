@@ -1,5 +1,6 @@
-﻿using AdventEcho.Identity.Application.Shared.Accounts.Register;
-using AdventEcho.Identity.Domain.Users.Services;
+﻿using AdventEcho.Identity.Application.Services;
+using AdventEcho.Identity.Application.Services.Users;
+using AdventEcho.Identity.Application.Shared.Accounts.Register;
 using AdventEcho.Kernel.Extensions;
 
 namespace AdventEcho.Identity.Application.Accounts.Register;

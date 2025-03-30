@@ -1,5 +1,6 @@
-﻿using AdventEcho.Identity.Application.Shared.Accounts.ConfirmEmail;
-using AdventEcho.Identity.Domain.Users.Services;
+﻿using AdventEcho.Identity.Application.Services;
+using AdventEcho.Identity.Application.Services.Users;
+using AdventEcho.Identity.Application.Shared.Accounts.ConfirmEmail;
 
 namespace AdventEcho.Identity.Application.Accounts.ConfirmEmail;
 

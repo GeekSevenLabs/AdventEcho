@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using AdventEcho.Kernel.Infrastructure.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -26,7 +28,11 @@ public static class HealthCheckEndpoint
             .WithDisplayName("Health Check Authorized")
             .WithSummary("Check to see if the advent echo identity service is running with authorization.")
             .WithTags("Health Check")
-            .RequireAuthorization();
+            .RequireAuthorization(option =>
+            {
+                option.AddAuthenticationSchemes(AdventEchoIdentityCookieDefaults.AuthenticationScheme);
+                option.RequireAuthenticatedUser();
+            });
     }
     
     private class HealthCheckResponse(string? userName = null)

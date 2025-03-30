@@ -15,13 +15,15 @@
         <!-- OPEN API DOCUMENTATION -->
         <PackageReference Include="FluentValidation" Version="11.11.0"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3"/>
-        <PackageReference Include="Scalar.AspNetCore" Version="2.0.36"/>
+        <PackageReference Include="Scalar.AspNetCore" Version="2.1.3" />
 
         <!-- DEPENDENCY INJECTION -->
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3"/>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Infrastructure\AdventEcho.Kernel.Infrastructure.csproj" />
+        <ProjectReference Include="..\IoC\AdventEcho.Kernel.IoC.csproj" />
         <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>
     </ItemGroup>
 

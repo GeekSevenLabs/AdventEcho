@@ -23,6 +23,8 @@ public static class ResultExtensions
         return result.Match(Ok, ExceptionToResult);
     }
     
+    public static IResult ProcessResult<T>(this Result<T> result) => result.Match(Ok, ExceptionToResult);
+    
     private static IResult Ok() => Results.Ok();
     private static Ok<TValue> Ok<TValue>(TValue value) => TypedResults.Ok(value);
     

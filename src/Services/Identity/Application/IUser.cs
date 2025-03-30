@@ -1,4 +1,4 @@
-namespace AdventEcho.Identity.Domain.Users;
+namespace AdventEcho.Identity.Application;
 
 public interface IUser
 {
