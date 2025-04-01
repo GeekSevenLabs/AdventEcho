@@ -5,14 +5,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
+    
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="11.11.0"/>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3" />
+        <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>
+        <PackageReference Include="FluentValidation" Version="11.11.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3"/>
+        <PackageReference Include="MediatR" Version="12.4.1"/>
     </ItemGroup>
 
 </Project>

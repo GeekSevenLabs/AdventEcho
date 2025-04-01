@@ -1,28 +1,23 @@
-using AdventEcho.Identity.Infrastructure.Configurations;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using AdventEcho.Identity.Domain;
+using AdventEcho.Identity.Domain.Users;
+using AdventEcho.Identity.Infrastructure.Configurations.Domain;
 
 namespace AdventEcho.Identity.Infrastructure.Contexts;
 
-public class AdventEchoIdentityDbContext(DbContextOptions<AdventEchoIdentityDbContext> options) : IdentityDbContext<
-    User, 
-    Role,
-    Guid,
-    UserClaim,
-    UserRole,
-    UserLogin,
-    RoleClaim,
-    UserToken>(options)
+public class AdventEchoIdentityDbContext(DbContextOptions<AdventEchoIdentityDbContext> options) : DbContext(options), IAdventEchoIdentityUnitOfWork
 {
-    protected override void OnModelCreating(ModelBuilder builder)
+    
+    public DbSet<User> Users { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(builder);
-        
-        builder.ApplyConfiguration(new UserConfiguration());
-        builder.ApplyConfiguration(new RoleConfiguration());
-        builder.ApplyConfiguration(new UserRoleConfiguration());
-        builder.ApplyConfiguration(new UserClaimConfiguration());
-        builder.ApplyConfiguration(new UserLoginConfiguration());
-        builder.ApplyConfiguration(new RoleClaimConfiguration());
-        builder.ApplyConfiguration(new UserTokenConfiguration());
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+    }
+
+    public new async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var rowsAffected = await base.SaveChangesAsync(cancellationToken);
+        return rowsAffected > 0;
     }
 }

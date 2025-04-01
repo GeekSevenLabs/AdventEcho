@@ -1,20 +1,22 @@
+using AdventEcho.Kernel.Server.Extensions;
+
 namespace AdventEcho.Presentation.Identity.Endpoints.Accounts;
 
 public static class AccountEndpoints
 {
-    public static void MapAccountEndpoints(this IEndpointRouteBuilder endpoints)
+    public static IEndpointRouteBuilder MapAccountEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints
-            .MapGroup("account")
-            .WithName("Account")
-            .WithSummary("Account endpoints.")
-            .WithDescription("Endpoints for managing accounts.")
+            .MapGroup("/accounts")
+            .WithDescription("Account endpoints")
             .WithTags("Account");
 
         group
-            .MapEndpoint<ConfirmUserEmailEndpoint>()
-            .MapEndpoint<LoginEndpoint>()
-            .MapEndpoint<RefreshLoginEndpoint>()
-            .MapEndpoint<RegisterUserEndpoint>();
+            .MapEndpoint<LoginAccountEndpoint>()
+            .MapEndpoint<ConfirmEmailAccountEndpoint>()
+            .MapEndpoint<RefreshLoginAccountEndpoint>()
+            .MapEndpoint<RegisterAccountEndpoint>();
+
+        return endpoints;
     }
 }

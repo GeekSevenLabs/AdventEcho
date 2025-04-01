@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Infrastructure\AdventEcho.Kernel.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Services\Identity\Infrastructure\AdventEcho.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\ServiceDefaults\AdventEcho.Orchestrator.ServiceDefaults.csproj" />
   </ItemGroup>
 </Project>

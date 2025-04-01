@@ -1,52 +1,21 @@
-using AdventEcho.Identity.Application;
+using AdventEcho.Identity.Domain.Users;
+using Cblx.Blocks;
 using Microsoft.AspNetCore.Identity;
 
 namespace AdventEcho.Identity.Infrastructure.Models;
 
-public sealed class User : IdentityUser<Guid>, IUser
+[HasPrivateEmptyConstructor]
+public sealed partial class AdventEchoUser : IdentityUser<Guid>
 {
-    public User(string nome)
+    public AdventEchoUser(NameVo nome)
     {
         Name = nome;
     }
-
-    private User() { }
     
     public ICollection<UserClaim> Claims { get; private set; } = [];
     public ICollection<UserLogin> Logins { get; private set; } = [];
     public ICollection<UserToken> Tokens { get; private set; } = [];
     public ICollection<UserRole> UserRoles { get; private set; } = [];
-    public string? Name { get; private set; }
-}
 
-public sealed class Role : IdentityRole<Guid>
-{
-    public ICollection<UserRole> UserRoles { get; private set; } = [];
-    public ICollection<RoleClaim> RoleClaims { get; private set; } = [];
-}
-
-public sealed class UserRole : IdentityUserRole<Guid>
-{
-    public User User { get; private set; } = null!;
-    public Role Role { get; private set; } = null!;
-}
-
-public sealed class UserClaim : IdentityUserClaim<Guid>
-{
-    public User User { get; private set; } = null!;
-}
-
-public sealed class UserLogin : IdentityUserLogin<Guid>
-{
-    public User User { get; private set; } = null!;
-}
-
-public sealed class RoleClaim : IdentityRoleClaim<Guid>
-{
-    public Role Role { get; private set; } = null!;
-}
-
-public sealed class UserToken : IdentityUserToken<Guid>
-{
-    public User User { get; private set; } = null!;
+    public NameVo Name { get; private set; } = NameVo.Empty;
 }

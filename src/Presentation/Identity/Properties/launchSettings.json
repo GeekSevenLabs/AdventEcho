@@ -1,11 +1,11 @@
-{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "AdventEcho.Presentation.Identity": {
+    "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:7070;http://localhost:7071",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7246;http://localhost:5092",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

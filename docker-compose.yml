@@ -9,7 +9,7 @@ services:
     ports:
       - "1433:1433"
     networks:
-      - geekseven-network
+      - adventecho-network
     volumes:
       - sql-server-data:/var/opt/mssql
     deploy:
@@ -25,7 +25,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - geekseven-network
+      - adventecho-network
     volumes:
       - redis-data:/data
     deploy:
@@ -33,30 +33,12 @@ services:
         limits:
           memory: 512MB
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.1.4
-    container_name: geekseven-advent-echo-keycloak
-    restart: always
-    command: start-dev
-    environment:
-      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=7PowerH@@K
-      - KC_DB=dev-file
-    ports:
-      - "8080:8080"
-    networks:
-      - geekseven-network
-    volumes:
-      - advent-echo-keycloak-data:/opt/keycloak/data
-
 networks:
-  geekseven-network:
+  adventecho-network:
     driver: bridge
 
 volumes:
   sql-server-data:
     driver: local
   redis-data:
-    driver: local
-  advent-echo-keycloak-data:
     driver: local

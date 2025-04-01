@@ -1,4 +1,4 @@
-using AdventEcho.Kernel.Application.Services;
+using AdventEcho.Identity.Application.Services.Caches;
 using StackExchange.Redis;
 
 namespace AdventEcho.Identity.Infrastructure.Services;

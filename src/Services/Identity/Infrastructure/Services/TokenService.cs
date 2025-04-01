@@ -1,64 +1,72 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using AdventEcho.Identity.Application;
 using AdventEcho.Identity.Application.Services.Tokens;
+using AdventEcho.Identity.Application.Shared;
 using AdventEcho.Identity.Application.Shared.Accounts;
-using AdventEcho.Kernel.Application.Shared;
-using AdventEcho.Kernel.Extensions;
-using AdventEcho.Kernel.Messages;
+using AdventEcho.Identity.Domain.Users;
+using AdventEcho.Kernel.Application.Shared.Messages.Results;
+using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AdventEcho.Identity.Infrastructure.Services;
 
-internal class TokenService(
+internal class BearerTokenService(
     SigningCredentials signingCredentials,
-    UserManager<User> userManager,
-    IOptions<AdventEchoIdentityOption> options) : ITokenService
+    UserManager<AdventEchoUser> userManager,
+    IOptions<AdventEchoIdentityOptions> options) : IBearerTokenService
 {
-    private readonly AdventEchoIdentityOption _options = options.Value;
+    private readonly AdventEchoIdentityOptions _options = options.Value;
     
-    public async Task<Result<JwtTokens>> GenerateTokensAsync(IUser user)
+    public async Task<Result<BearerTokens>> GenerateTokensAsync(User user)
     {
-        var currentUser = (User)user;
-        var claims = await GetClaimsAsync(currentUser);
-        var expires = _options.Jwt.GetAccessTokenLifetime();
+        var currentUser = await userManager.FindByIdAsync(user.Id.ToString());
+        if (currentUser is null) return EchoResults<BearerTokens>.Unauthorized();
+        
+        var claims = await GetClaimsAsync(currentUser, user);
+        var expiration = DateTimeOffset.UtcNow.AddMinutes(_options.Bearer.AccessTokenExpirationInMinutes);
         
         var token = new JwtSecurityToken(
-            issuer: _options.Jwt.Issuer,
-            audience: _options.Jwt.Audiences.First(),
+            issuer: _options.Bearer.Issuer,
+            audience: _options.Bearer.Audiences.First(),
             claims: claims,
-            expires: expires,
-            signingCredentials: signingCredentials);
+            expires: expiration.UtcDateTime,
+            signingCredentials: signingCredentials
+        );
+        
+        // Add additional audiences 
+        foreach (var audience in _options.Bearer.Audiences.Skip(1))
+        {
+            token.Payload.Add("aud", audience);
+        }
 
-        var accessToken = new AccessToken
+        var accessToken = new BearerAccessToken
         {
             Value = new JwtSecurityTokenHandler().WriteToken(token),
-            Expires = expires
+            Expiration = expiration
         };
         
         var refreshToken = GenerateRefreshToken(currentUser);
         
-        return new JwtTokens(accessToken, refreshToken);
+        return new BearerTokens(accessToken, refreshToken);
     }
 
-    private RefreshToken GenerateRefreshToken(User user)
+    private BearerRefreshToken GenerateRefreshToken(AdventEchoUser user)
     {
-        var expiresIn = _options.Jwt.GetRefreshTokenLifetime();
-        return new RefreshToken(user.Id, user.Email!, expiresIn);
+        var expiration = DateTimeOffset.UtcNow.AddMinutes(_options.Bearer.RefreshTokenExpirationInMinutes);
+        return new BearerRefreshToken(user.Id, expiration);
     }
     
-    private async Task<IEnumerable<Claim>> GetClaimsAsync(User user)
+    private async Task<IEnumerable<Claim>> GetClaimsAsync(AdventEchoUser user, User domainUser)
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.Name.Required()),
-            new(ClaimTypes.Name, user.Name.Required()),
-            new(AdventEchoClaims.UserId, user.Id.Required().ToString()),
-            new(JwtRegisteredClaimNames.Jti, user.Id.Required().ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email.Required()),
-            new Claim(JwtRegisteredClaimNames.Sub, user.Name.Required())
+            new(ClaimTypes.NameIdentifier, domainUser.Name.First),
+            new(ClaimTypes.Name, user.Name),
+            new(JwtRegisteredClaimNames.Jti, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Email, domainUser.Email),
+            new(JwtRegisteredClaimNames.Sub, user.Name)
         };
         
         var roles = await userManager.GetRolesAsync(user);

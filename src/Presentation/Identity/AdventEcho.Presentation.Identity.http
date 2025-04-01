@@ -1,4 +1,4 @@
-@AdventEcho.Presentation.Identity_HostAddress = http://localhost:5258
+@AdventEcho.Presentation.Identity_HostAddress = http://localhost:5092
 
 GET {{AdventEcho.Presentation.Identity_HostAddress}}/weatherforecast/
 Accept: application/json

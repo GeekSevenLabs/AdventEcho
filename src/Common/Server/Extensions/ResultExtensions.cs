@@ -1,6 +1,5 @@
 using System.Net;
-using AdventEcho.Kernel.Exceptions;
-using AdventEcho.Kernel.Messages;
+using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -34,7 +33,7 @@ public static class ResultExtensions
         {
             InvalidOperationException ex => TypedResults.ValidationProblem(ex.ToUniqueProblem(), type: nameof(InvalidOperationException)),
             ArgumentNullException ex => TypedResults.ValidationProblem(ex.ToUniqueProblem(), type: nameof(ArgumentNullException)),
-            AdventEchoValidationException ex => TypedResults.ValidationProblem(ex.Problems, type: nameof(AdventEchoValidationException)),
+            // AdventEchoValidationException ex => TypedResults.ValidationProblem(ex.Problems, type: nameof(AdventEchoValidationException)),
             
             _ => TypedResults.InternalServerError(new InternalServerErrorMessage(exception.Message))
         };
