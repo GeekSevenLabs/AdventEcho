@@ -19,6 +19,7 @@ public static class BuilderExtensions
         });
         
         builder
+            .AddAdventEchoCorsPolicy(options)    
             .AddAdventEchoIdentityInfrastructureServices()
             .AddAdventEchoIdentityOpenApiServices()
             .AddAdventEchoIdentitySecurityServices(options);
@@ -36,6 +37,8 @@ public static class BuilderExtensions
             app.MapOpenApi();
             app.MapScalarApiReference();
         }
+
+        app.UseAdventEchoCorsPolicy();
         
         app.UseHttpsRedirection();
 

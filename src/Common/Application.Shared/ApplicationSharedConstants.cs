@@ -4,6 +4,6 @@ public static class ApplicationSharedConstants
 {
     public static class HttpClients
     {
-        public const string AdventEchoIdentity = nameof(AdventEchoIdentity);
+        public const string AdventEchoIdentityName = nameof(AdventEchoIdentityName);
     }
 }

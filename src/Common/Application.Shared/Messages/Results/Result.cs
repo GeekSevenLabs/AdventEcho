@@ -51,22 +51,37 @@ public class Result
             onFailure(_error);
         }
     }
-    
     public TReturn Match<TReturn>(Func<TReturn> onSuccess, Func<Exception, TReturn> onFailure)
     {
         return IsSuccess ? onSuccess() : onFailure(_error);
+    }
+    
+    public bool IsFail([NotNullWhen(true)] out Exception? error)
+    {
+        error = _error;
+        return !IsSuccess;
+    }
+    
+    public async Task WhenSuccessAsync(Func<Task> onSuccess)
+    {
+        if (IsSuccess)
+        {
+            await onSuccess();
+        }
+    }
+    
+    public async Task WhenFailureAsync(Func<Exception, Task> onFailure)
+    {
+        if (!IsSuccess)
+        {
+            await onFailure(_error);
+        }
     }
     
     public static Result Success() => new();
     public static Result Fail(Exception error) => new(error);
     
     public static implicit operator Result(Exception error) => Fail(error);
-
-    public bool IsFail([NotNullWhen(true)] out Exception? error)
-    {
-        error = _error;
-        return !IsSuccess;
-    }
 }
 
 public class Result<T>
@@ -135,6 +150,27 @@ public class Result<T>
         value = _value;
         error = _error;
         return !IsSuccess;
+    }
+    
+    public async Task WhenSuccessAsync(Func<Task> onSuccess)
+    {
+        if (IsSuccess)
+        {
+            await onSuccess();
+        }
+    }
+    
+    public async Task WhenFailureAsync(Func<Exception, Task> onFailure)
+    {
+        if (!IsSuccess)
+        {
+            await onFailure(_error);
+        }
+    }
+    
+    public Result ToResult()
+    {
+        return IsSuccess ? Result.Success() : Result.Fail(_error);
     }
 
     // Helper methods for constructing the `Result<T>`

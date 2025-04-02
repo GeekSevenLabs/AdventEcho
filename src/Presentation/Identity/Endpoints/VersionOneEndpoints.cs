@@ -8,7 +8,7 @@ public static class VersionOneEndpoints
     public static IEndpointRouteBuilder MapAdventEchoIdentityEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints
-            .MapGroup("/v1")
+            .MapGroup("api/v1")
             .WithTags("Advent Echo Identity API");
         
         group
