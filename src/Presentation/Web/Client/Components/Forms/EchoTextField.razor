@@ -1,0 +1,20 @@
+@using System.Linq.Expressions
+@inherits EchoComponentBase
+
+<MudTextField
+    For="ValueExpression" Value="Value" ValueChanged="ValueChanged"
+    Label="@Label" Placeholder="@Placeholder" 
+    Class="@Class" Style="@Style" UserAttributes="@AdditionalAttributes"
+    Variant="Variant.Outlined" Immediate Mask="Mask" InputType="InputType"/>
+
+@code 
+{
+    [Parameter, EditorRequired] public required string? Value { get; set; }
+    [Parameter] public required EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public required Expression<Func<string?>> ValueExpression { get; set; }
+    
+    [Parameter] public string Label { get; set; } = string.Empty;
+    [Parameter] public string Placeholder { get; set; } = string.Empty;
+    [Parameter] public IMask? Mask { get; set; }
+    [Parameter] public InputType InputType { get; set; }
+}

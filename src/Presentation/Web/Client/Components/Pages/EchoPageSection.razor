@@ -1,0 +1,12 @@
+@inherits EchoComponentBase
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+    <MudText Typo="Typo.h4">@Label</MudText>
+}
+
+<MudPaper Elevation="2" Class="tw:!py-6 tw:!px-6">
+    <EchoStack Class="@Class" Style="@Label" AdditionalAttributes="AdditionalAttributes" Gap="Gap">
+        @ChildContent
+    </EchoStack>
+</MudPaper>
