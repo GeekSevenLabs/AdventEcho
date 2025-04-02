@@ -6,17 +6,18 @@ using AdventEcho.Kernel.Server.Validations;
 
 namespace AdventEcho.Presentation.Identity.Endpoints.Accounts;
 
-public class RefreshLoginAccountEndpoint : IEndpoint
+using static AdventEcho.Identity.Application.Shared.Constants.Routes.Account;
+
+public sealed class RefreshLoginAccountEndpoint : IEndpoint
 {
     public static IEndpointRouteBuilder Map(IEndpointRouteBuilder endpoints)
     {
         endpoints
-            .MapPost("/refresh-login", ExecuteAsync)
+            .MapPost(Refresh.Endpoint, ExecuteAsync)
+            .WithDefinition(Refresh)
             .UseValidationFor<RefreshLoginAccountRequest>()
-            .WithName("Refresh Login")
-            .WithDescription("Refresh login to the system")
-            .ProducesValidationProblem()
-            .Produces<RefreshLoginAccountResponse>();
+            .ProducesCommonResponse<RefreshLoginAccountResponse>()
+            .AllowAnonymous();
         
         return endpoints;
     }

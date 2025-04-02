@@ -6,16 +6,18 @@ using AdventEcho.Kernel.Server.Validations;
 
 namespace AdventEcho.Presentation.Identity.Endpoints.Accounts;
 
-public class RegisterAccountEndpoint : IEndpoint
+using static AdventEcho.Identity.Application.Shared.Constants.Routes.Account;
+
+public sealed class RegisterAccountEndpoint : IEndpoint
 {
     public static IEndpointRouteBuilder Map(IEndpointRouteBuilder endpoints)
     {
         endpoints
-            .MapPost("/register", ExecuteAsync)
+            .MapPost(Register.Endpoint, ExecuteAsync)
+            .WithDefinition(Register)
             .UseValidationFor<RegisterAccountRequest>()
-            .WithName("Register")
-            .WithDescription("Register a new account")
-            .ProducesValidationProblem();
+            .ProducesCommonResponse()
+            .AllowAnonymous();
         
         return endpoints;
     }

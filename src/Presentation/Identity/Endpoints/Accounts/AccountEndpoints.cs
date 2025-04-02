@@ -6,12 +6,7 @@ public static class AccountEndpoints
 {
     public static IEndpointRouteBuilder MapAccountEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints
-            .MapGroup("/accounts")
-            .WithDescription("Account endpoints")
-            .WithTags("Account");
-
-        group
+        endpoints
             .MapEndpoint<LoginAccountEndpoint>()
             .MapEndpoint<ConfirmEmailAccountEndpoint>()
             .MapEndpoint<RefreshLoginAccountEndpoint>()

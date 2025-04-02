@@ -7,24 +7,20 @@ public static class VersionOneEndpoints
 {
     public static IEndpointRouteBuilder MapAdventEchoIdentityEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints
-            .MapGroup("api/v1")
-            .WithTags("Advent Echo Identity API");
-        
-        group
+        endpoints
             .MapGet("/health", () => Results.Ok("Healthy"))
             .WithName("Health Check")
             .WithDescription("Check the health of the API")
             .Produces<string>();
-        
-        group
+
+        endpoints
             .MapGet("/health-auth", (ClaimsPrincipal principal) => Results.Ok($"Healthy - User: {principal.Identity?.Name}"))
             .WithName("Health Check Auth")
             .WithDescription("Check the health of the API")
             .Produces<string>()
             .RequireAuthorization();
 
-        group.MapAccountEndpoints();
+        endpoints.MapAccountEndpoints();
 
         return endpoints;
     }

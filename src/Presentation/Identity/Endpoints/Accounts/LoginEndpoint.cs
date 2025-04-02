@@ -1,3 +1,4 @@
+using AdventEcho.Identity.Application.Shared;
 using AdventEcho.Identity.Application.Shared.Accounts.Login;
 using AdventEcho.Kernel.Application.Communication.Mediator;
 using AdventEcho.Kernel.Server.Endpoints;
@@ -6,17 +7,18 @@ using AdventEcho.Kernel.Server.Validations;
 
 namespace AdventEcho.Presentation.Identity.Endpoints.Accounts;
 
+using static Constants.Routes.Account;
+
 public class LoginAccountEndpoint : IEndpoint
 {
     public static IEndpointRouteBuilder Map(IEndpointRouteBuilder endpoints)
     {
         endpoints
-            .MapPost("/login", ExecuteAsync)
+            .MapPost(Login.Endpoint, ExecuteAsync)
+            .WithDefinition(Login)
             .UseValidationFor<LoginAccountRequest>()
-            .WithName("Login")
-            .WithDescription("Login to the system")
-            .ProducesValidationProblem()
-            .Produces<LoginAccountResponse>();
+            .ProducesCommonResponse<LoginAccountResponse>()
+            .AllowAnonymous();
         
         return endpoints;
     }

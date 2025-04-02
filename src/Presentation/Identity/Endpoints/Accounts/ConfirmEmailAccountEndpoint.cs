@@ -6,16 +6,18 @@ using AdventEcho.Kernel.Server.Validations;
 
 namespace AdventEcho.Presentation.Identity.Endpoints.Accounts;
 
+using static AdventEcho.Identity.Application.Shared.Constants.Routes.Account;
+
 public class ConfirmEmailAccountEndpoint : IEndpoint
 {
     public static IEndpointRouteBuilder Map(IEndpointRouteBuilder endpoints)
     {
         endpoints
-            .MapPost("/confirm-email", ExecuteAsync)
+            .MapPost(ConfirmEmail.Endpoint, ExecuteAsync)
+            .WithDefinition(ConfirmEmail)
             .UseValidationFor<ConfirmEmailAccountRequest>()
-            .WithName("Confirm Email")
-            .WithDescription("Confirm your email")
-            .ProducesValidationProblem();
+            .ProducesCommonResponse()
+            .AllowAnonymous();
         
         return endpoints;
     }
