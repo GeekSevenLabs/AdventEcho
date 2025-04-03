@@ -1,8 +1,11 @@
 using AdventEcho.Kernel.Infrastructure.Options;
 using Menso.Tools.Exceptions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Resend;
 
-namespace AdventEcho.Presentation.Identity.Extensions;
+namespace AdventEcho.Kernel.Server.Extensions;
 
 public static class OptionsExtensions
 {

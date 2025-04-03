@@ -1,4 +1,4 @@
-namespace AdventEcho.Identity.Application.Shared.Accounts;
+namespace AdventEcho.Kernel.Application.Shared;
 
 public class BearerAccessToken
 {

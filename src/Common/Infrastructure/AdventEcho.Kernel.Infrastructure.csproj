@@ -11,4 +11,13 @@
         <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+        <HintPath>..\..\..\..\..\..\.dotnet\shared\Microsoft.AspNetCore.App\9.0.1\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Http.Features">
+        <HintPath>..\..\..\..\..\..\.dotnet\shared\Microsoft.AspNetCore.App\9.0.1\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Common\Server\AdventEcho.Kernel.Server.csproj"/>
+        <ProjectReference Include="..\..\Services\Identity\Infrastructure\AdventEcho.Identity.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

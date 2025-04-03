@@ -4,6 +4,7 @@ using AdventEcho.Identity.Application.Services.Tokens;
 using AdventEcho.Identity.Application.Shared;
 using AdventEcho.Identity.Application.Shared.Accounts;
 using AdventEcho.Identity.Domain.Users;
+using AdventEcho.Kernel.Application.Shared;
 using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Identity;

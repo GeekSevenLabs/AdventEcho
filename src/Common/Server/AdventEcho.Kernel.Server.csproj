@@ -15,6 +15,7 @@
         <!-- OPEN API DOCUMENTATION -->
         <PackageReference Include="FluentValidation" Version="11.11.0"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3"/>
+        <PackageReference Include="Resend" Version="0.1.0" />
         <PackageReference Include="Scalar.AspNetCore" Version="2.1.3" />
 
         <!-- DEPENDENCY INJECTION -->
@@ -22,7 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Services\Identity\Infrastructure\AdventEcho.Identity.Infrastructure.csproj" />
         <ProjectReference Include="..\Infrastructure\AdventEcho.Kernel.Infrastructure.csproj" />
         <ProjectReference Include="..\IoC\AdventEcho.Kernel.IoC.csproj" />
         <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>

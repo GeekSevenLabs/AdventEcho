@@ -160,6 +160,14 @@ public class Result<T>
         }
     }
     
+    public async Task WhenSuccessAsync(Func<T,Task> onSuccess)
+    {
+        if (IsSuccess)
+        {
+            await onSuccess(_value);
+        }
+    }
+    
     public async Task WhenFailureAsync(Func<Exception, Task> onFailure)
     {
         if (!IsSuccess)

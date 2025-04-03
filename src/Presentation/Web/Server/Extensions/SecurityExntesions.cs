@@ -1,36 +1,24 @@
 using System.Security.Cryptography;
 using AdventEcho.Identity.Application.Shared.Accounts.Refresh;
-using AdventEcho.Identity.Infrastructure;
-using AdventEcho.Identity.Infrastructure.Models;
-using AdventEcho.Kernel.Application.Communication.Mediator;
+using AdventEcho.Identity.Application.Shared.Services;
+using AdventEcho.Kernel.Infrastructure.Extensions;
 using AdventEcho.Kernel.Infrastructure.Options;
-using Menso.Tools.Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AdventEcho.Presentation.Identity.Extensions;
+namespace AdventEcho.Presentation.Web.Server.Extensions;
 
 public static class SecurityExtensions
 {
-    public static WebApplicationBuilder AddAdventEchoIdentitySecurityServices(
+    public static WebApplicationBuilder AddAdventEchoIdentitySecurityForClientServices(
         this WebApplicationBuilder builder,
         AdventEchoIdentityOptions options)
     {
-        var privateKey = builder.Configuration["AdventEchoIdentity:Bearer:PrivateKey"];
-        Throw.When.Null(privateKey, "AdventEchoIdentity:Bearer:PrivateKey is not set");
-        
-        var privateKeyBytes = Convert.FromBase64String(privateKey);
         var publicKeyBytes = Convert.FromBase64String(options.Bearer.PublicKey);
         
-        var rsaPrivate = RSA.Create();
-        rsaPrivate.ImportRSAPrivateKey(privateKeyBytes, out _);
-
-        var credentials = new SigningCredentials(new RsaSecurityKey(rsaPrivate), SecurityAlgorithms.RsaSha256);
-        builder.Services.AddSingleton(credentials);
-
         var rsaPublic = RSA.Create();
         rsaPublic.ImportRSAPublicKey(publicKeyBytes, out _);
+        
         var parameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
@@ -61,29 +49,6 @@ public static class SecurityExtensions
                     OnMessageReceived = context => OnMessageReceived(context, options)
                 };
             });
-        
-        builder.Services
-            .AddIdentityCore<AdventEchoUser>(opt =>
-            {
-                opt.User.RequireUniqueEmail = true;
-                
-                opt.Lockout.MaxFailedAccessAttempts = 5;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                
-                opt.SignIn.RequireConfirmedAccount = true;
-                opt.SignIn.RequireConfirmedEmail = true;
-                opt.SignIn.RequireConfirmedPhoneNumber = false;
-                
-                opt.Password.RequireDigit = true;
-                opt.Password.RequireLowercase = true;
-                opt.Password.RequireUppercase = true;
-                opt.Password.RequireNonAlphanumeric = true;
-                opt.Password.RequiredLength = 8;
-            })
-            .AddSignInManager()
-            .AddRoles<Role>()
-            .AddAdventEchoIdentityDbContextStores()
-            .AddDefaultTokenProviders();
 
         builder.Services.AddAuthorization();
         
@@ -104,7 +69,7 @@ public static class SecurityExtensions
             if (string.IsNullOrEmpty(refreshToken)) return;
             
             // Refresh the tokens
-            var mediator = context.HttpContext.RequestServices.GetRequiredService<IMediatorHandler>();
+            var service = context.HttpContext.RequestServices.GetRequiredService<IAccountViewService>();
             try
             {
                 var command = new RefreshLoginAccountRequest
@@ -112,8 +77,8 @@ public static class SecurityExtensions
                     RefreshToken = refreshToken,
                     UseCookie = true
                 };
-                
-                var tokensResult = await mediator.SendCommandAsync(command);
+
+                var tokensResult = await service.RefreshLoginAsync(command, CancellationToken.None);
 
                 if (tokensResult.IsFail(out var tokens, out var error))
                 {
@@ -123,6 +88,13 @@ public static class SecurityExtensions
                 {
                     // Set the new access token in the request headers
                     context.Token = tokens.AccessToken.Value;
+                    context.HttpContext.RemoveTokensFromCookie(options);
+                    context.HttpContext.SetTokensIntoCookie(
+                        options, 
+                        tokens.AccessToken,
+                        tokens.RefreshToken,
+                        DateTimeOffset.UtcNow.AddMinutes(options.Bearer.RefreshTokenExpirationInMinutes - 10)
+                    );
                 }
             }
             catch (Exception ex)

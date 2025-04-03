@@ -1,6 +1,8 @@
 using AdventEcho.Identity.Application.Services.Cookies;
 using AdventEcho.Identity.Application.Services.Tokens;
+using AdventEcho.Kernel.Application.Shared;
 using AdventEcho.Kernel.Application.Shared.Messages.Results;
+using AdventEcho.Kernel.Infrastructure.Extensions;
 using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -18,17 +20,13 @@ internal class CookieService(IHttpContextAccessor accessor, IOptions<AdventEchoI
             var context = accessor.HttpContext;
             if(context is null) return EchoResults.Unauthorized();
             
-            context.Response.Cookies.Append(
-                _configs.Cookie.AccessTokenName, 
-                tokens.AccessToken.Value,
-                DefaultCookieOptions(tokens.AccessToken.Expiration)
-            );
+            context.RemoveTokensFromCookie(_configs);
             
-            context.Response.Cookies.Append(
-                _configs.Cookie.RefreshTokenName, 
-                tokens.RefreshToken.Id.ToString(),
-                DefaultCookieOptions(tokens.RefreshToken.Expiration)
-            );
+            context.SetTokensIntoCookie(
+                _configs,
+                tokens.AccessToken, 
+                tokens.RefreshToken.Id.ToString("N"),
+                tokens.RefreshToken.Expiration);
 
             await Task.CompletedTask;
         }
@@ -59,13 +57,5 @@ internal class CookieService(IHttpContextAccessor accessor, IOptions<AdventEchoI
 
         return EchoResults.Success();
     }
-
-
-    private static CookieOptions DefaultCookieOptions(DateTimeOffset expiration) => new()
-    {
-        HttpOnly = true,
-        Secure = true,
-        SameSite = SameSiteMode.None,
-        Expires = expiration
-    };
+    
 }

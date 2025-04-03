@@ -1,4 +1,3 @@
-using AdventEcho.Identity.Application.Shared;
 using AdventEcho.Kernel.Application.Shared;
 using AdventEcho.Kernel.Server.Endpoints;
 using Microsoft.AspNetCore.Builder;

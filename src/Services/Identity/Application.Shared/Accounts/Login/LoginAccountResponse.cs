@@ -1,3 +1,5 @@
+using AdventEcho.Kernel.Application.Shared;
+
 namespace AdventEcho.Identity.Application.Shared.Accounts.Login;
 
 public class LoginAccountResponse

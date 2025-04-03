@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using AdventEcho.Kernel.Application.Shared.Messages;
 using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using AdventEcho.Kernel.Exceptions;
 
@@ -25,6 +26,11 @@ public interface IEchoRestDefinition
 public interface IEchoRestBuilder
 {
     Task<Result> PostAsync<TRequest>(
+        [StringSyntax(StringSyntaxAttribute.Uri)] string path,
+        TRequest request,
+        CancellationToken cancellationToken = default) where TRequest : notnull;
+    
+    Task<Result<TResponse>> PostAsync<TRequest, TResponse>(
         [StringSyntax(StringSyntaxAttribute.Uri)] string path,
         TRequest request,
         CancellationToken cancellationToken = default) where TRequest : notnull;
@@ -52,6 +58,41 @@ file class EchoRestService(IHttpClientFactory factory) : IEchoRestDefinition, IE
 
         return (await SendAsync(httpRequest, cancellationToken)).ToResult();
     }
+
+    public async Task<Result<TResponse>> PostAsync<TRequest, TResponse>(string path, TRequest request, CancellationToken cancellationToken = default) where TRequest : notnull
+    {
+        var requestJson = JsonSerializer.Serialize(request);
+        var content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+        var httpRequest = new HttpRequestMessage(HttpMethod.Post, path)
+        {
+            Content = content
+        };
+
+        var responseMessage  = await SendAsync(httpRequest, cancellationToken);
+        return await HandleResponseAsync<TResponse>(responseMessage);
+    }
+
+    private static async Task<Result<TResponse>> HandleResponseAsync<TResponse>(Result<HttpResponseMessage> response)
+    {
+        if (response.IsFail(out var message, out var error))
+        {
+            return EchoResults<TResponse>.Fail(error);
+        }
+
+        try
+        {
+            var result = await message.Content.ReadFromJsonAsync<TResponse>();
+            
+            return result is null ? 
+                EchoResults<TResponse>.BadRequest($"Json content is null or not valid for this type {typeof(TResponse).Name}") : 
+                EchoResults<TResponse>.Success(result);
+        }
+        catch (Exception e)
+        {
+            return EchoResults<TResponse>.Fail(e);
+        }
+        
+    } 
 
     private async Task<Result<HttpResponseMessage>> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
     {
