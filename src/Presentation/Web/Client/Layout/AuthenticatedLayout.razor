@@ -12,7 +12,21 @@
         <MudText Typo="Typo.h5">Advent Echo</MudText>
         <MudSpacer />
         <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+        <AuthorizeView>
+            <Authorized>
+                <MudMenu StartIcon="@Icons.Material.Filled.Person" Label="@context.User.Identity?.Name">
+                    <MudMenuItem Icon="@Icons.Material.Filled.AccountBox">
+                        Profile
+                    </MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Settings">
+                        Settings
+                    </MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.ExitToApp">
+                        Logout
+                    </MudMenuItem>
+                </MudMenu>
+            </Authorized>
+        </AuthorizeView>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavigationMenu />
