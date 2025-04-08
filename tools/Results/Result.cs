@@ -142,6 +142,11 @@ public sealed class Result<TValue> : EchoResultBase<Result<TValue>>
         if (IsSuccess) await onSuccess(Value);
     }
     
+    public void WhenSuccess(Action<TValue> onSuccess)
+    {
+        if (IsSuccess) onSuccess(Value);
+    }
+    
     private Result<TValue> SetValue(TValue value)
     {
         Value = value;

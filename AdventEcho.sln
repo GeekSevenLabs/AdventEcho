@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventEcho.Registration.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventEcho.Registration.Tests", "tests\Services\Registration\AdventEcho.Registration.Tests.csproj", "{A02E0EE1-80A8-4958-8540-3D7821459921}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventEcho.Kernel.Tests", "tests\Kernel\Tests\AdventEcho.Kernel.Tests.csproj", "{3D6ABECF-7486-434F-A88D-D101A4F223FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -330,6 +332,18 @@ Global
 		{A02E0EE1-80A8-4958-8540-3D7821459921}.Release|x64.Build.0 = Release|Any CPU
 		{A02E0EE1-80A8-4958-8540-3D7821459921}.Release|x86.ActiveCfg = Release|Any CPU
 		{A02E0EE1-80A8-4958-8540-3D7821459921}.Release|x86.Build.0 = Release|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Debug|x64.Build.0 = Debug|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Debug|x86.Build.0 = Debug|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Release|x64.ActiveCfg = Release|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Release|x64.Build.0 = Release|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -363,5 +377,6 @@ Global
 		{5F11C8FB-65EF-4661-A8A7-8FBC7DF68A63} = {45A14418-AE05-4592-A58F-82B12EFBD4A6}
 		{DA327C55-F779-448E-8477-29BDF86E54FA} = {C1C8D828-8293-4988-AB39-42E4F90BB0C1}
 		{A02E0EE1-80A8-4958-8540-3D7821459921} = {C1C8D828-8293-4988-AB39-42E4F90BB0C1}
+		{3D6ABECF-7486-434F-A88D-D101A4F223FD} = {1EBCF1BD-F4A5-480A-8377-2760FDCBAF7A}
 	EndGlobalSection
 EndGlobal
