@@ -1,11 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using AdventEcho.Identity.Application.Services.Tokens;
-using AdventEcho.Identity.Application.Shared;
-using AdventEcho.Identity.Application.Shared.Accounts;
 using AdventEcho.Identity.Domain.Users;
+using AdventEcho.Kernel.Application.Errors;
 using AdventEcho.Kernel.Application.Shared;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -23,7 +21,7 @@ internal class BearerTokenService(
     public async Task<Result<BearerTokens>> GenerateTokensAsync(User user)
     {
         var currentUser = await userManager.FindByIdAsync(user.Id.ToString());
-        if (currentUser is null) return EchoResults<BearerTokens>.Unauthorized();
+        if (currentUser is null) return SecurityErrors.Unauthorized;
         
         var claims = await GetClaimsAsync(currentUser, user);
         var expiration = DateTimeOffset.UtcNow.AddMinutes(_options.Bearer.AccessTokenExpirationInMinutes);

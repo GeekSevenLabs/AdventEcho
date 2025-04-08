@@ -1,7 +1,6 @@
 using AdventEcho.Identity.Application.Services.Cookies;
 using AdventEcho.Identity.Application.Services.Tokens;
-using AdventEcho.Kernel.Application.Shared;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
+using AdventEcho.Kernel.Application.Errors;
 using AdventEcho.Kernel.Infrastructure.Extensions;
 using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +17,7 @@ internal class CookieService(IHttpContextAccessor accessor, IOptions<AdventEchoI
         try
         {
             var context = accessor.HttpContext;
-            if(context is null) return EchoResults.Unauthorized();
+            if (context is null) return SecurityErrors.Unauthorized;
             
             context.RemoveTokensFromCookie(_configs);
             
@@ -32,10 +31,10 @@ internal class CookieService(IHttpContextAccessor accessor, IOptions<AdventEchoI
         }
         catch (Exception e)
         {
-            return EchoResults.Fail(e);
+            return e;
         }
 
-        return EchoResults.Success();
+        return Result.Ok();
     }
 
     public async Task<Result> RemoveTokensFromCookieAsync()
@@ -43,7 +42,7 @@ internal class CookieService(IHttpContextAccessor accessor, IOptions<AdventEchoI
         try
         {
             var context = accessor.HttpContext;
-            if(context is null) return EchoResults.Unauthorized();
+            if(context is null) return SecurityErrors.Unauthorized;
             
             context.Response.Cookies.Delete(_configs.Cookie.AccessTokenName);
             context.Response.Cookies.Delete(_configs.Cookie.RefreshTokenName);
@@ -52,10 +51,10 @@ internal class CookieService(IHttpContextAccessor accessor, IOptions<AdventEchoI
         }
         catch (Exception e)
         {
-            return EchoResults.Fail(e);
+            return e;
         }
 
-        return EchoResults.Success();
+        return Result.Ok();
     }
     
 }

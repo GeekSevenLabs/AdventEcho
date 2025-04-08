@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\tools\Results\AdventEcho.Tools.Results.csproj" />
         <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>
     </ItemGroup>
 

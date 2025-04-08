@@ -20,7 +20,10 @@
             }
             else
             {
-                @Exception.Message 
+                @foreach (var exception in Exceptions)
+                {
+                    @exception.Message 
+                }
             }
         </div>
     </DialogContent>

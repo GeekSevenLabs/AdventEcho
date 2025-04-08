@@ -12,6 +12,7 @@ public interface IUiUtils
     Task HideBusyAsync(Guid busyId);
     Task ShowSuccessAsync(string message = "Operation completed successfully");
     Task ShowErrorAsync(Exception ex);
+    Task ShowErrorAsync(IEchoError[] errors);
     
     void NavigateTo([StringSyntax(StringSyntaxAttribute.Uri)] string uri);
 }

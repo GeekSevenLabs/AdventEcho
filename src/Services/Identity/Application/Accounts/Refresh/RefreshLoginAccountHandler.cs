@@ -3,8 +3,8 @@ using AdventEcho.Identity.Application.Services.Cookies;
 using AdventEcho.Identity.Application.Services.Tokens;
 using AdventEcho.Identity.Application.Shared.Accounts.Refresh;
 using AdventEcho.Identity.Domain.Users;
+using AdventEcho.Kernel.Application.Errors;
 using AdventEcho.Kernel.Application.Handlers;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using Microsoft.Extensions.Logging;
 
 namespace AdventEcho.Identity.Application.Accounts.Refresh;
@@ -25,7 +25,7 @@ public class RefreshLoginAccountHandler(
         if (string.IsNullOrEmpty(refreshTokenJson))
         {
             logger.LogWarning("Refresh token not found in cache");
-            return EchoResults<RefreshLoginAccountResponse>.Unauthorized();
+            return SecurityErrors.Unauthorized;
         }
         
         var refreshTokenResult = BearerRefreshToken.FromJson(refreshTokenJson);
@@ -35,7 +35,7 @@ public class RefreshLoginAccountHandler(
         {
             logger.LogWarning("Refresh token expired or invalid for user {UserId}", refreshToken.UserId);
             await cacheService.RemoveAsync(refreshToken.ToCacheKey(), cancellationToken);
-            return EchoResults<RefreshLoginAccountResponse>.Unauthorized();
+            return SecurityErrors.Unauthorized;
         }
         
         var user = await userRepository.GetByIdAsync(refreshToken.UserId);
@@ -43,13 +43,13 @@ public class RefreshLoginAccountHandler(
         {
             logger.LogWarning("User not found for refresh token {RefreshId}", request.RefreshToken);
             await cacheService.RemoveAsync(refreshToken.ToCacheKey(), cancellationToken);
-            return EchoResults<RefreshLoginAccountResponse>.Unauthorized();
+            return SecurityErrors.Unauthorized;
         }
         
         var tokensResult = await tokenService.GenerateTokensAsync(user);
         if (tokensResult.IsFail(out var tokens, out var tokensError))
         {
-            logger.LogWarning("Failed to generate tokens for user {UserId}: {Message}", user.Id, tokensError.Message);
+            logger.LogWarning("Failed to generate tokens for user {UserId}", user.Id);
             return tokensError;
         }
         
@@ -78,18 +78,18 @@ public class RefreshLoginAccountHandler(
             logger.LogInformation("User {UserId} logged in without cookie.", user.Id);
 
             await cookieService.RemoveTokensFromCookieAsync();
-            return EchoResults<RefreshLoginAccountResponse>.Success(response);
+            return response;
         }
         
         var setTokensResult = await cookieService.SetTokensIntoCookieAsync(tokens);
 
-        if (setTokensResult.IsFail(out var cookieError))
+        if (setTokensResult.IsFail(out var cookieErrors))
         {
-            logger.LogWarning("Failed to sign in user {UserId} with cookie: {Message}", user.Id, cookieError.Message);
-            return EchoResults<RefreshLoginAccountResponse>.Fail(cookieError);
+            logger.LogWarning("Failed to sign in user {UserId} with cookie", user.Id);
+            return cookieErrors;
         }
 
         logger.LogInformation("User {UserId} logged in with cookie.", user.Id);
-        return EchoResults<RefreshLoginAccountResponse>.Success(response);
+        return response;
     }
 }

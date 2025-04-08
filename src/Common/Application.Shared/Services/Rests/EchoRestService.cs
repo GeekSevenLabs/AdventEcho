@@ -2,15 +2,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using AdventEcho.Kernel.Application.Shared.Messages;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
+using AdventEcho.Kernel.Application.Shared.Errors;
 using AdventEcho.Kernel.Exceptions;
 
 namespace AdventEcho.Kernel.Application.Shared.Services.Rests;
 
-
-
-public class EchoRest
+public static class EchoRest
 {
     public static IEchoRestDefinition Use(IHttpClientFactory factory)
     {
@@ -56,7 +53,7 @@ file class EchoRestService(IHttpClientFactory factory) : IEchoRestDefinition, IE
             Content = content
         };
 
-        return (await SendAsync(httpRequest, cancellationToken)).ToResult();
+        return await SendAsync(httpRequest, cancellationToken);
     }
 
     public async Task<Result<TResponse>> PostAsync<TRequest, TResponse>(string path, TRequest request, CancellationToken cancellationToken = default) where TRequest : notnull
@@ -68,30 +65,21 @@ file class EchoRestService(IHttpClientFactory factory) : IEchoRestDefinition, IE
             Content = content
         };
 
-        var responseMessage  = await SendAsync(httpRequest, cancellationToken);
-        return await HandleResponseAsync<TResponse>(responseMessage);
+        var responseResult  = await SendAsync(httpRequest, cancellationToken);
+        return await responseResult.MatchAsync(HandleResponseAsync<TResponse>, Result<TResponse>.Fail);
     }
 
-    private static async Task<Result<TResponse>> HandleResponseAsync<TResponse>(Result<HttpResponseMessage> response)
+    private static async Task<Result<TResponse>> HandleResponseAsync<TResponse>(HttpResponseMessage response)
     {
-        if (response.IsFail(out var message, out var error))
-        {
-            return EchoResults<TResponse>.Fail(error);
-        }
-
         try
         {
-            var result = await message.Content.ReadFromJsonAsync<TResponse>();
-            
-            return result is null ? 
-                EchoResults<TResponse>.BadRequest($"Json content is null or not valid for this type {typeof(TResponse).Name}") : 
-                EchoResults<TResponse>.Success(result);
+            var result = await response.Content.ReadFromJsonAsync<TResponse>();
+            return result is null ? JsonErrors.InvalidJson<TResponse>() : result;
         }
         catch (Exception e)
         {
-            return EchoResults<TResponse>.Fail(e);
-        }
-        
+            return e;
+        }        
     } 
 
     private async Task<Result<HttpResponseMessage>> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
@@ -102,7 +90,7 @@ file class EchoRestService(IHttpClientFactory factory) : IEchoRestDefinition, IE
 
             if (response.IsSuccessStatusCode)
             {
-                return Result<HttpResponseMessage>.Success(response);
+                return response;
             }
 
             if (response.Content.Headers.ContentType?.MediaType == ProblemDetailsContentType)
@@ -114,7 +102,7 @@ file class EchoRestService(IHttpClientFactory factory) : IEchoRestDefinition, IE
         }
         catch (Exception e)
         {
-            return EchoResults<HttpResponseMessage>.Fail(e);
+            return e;
         }
     }
 
@@ -126,13 +114,13 @@ file class EchoRestService(IHttpClientFactory factory) : IEchoRestDefinition, IE
                 .Content
                 .ReadFromJsonAsync<ProblemDetailsException>(cancellationToken);
             
-            if (problemDetailsException is not null) return EchoResults<HttpResponseMessage>.Fail(problemDetailsException);
+            if (problemDetailsException is not null) return problemDetailsException;
 
             return await HandlerProblemResponseAsync(response, cancellationToken);
         }
         catch (Exception e)
         {
-            return EchoResults<HttpResponseMessage>.Fail(e);
+            return e;
         }
     }
     
@@ -148,7 +136,7 @@ file class EchoRestService(IHttpClientFactory factory) : IEchoRestDefinition, IE
         
         var error = await response.Content.ReadAsStringAsync(cancellationToken);
         var problem = new ProblemDetailsException("Bx0", title, (int)response.StatusCode, error, null);
-        return EchoResults<HttpResponseMessage>.Fail(problem);
+        return problem;
     }
 
 }

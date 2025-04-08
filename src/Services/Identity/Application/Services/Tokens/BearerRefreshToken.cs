@@ -1,6 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
+using AdventEcho.Kernel.Application.Errors;
 using Cblx.Blocks;
 
 namespace AdventEcho.Identity.Application.Services.Tokens;
@@ -24,7 +24,8 @@ public sealed partial class BearerRefreshToken
     public static Result<BearerRefreshToken> FromJson(string json)
     {
         var token = JsonSerializer.Deserialize<BearerRefreshToken>(json);
-        return token ?? EchoResults<BearerRefreshToken>.Unauthorized();
+        if (token == null) return SecurityErrors.Unauthorized;
+        return token;
     }
 
     public string ToCacheKey() => nameof(BearerRefreshToken) + Id.ToString("N");

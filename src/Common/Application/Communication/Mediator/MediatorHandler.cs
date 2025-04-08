@@ -1,5 +1,4 @@
 using AdventEcho.Kernel.Application.Shared.Messages;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using MediatR;
 
 namespace AdventEcho.Kernel.Application.Communication.Mediator;

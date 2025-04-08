@@ -2,7 +2,6 @@ using AdventEcho.Identity.Application.Services.Users;
 using AdventEcho.Identity.Application.Shared.Accounts.Register;
 using AdventEcho.Identity.Domain.Users;
 using AdventEcho.Kernel.Application.Handlers;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 
 namespace AdventEcho.Identity.Application.Accounts.Register;
 

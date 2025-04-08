@@ -1,7 +1,6 @@
 using AdventEcho.Identity.Application.Shared.Accounts.Login;
 using AdventEcho.Identity.Application.Shared.Accounts.Refresh;
 using AdventEcho.Identity.Application.Shared.Accounts.Register;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 
 namespace AdventEcho.Identity.Application.Shared.Services;
 

@@ -80,9 +80,9 @@ public static class SecurityExtensions
 
                 var tokensResult = await service.RefreshLoginAsync(command, CancellationToken.None);
 
-                if (tokensResult.IsFail(out var tokens, out var error))
+                if (tokensResult.IsFail(out var tokens, out _))
                 {
-                    context.Fail(error);
+                    context.Fail("Unauthorized");
                 }
                 else
                 {

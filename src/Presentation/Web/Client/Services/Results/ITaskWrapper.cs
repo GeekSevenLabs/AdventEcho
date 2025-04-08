@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 
 namespace AdventEcho.Presentation.Web.Client.Services.Results;
 

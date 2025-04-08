@@ -6,7 +6,6 @@ using AdventEcho.Identity.Application.Shared.Accounts.ConfirmEmail;
 using AdventEcho.Identity.Application.Shared.Accounts.Login;
 using AdventEcho.Identity.Application.Shared.Accounts.Refresh;
 using AdventEcho.Identity.Application.Shared.Accounts.Register;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using AdventEcho.Kernel.Exceptions;
 
 namespace AdventEcho.Presentation.Web.Client.Services.Results;
@@ -42,16 +41,16 @@ public abstract class TaskWrapperBase<TChild>(IUiUtils ui) : ITaskWrapperBase<TC
         {
             busyId = await TryShowBusyAsync();
             
-            var value = await task;
+            var result = await task;
 
-            await value.WhenSuccessAsync(TryShowSuccessAsync);
-            await value.WhenFailureAsync(TryShowErrorOrRedirectToLoginPageAsync);
+            await result.WhenSuccessAsync(TryShowSuccessAsync);
+            await result.WhenFailureAsync(TryShowErrorOrRedirectToLoginPageAsync);
             
-            return value;
+            return result;
         }
         catch (Exception ex)
         {
-            await TryShowErrorOrRedirectToLoginPageAsync(ex);
+            await TryShowErrorOrRedirectToLoginPageAsync([new EchoExceptionalError(ex)]);
             
             // Think about logging the exception here or not rethrowing it
             throw;
@@ -78,7 +77,7 @@ public abstract class TaskWrapperBase<TChild>(IUiUtils ui) : ITaskWrapperBase<TC
         }
         catch (Exception ex)
         {
-            await TryShowErrorOrRedirectToLoginPageAsync(ex);
+            await TryShowErrorOrRedirectToLoginPageAsync([new EchoExceptionalError(ex)]);
             
             // Think about logging the exception here or not rethrowing it
             throw;
@@ -107,29 +106,25 @@ public abstract class TaskWrapperBase<TChild>(IUiUtils ui) : ITaskWrapperBase<TC
         }
     }
     
-    private async Task TryShowErrorOrRedirectToLoginPageAsync(Exception exception)
+    private async Task TryShowErrorOrRedirectToLoginPageAsync(IEchoError[] errors)
     {
         if (_showError)
         {
-            if(_redirectToLogin && IsUnauthorized(exception)) 
+            if(_redirectToLogin && IsUnauthorized(errors)) 
             {
                 ui.NavigateTo("/account/login");
             }
             else
             {
-                await ui.ShowErrorAsync(exception);
+                await ui.ShowErrorAsync(errors);
             }
         }
     }
 
-    private static bool IsUnauthorized(Exception exception)
+    private static bool IsUnauthorized(IEchoError[] errors)
     {
-        return exception switch
-        {
-            UnauthorizedException => true,
-            ProblemDetailsException problem => problem.IsUnauthorized,
-            _ => false
-        };
+        if(errors.HasException<UnauthorizedException>()) return true;
+        return errors.TryGetException<ProblemDetailsException>(out var problem) && problem?.IsUnauthorized == true;
     } 
     
     private async Task TryHideBusyAsync(Guid busyId)

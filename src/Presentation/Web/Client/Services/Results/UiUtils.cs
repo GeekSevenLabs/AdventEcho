@@ -18,9 +18,20 @@ public class UiUtils(IDialogService dialogService, ISnackbar snackbar, Navigatio
     {
         var dialogParameters = new DialogParameters<ErrorDialog>
         {
-            { d => d.Exception, ex }
+            { d => d.Exceptions, [ex] },
+            { d => d.Errors, [] }
         };
         await dialogService.ShowAsync<ErrorDialog>(ExtractFriendlyTitle(ex), dialogParameters);
+    }
+
+    public async Task ShowErrorAsync(IEchoError[] errors)
+    {
+        var dialogParameters = new DialogParameters<ErrorDialog>
+        {
+            { d => d.Exceptions, [] },
+            { d => d.Errors, errors }
+        };
+        await dialogService.ShowAsync<ErrorDialog>("", dialogParameters);
     }
 
     public void NavigateTo([StringSyntax(StringSyntaxAttribute.Uri)] string uri) => navigation.NavigateTo(uri, forceLoad: true);

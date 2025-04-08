@@ -4,7 +4,6 @@ using AdventEcho.Identity.Application.Services.Tokens;
 using AdventEcho.Identity.Application.Services.Users;
 using AdventEcho.Identity.Application.Shared.Accounts.Login;
 using AdventEcho.Kernel.Application.Handlers;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
 using Microsoft.Extensions.Logging;
 
 namespace AdventEcho.Identity.Application.Accounts.Login;
@@ -20,17 +19,17 @@ public class LoginAccountHandler(
     public async Task<Result<LoginAccountResponse>> Handle(LoginAccountRequest request, CancellationToken cancellationToken)
     {
         var userResult = await userService.CheckPasswordSignInAsync(request.Email!, request.Password!, cancellationToken);
-        if (userResult.IsFail(out var user, out var error))
+        if (userResult.IsFail(out var user, out var errors))
         {
-            logger.LogWarning("User login failed: {Error}", error.Message);
-            return EchoResults<LoginAccountResponse>.Fail(error);
+            logger.LogWarning("User login failed");
+            return errors;
         }
         
         var tokensResult = await tokenService.GenerateTokensAsync(user);
-        if (tokensResult.IsFail(out var tokens, out error))
+        if (tokensResult.IsFail(out var tokens, out errors))
         {
-            logger.LogWarning("Token generation failed: {Error}", error.Message);
-            return EchoResults<LoginAccountResponse>.Fail(error);
+            logger.LogWarning("Token generation failed");
+            return errors;
         }
         
         var expiration = tokens.RefreshToken.Expiration - DateTimeOffset.UtcNow;
@@ -54,13 +53,13 @@ public class LoginAccountHandler(
             RefreshToken = tokens.RefreshToken.Id.ToString("N")
         };
 
-        if (request.UseCookie is false) return EchoResults<LoginAccountResponse>.Success(response);
+        if (request.UseCookie is false) return response;
         
         var setTokensResult = await cookieService.SetTokensIntoCookieAsync(tokens);
 
-        if (!setTokensResult.IsFail(out var cookieError)) return EchoResults<LoginAccountResponse>.Success(response);
+        if (!setTokensResult.IsFail(out var cookieError)) return response;
         
-        logger.LogWarning("Cookie storage failed: {Error}", cookieError.Message);
-        return Result<LoginAccountResponse>.Fail(cookieError);
+        logger.LogWarning("Cookie storage failed");
+        return cookieError;
     }
 }

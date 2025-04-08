@@ -1,9 +1,8 @@
 using System.Web;
-using AdventEcho.Identity.Application;
 using AdventEcho.Identity.Application.Services.Users;
 using AdventEcho.Identity.Domain.Users;
 using AdventEcho.Identity.Infrastructure.Extensions;
-using AdventEcho.Kernel.Application.Shared.Messages.Results;
+using AdventEcho.Kernel.Application.Errors;
 using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -31,7 +30,7 @@ internal class UserService(
         await ((IUserEmailStore<AdventEchoUser>)userStore).SetEmailAsync(user, email, cancellationToken);
         
         var result = await userManager.CreateAsync(user, password);
-        if (!result.Succeeded) return EchoResults.Validation(result.Errors.ToDictionary());
+        if (!result.Succeeded) return result.Errors.ToResultErrors();
         
         logger.LogInformation("User account created for {email} and password set.", email);
         
@@ -44,36 +43,37 @@ internal class UserService(
         
         await emailSender.SendConfirmationLinkAsync(user, email, callbackUrl);
         
-        return Result.Success();
+        return Result.Ok();
     }
 
     public async Task<Result> ConfirmEmailAsync(Guid userId, string token, CancellationToken cancellationToken = default)
     {
         var user = await userManager.FindByIdAsync(userId.ToString());
-        if (user is null) return EchoResults.BadRequest("This operation is invalid.");
+        if (user is null) return SecurityErrors.Unauthorized;
         
         var result = await userManager.ConfirmEmailAsync(user, token);
-        
-        if (!result.Succeeded) return EchoResults.Validation(result.Errors.ToDictionary());
+
+        if (!result.Succeeded) return result.Errors.ToResultErrors();
         
         
         logger.LogInformation("User account confirmed for {email}.", user.Email);
         
-        return Result.Success();
+        return Result.Ok();
     }
 
     public async Task<Result<User>> CheckPasswordSignInAsync(string email, string password, CancellationToken cancellationToken = default)
     {
         var user = await userManager.FindByEmailAsync(email);
-        if (user is null) return EchoResults<User>.BadRequest("This operation is invalid.");
+        if (user is null) return SecurityErrors.Unauthorized;
 
         var result = await signInManager.CheckPasswordSignInAsync(user, password, false);
 
-        if (result.IsLockedOut) return EchoResults<User>.Forbidden("User account is locked out.");
-        if (result.IsNotAllowed) return EchoResults<User>.Forbidden("User account is not allowed.");
-        if (result.RequiresTwoFactor) return EchoResults<User>.Forbidden("User account requires two factor authentication.");
+        if (result.IsLockedOut) return SecurityErrors.Forbidden("User account is locked out.");
+        if (result.IsNotAllowed) return SecurityErrors.Forbidden("User account is not allowed.");
+        if (result.RequiresTwoFactor) return SecurityErrors.Forbidden("User account requires two factor authentication.");
         
         var domainUser = await userRepository.GetByIdAsync(user.Id);
-        return domainUser ?? EchoResults<User>.BadRequest("This operation is invalid.");
+        if (domainUser is null) return SecurityErrors.Unauthorized;
+        return domainUser;
     }
 }
