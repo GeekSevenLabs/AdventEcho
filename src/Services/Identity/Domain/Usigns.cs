@@ -1,3 +1,1 @@
-﻿global using AdventEcho.Kernel.Domain.Entities;
-global using Cblx.Blocks;
-global using AdventEcho.Kernel.Domain;
+﻿global using Cblx.Blocks;

@@ -1,10 +1,9 @@
-using AdventEcho.Kernel.Application.Shared;
-using AdventEcho.Kernel.Server.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace AdventEcho.Kernel.Server.Extensions;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class EndpointExtensions
 {

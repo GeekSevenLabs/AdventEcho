@@ -1,4 +1,5 @@
-namespace AdventEcho.Kernel.Domain;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public interface IUnitOfWork
 {

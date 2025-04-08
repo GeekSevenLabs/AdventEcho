@@ -4,15 +4,16 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>AdventEcho</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\tools\Results\AdventEcho.Tools.Results.csproj" />
+        <ProjectReference Include="..\..\..\tools\Results\AdventEcho.Tools.Results.csproj"/>
         <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Cblx.Blocks.SourceGenerators.EmptyConstructor" Version="0.16.0" />
+        <PackageReference Include="Cblx.Blocks.SourceGenerators.EmptyConstructor" Version="0.16.0"/>
     </ItemGroup>
 
 </Project>

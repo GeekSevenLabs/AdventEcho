@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace AdventEcho.Kernel.Server.Extensions;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class ResultExtensions
 {

@@ -1,4 +1,5 @@
-namespace AdventEcho.Kernel.Infrastructure.Options;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public class AdventEchoIdentityDomainsOptions 
 {

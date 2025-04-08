@@ -3,7 +3,6 @@ using AdventEcho.Identity.Application.Services.Cookies;
 using AdventEcho.Identity.Application.Services.Tokens;
 using AdventEcho.Identity.Application.Services.Users;
 using AdventEcho.Identity.Application.Shared.Accounts.Login;
-using AdventEcho.Kernel.Application.Handlers;
 using Microsoft.Extensions.Logging;
 
 namespace AdventEcho.Identity.Application.Accounts.Login;

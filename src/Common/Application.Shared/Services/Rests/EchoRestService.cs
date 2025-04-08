@@ -1,11 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using AdventEcho.Kernel.Application.Shared.Errors;
-using AdventEcho.Kernel.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 
-namespace AdventEcho.Kernel.Application.Shared.Services.Rests;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class EchoRest
 {

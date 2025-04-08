@@ -1,5 +1,3 @@
-using AdventEcho.Kernel.Application.Shared;
-
 namespace AdventEcho.Identity.Application.Shared;
 
 public static class Constants

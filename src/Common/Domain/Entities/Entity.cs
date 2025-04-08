@@ -1,4 +1,5 @@
-namespace AdventEcho.Kernel.Domain.Entities;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public abstract class Entity
 {

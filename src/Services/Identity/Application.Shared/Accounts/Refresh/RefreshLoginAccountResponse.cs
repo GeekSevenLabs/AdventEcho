@@ -1,5 +1,3 @@
-using AdventEcho.Kernel.Application.Shared;
-
 namespace AdventEcho.Identity.Application.Shared.Accounts.Refresh;
 
 public class RefreshLoginAccountResponse

@@ -2,8 +2,6 @@ using System.Security.Cryptography;
 using AdventEcho.Identity.Application.Shared.Accounts.Refresh;
 using AdventEcho.Identity.Infrastructure;
 using AdventEcho.Identity.Infrastructure.Models;
-using AdventEcho.Kernel.Application.Communication.Mediator;
-using AdventEcho.Kernel.Infrastructure.Options;
 using Menso.Tools.Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

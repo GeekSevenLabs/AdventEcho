@@ -1,5 +1,5 @@
+using AdventEcho;
 using AdventEcho.Identity.Application.Shared;
-using AdventEcho.Kernel.Application.Shared;
 using AdventEcho.Presentation.Web.Client.MessageHandlers;
 using AdventEcho.Presentation.Web.Client.Services.Results;
 using Menso.Tools.Exceptions;

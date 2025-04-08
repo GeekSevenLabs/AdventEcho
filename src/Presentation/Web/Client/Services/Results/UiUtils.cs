@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using AdventEcho.Kernel.Exceptions;
 using AdventEcho.Presentation.Web.Client.Components.Dialogs;
 
 namespace AdventEcho.Presentation.Web.Client.Services.Results;

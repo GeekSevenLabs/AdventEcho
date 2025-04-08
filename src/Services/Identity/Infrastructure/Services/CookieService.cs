@@ -1,8 +1,5 @@
 using AdventEcho.Identity.Application.Services.Cookies;
 using AdventEcho.Identity.Application.Services.Tokens;
-using AdventEcho.Kernel.Application.Errors;
-using AdventEcho.Kernel.Infrastructure.Extensions;
-using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 

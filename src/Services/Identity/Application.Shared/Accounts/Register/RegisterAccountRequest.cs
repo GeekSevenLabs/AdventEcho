@@ -1,5 +1,3 @@
-using AdventEcho.Kernel.Application.Shared.Messages;
-
 namespace AdventEcho.Identity.Application.Shared.Accounts.Register;
 
 public class RegisterAccountRequest : ICommand

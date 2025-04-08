@@ -1,6 +1,5 @@
-using MediatR;
-
-namespace AdventEcho.Kernel.Application.Shared.Messages;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public abstract class Event : Message, INotification;
 

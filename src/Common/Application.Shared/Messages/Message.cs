@@ -1,4 +1,5 @@
-namespace AdventEcho.Kernel.Application.Shared.Messages;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public abstract class Message
 {

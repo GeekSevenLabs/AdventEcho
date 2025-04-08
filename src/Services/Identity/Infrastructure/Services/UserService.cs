@@ -2,8 +2,6 @@ using System.Web;
 using AdventEcho.Identity.Application.Services.Users;
 using AdventEcho.Identity.Domain.Users;
 using AdventEcho.Identity.Infrastructure.Extensions;
-using AdventEcho.Kernel.Application.Errors;
-using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

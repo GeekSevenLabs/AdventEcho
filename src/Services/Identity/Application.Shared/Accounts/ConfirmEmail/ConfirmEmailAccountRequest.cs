@@ -1,5 +1,3 @@
-using AdventEcho.Kernel.Application.Shared.Messages;
-
 namespace AdventEcho.Identity.Application.Shared.Accounts.ConfirmEmail;
 
 public class ConfirmEmailAccountRequest : ICommand

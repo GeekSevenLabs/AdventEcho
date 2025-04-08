@@ -1,5 +1,4 @@
-using MediatR;
-
-namespace AdventEcho.Kernel.Application.Shared.Messages;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public interface IQuery<TResponse> : IRequest<Result<TResponse>>;

@@ -1,8 +1,4 @@
 using AdventEcho.Identity.Application.Shared.Accounts.ConfirmEmail;
-using AdventEcho.Kernel.Application.Communication.Mediator;
-using AdventEcho.Kernel.Server.Endpoints;
-using AdventEcho.Kernel.Server.Extensions;
-using AdventEcho.Kernel.Server.Validations;
 
 namespace AdventEcho.Presentation.Identity.Endpoints.Accounts;
 

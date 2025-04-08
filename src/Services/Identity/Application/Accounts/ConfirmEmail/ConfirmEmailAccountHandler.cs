@@ -1,6 +1,5 @@
 using AdventEcho.Identity.Application.Services.Users;
 using AdventEcho.Identity.Application.Shared.Accounts.ConfirmEmail;
-using AdventEcho.Kernel.Application.Handlers;
 
 namespace AdventEcho.Identity.Application.Accounts.ConfirmEmail;
 

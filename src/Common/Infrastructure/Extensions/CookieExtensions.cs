@@ -1,8 +1,7 @@
-using AdventEcho.Kernel.Application.Shared;
-using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Http;
 
-namespace AdventEcho.Kernel.Infrastructure.Extensions;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class CookieExtensions
 {

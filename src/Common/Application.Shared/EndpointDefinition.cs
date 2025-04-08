@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace AdventEcho.Kernel.Application.Shared;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public readonly record struct EndpointDefinition(
     [StringSyntax(StringSyntaxAttribute.Uri)]string Endpoint, 

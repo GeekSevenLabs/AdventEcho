@@ -1,4 +1,5 @@
-namespace AdventEcho.Kernel.Application.Shared;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public class BearerAccessToken
 {

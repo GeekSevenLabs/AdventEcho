@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Routing;
 
-namespace AdventEcho.Kernel.Server.Endpoints;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public interface IEndpoint
 {

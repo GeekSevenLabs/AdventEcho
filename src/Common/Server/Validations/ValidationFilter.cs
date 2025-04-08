@@ -3,7 +3,8 @@ using FluentValidation.Results;
 using Menso.Tools.Exceptions;
 using Microsoft.AspNetCore.Http;
 
-namespace AdventEcho.Kernel.Server.Validations;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public class ValidationFilter<TModel>(IValidator<TModel> validator) : IEndpointFilter where TModel : class
 {

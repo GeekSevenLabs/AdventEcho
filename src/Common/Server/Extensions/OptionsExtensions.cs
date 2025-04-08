@@ -1,11 +1,11 @@
-using AdventEcho.Kernel.Infrastructure.Options;
 using Menso.Tools.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Resend;
 
-namespace AdventEcho.Kernel.Server.Extensions;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class OptionsExtensions
 {

@@ -3,8 +3,6 @@ using AdventEcho.Identity.Application.Services.Cookies;
 using AdventEcho.Identity.Application.Services.Tokens;
 using AdventEcho.Identity.Application.Shared.Accounts.Refresh;
 using AdventEcho.Identity.Domain.Users;
-using AdventEcho.Kernel.Application.Errors;
-using AdventEcho.Kernel.Application.Handlers;
 using Microsoft.Extensions.Logging;
 
 namespace AdventEcho.Identity.Application.Accounts.Refresh;

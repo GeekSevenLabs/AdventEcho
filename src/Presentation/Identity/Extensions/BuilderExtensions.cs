@@ -1,7 +1,5 @@
 using AdventEcho.Identity.Application;
 using AdventEcho.Identity.Infrastructure;
-using AdventEcho.Kernel.Application.Communication.Mediator;
-using AdventEcho.Kernel.Server.Extensions;
 using AdventEcho.Presentation.Identity.Endpoints;
 using Scalar.AspNetCore;
 

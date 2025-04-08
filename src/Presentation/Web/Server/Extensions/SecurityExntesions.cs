@@ -1,8 +1,6 @@
 using System.Security.Cryptography;
 using AdventEcho.Identity.Application.Shared.Accounts.Refresh;
 using AdventEcho.Identity.Application.Shared.Services;
-using AdventEcho.Kernel.Infrastructure.Extensions;
-using AdventEcho.Kernel.Infrastructure.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 

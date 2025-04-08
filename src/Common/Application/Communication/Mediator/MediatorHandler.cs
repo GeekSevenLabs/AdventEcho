@@ -1,7 +1,5 @@
-using AdventEcho.Kernel.Application.Shared.Messages;
-using MediatR;
-
-namespace AdventEcho.Kernel.Application.Communication.Mediator;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public class MediatorHandler(IMediator mediator) : IMediatorHandler
 {

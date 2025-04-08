@@ -1,5 +1,3 @@
-using AdventEcho.Kernel.Infrastructure.Options;
-
 namespace AdventEcho.Presentation.Identity.Extensions;
 
 public static class CorsExtensions

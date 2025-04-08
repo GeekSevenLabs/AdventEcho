@@ -1,4 +1,5 @@
-﻿namespace AdventEcho.Kernel.Infrastructure;
+﻿// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class InfrastructureConstants
 {

@@ -1,4 +1,5 @@
-namespace AdventEcho.Kernel.Application.Shared.Errors;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class JsonErrors
 {
