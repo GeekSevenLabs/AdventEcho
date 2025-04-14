@@ -1,17 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>AdventEcho</RootNamespace>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\tools\Results\AdventEcho.Tools.Results.csproj" />
+        <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.11.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Kernel\AdventEcho.Kernel.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="11.11.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3"/>
+        <PackageReference Include="MediatR" Version="12.4.1"/>
+    </ItemGroup>
 
 </Project>

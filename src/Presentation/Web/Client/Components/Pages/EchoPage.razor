@@ -1,0 +1,11 @@
+@inherits EchoComponentBase
+
+<PageTitle>@Title | Advent Echo</PageTitle>
+
+<CascadingValue Value="@this" IsFixed>
+    <MudContainer Class="@CssClassContainer" Style="@Style" UserAttributes="AdditionalAttributes" MaxWidth="MaxWidth">
+        <EchoStack Direction="EchoDirection.Column" Gap="EchoGap.Medium" Class="tw:!py-4">
+            @ChildContent
+        </EchoStack>
+    </MudContainer>
+</CascadingValue>

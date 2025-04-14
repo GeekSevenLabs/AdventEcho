@@ -1,0 +1,58 @@
+@page "/account/login"
+@attribute [AllowAnonymous]
+@layout AnonymousLayout
+
+<EchoPage Title="Register" MaxWidth="MaxWidth.ExtraSmall">
+
+    <EchoPageSection>
+
+        <EchoStack Gap="EchoGap.None">
+            <MudText Color="Color.Primary" Typo="Typo.h4" Class="tw:!font-thin">Hello,</MudText>
+            <MudText Color="Color.Primary" Typo="Typo.h5" Class="tw:!font-bold">Welcome!</MudText>
+        </EchoStack>
+
+        <MudStack>
+            @* <StatusMessage Message="@Message"/> *@
+        </MudStack>
+
+        <EchoForm Model="_request" OnValidSubmit="HandleValidSubmitAsync" Validator="_validator">
+
+            <EchoStack Gap="EchoGap.Medium">
+
+                <MudText Class="tw:col-span-full" Typo="Typo.body1" GutterBottom>
+                    Por favor, entre com suas credenciais.
+                </MudText>
+
+                <EchoTextField
+                    @bind-Value="_request.Email" Label="Email" Placeholder="name@example.com"
+                    autocomplete="email" aria-required="true"/>
+
+                <EchoTextField
+                    @bind-Value="_request.Password" Label="Senha" InputType="InputType.Password"
+                    Placeholder="password" autocomplete="new-password" aria-required="true" />
+                
+
+                <ValidationSummary class="tw:col-span-full"/>
+
+                <MudButton Class="tw:col-span-full" Variant="Variant.Filled" Color="Color.Primary" FullWidth ButtonType="ButtonType.Submit">
+                    Entrar
+                </MudButton>
+            </EchoStack>
+        </EchoForm>
+
+        <MudDivider/>
+
+        <MudStack Spacing="0">
+            <MudLink Href="account/forgot-password">
+                Ops, esqueci minha senha
+            </MudLink>
+            <MudLink Href="@(NavigationManager.GetUriWithQueryParameters("account/register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">
+                Sou novo por aqui, quero me cadastrar
+            </MudLink>
+            <MudLink Href="account/resend-email-confirmation">
+                Reenviar e-mail de confirmação
+            </MudLink>
+        </MudStack>
+
+    </EchoPageSection>
+</EchoPage>

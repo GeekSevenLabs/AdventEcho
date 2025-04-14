@@ -1,9 +1,7 @@
 using System.Web;
-using AdventEcho.Identity.Application;
-using AdventEcho.Identity.Domain.Users.Services;
+using AdventEcho.Identity.Application.Services.Users;
+using AdventEcho.Identity.Domain.Users;
 using AdventEcho.Identity.Infrastructure.Extensions;
-using AdventEcho.Kernel.Extensions;
-using AdventEcho.Kernel.Messages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -11,29 +9,26 @@ using Microsoft.Extensions.Options;
 namespace AdventEcho.Identity.Infrastructure.Services;
 
 internal class UserService(
-    UserManager<User> userManager,
-    SignInManager<User> signInManager,
-    IUserStore<User> userStore,
+    UserManager<AdventEchoUser> userManager,
+    SignInManager<AdventEchoUser> signInManager,
+    IUserStore<AdventEchoUser> userStore,
     ILogger<UserService> logger,
-    IOptions<AdventEchoIdentityDomainsConfiguration> options,
-    IEmailSender<User> emailSender) : IUserService
+    IOptions<AdventEchoIdentityOptions> options,
+    IEmailSender<AdventEchoUser> emailSender,
+    IUserRepository userRepository) : IUserService
 {
-    private readonly AdventEchoIdentityDomainsConfiguration _domainConfigs = options.Value;
+    private readonly AdventEchoIdentityOptions _options = options.Value;
     
     
-    public async Task<Result> RegisterAsync(string name, string email, string password, CancellationToken cancellationToken = default)
+    public async Task<Result> RegisterAsync(NameVo name, string email, string password, CancellationToken cancellationToken = default)
     {
-        var user = new User(name);
+        var user = new AdventEchoUser(name);
         
         await userStore.SetUserNameAsync(user, email, cancellationToken);
-        await ((IUserEmailStore<User>)userStore).SetEmailAsync(user, email, cancellationToken);
+        await ((IUserEmailStore<AdventEchoUser>)userStore).SetEmailAsync(user, email, cancellationToken);
         
         var result = await userManager.CreateAsync(user, password);
-
-        if (!result.Succeeded)
-        {
-            return result.Errors.ToValidationException();
-        }
+        if (!result.Succeeded) return result.Errors.ToResultErrors();
         
         logger.LogInformation("User account created for {email} and password set.", email);
         
@@ -42,45 +37,41 @@ internal class UserService(
         
         code = HttpUtility.UrlEncode(code);
         
-        var callbackUrl = $"{_domainConfigs.ApiIdentity}/account/confirm-email?userId={userId}&code={code}";
+        var callbackUrl = $"{_options.Domains.Web}/account/confirm-email?userId={userId}&code={code}";
         
         await emailSender.SendConfirmationLinkAsync(user, email, callbackUrl);
         
-        return Result.Success();
+        return Result.Ok();
     }
 
     public async Task<Result> ConfirmEmailAsync(Guid userId, string token, CancellationToken cancellationToken = default)
     {
         var user = await userManager.FindByIdAsync(userId.ToString());
-        
-        if (user is null) return "This operation is invalid.".ToInvalidOperationException();
+        if (user is null) return SecurityErrors.Unauthorized;
         
         var result = await userManager.ConfirmEmailAsync(user, token);
+
+        if (!result.Succeeded) return result.Errors.ToResultErrors();
         
-        if (!result.Succeeded)
-        {
-            return result.Errors.ToValidationException();
-        }
         
         logger.LogInformation("User account confirmed for {email}.", user.Email);
         
-        return Result.Success();
+        return Result.Ok();
     }
 
+    public async Task<Result<User>> CheckPasswordSignInAsync(string email, string password, CancellationToken cancellationToken = default)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user is null) return SecurityErrors.Unauthorized;
 
-    // public async Task<IUser?> FindByEmailAsync(string email, CancellationToken cancellationToken = default)
-    // {
-    //     return await userManager.FindByEmailAsync(email); 
-    // }
-    //
-    // public async Task<Result<IUser>> LoginAsync(IUser user, string password, CancellationToken cancellationToken = default)
-    // {
-    //     var result = await signInManager.CheckPasswordSignInAsync((User)user, password, false);
-    //     
-    //     if(result.IsLockedOut) return "User account is locked out.".ToInvalidOperationException();
-    //     if(result.IsNotAllowed) return "User account is not allowed.".ToInvalidOperationException();
-    //     if(result.RequiresTwoFactor) return "User account requires two factor authentication.".ToInvalidOperationException();
-    //     
-    //     return (User)user;
-    // }
+        var result = await signInManager.CheckPasswordSignInAsync(user, password, false);
+
+        if (result.IsLockedOut) return SecurityErrors.Forbidden("User account is locked out.");
+        if (result.IsNotAllowed) return SecurityErrors.Forbidden("User account is not allowed.");
+        if (result.RequiresTwoFactor) return SecurityErrors.Forbidden("User account requires two factor authentication.");
+        
+        var domainUser = await userRepository.GetByIdAsync(user.Id);
+        if (domainUser is null) return SecurityErrors.Unauthorized;
+        return domainUser;
+    }
 }

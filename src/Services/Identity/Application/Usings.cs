@@ -1,1 +1,1 @@
-﻿global using AdventEcho.Kernel.Messages;
+﻿

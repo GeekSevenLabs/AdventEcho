@@ -1,0 +1,44 @@
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: geekseven-advent-echo-sql-server
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "1q2w3e4r@#$"
+    ports:
+      - "1433:1433"
+    networks:
+      - adventecho-network
+    volumes:
+      - sql-server-data:/var/opt/mssql
+    deploy:
+      resources:
+        limits:
+          memory: 2GB
+
+  redis:
+    image: redis:latest
+    container_name: geekseven-advent-echo-redis
+    restart: always
+    command: redis-server --requirepass "RpOaYFoDXCwOvTBx"
+    ports:
+      - "6379:6379"
+    networks:
+      - adventecho-network
+    volumes:
+      - redis-data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
+
+networks:
+  adventecho-network:
+    driver: bridge
+
+volumes:
+  sql-server-data:
+    driver: local
+  redis-data:
+    driver: local

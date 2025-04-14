@@ -1,0 +1,14 @@
+@inherits EchoComponentBase
+
+<MudPaper Elevation="2">
+    <MudToolBar>
+        @if (!string.IsNullOrWhiteSpace(EchoPage.BackLink))
+        {
+            <MudIconButton Href="@EchoPage.BackLink" Icon="@Icons.Material.Outlined.ChevronLeft" Color="Color.Inherit" Class="tw:!mr-2"/>
+        }
+        <MudText>@EchoPage.Title</MudText>
+        <MudSpacer></MudSpacer>
+
+        <MudIconButton Icon="@Icons.Material.Outlined.MoreVert" Color="Color.Inherit"/>
+    </MudToolBar>
+</MudPaper>

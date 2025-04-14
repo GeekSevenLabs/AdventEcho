@@ -1,8 +1,10 @@
+using AdventEcho.Identity.Domain.Users;
+
 namespace AdventEcho.Identity.Infrastructure.Configurations;
 
-internal class UserConfiguration : IEntityTypeConfiguration<User>
+internal class UserConfiguration : IEntityTypeConfiguration<AdventEchoUser>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<AdventEchoUser> builder)
     {
         // Primary key
         builder.HasKey(user => user.Id);
@@ -18,12 +20,20 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(user => user.ConcurrencyStamp).IsConcurrencyToken();
 
         // Limit the size of columns to use efficient database types
-        builder.Property(user => user.Name).HasMaxLength(256);
-        builder.Property(user => user.UserName).HasMaxLength(256);
-        builder.Property(user => user.NormalizedUserName).HasMaxLength(256);
-        builder.Property(user => user.Email).HasMaxLength(256);
-        builder.Property(user => user.NormalizedEmail).HasMaxLength(256);
+        builder.Property(user => user.UserName).HasMaxLength(256).IsRequired();
+        builder.Property(user => user.NormalizedUserName).HasMaxLength(256).IsRequired();
+        builder.Property(user => user.Email).HasMaxLength(256).IsRequired();
+        builder.Property(user => user.NormalizedEmail).HasMaxLength(256).IsRequired();
         builder.Property(user => user.PhoneNumber).HasMaxLength(256);
+        
+        // Complex types
+        // The following properties are complex types, so we need to configure them
+        builder.ComplexProperty<NameVo>(user => user.Name, voBuilder =>
+        {
+            // Configure the properties of the complex type
+            voBuilder.Property(name => name.First).HasMaxLength(100).IsRequired();
+            voBuilder.Property(name => name.Last).HasMaxLength(150).IsRequired();
+        });
 
         // The relationships between User and other entity types
         // Note that these relationships are configured with no navigation properties

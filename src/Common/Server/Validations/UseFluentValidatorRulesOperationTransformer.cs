@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using FluentValidation.Validators;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 
-namespace AdventEcho.Kernel.Server.Validations;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public class UseFluentValidatorRulesOperationTransformer : IOpenApiOperationTransformer
 {

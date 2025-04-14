@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AdventEcho.Kernel.Server.Validations;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class ValidationFilterExtensions
 {

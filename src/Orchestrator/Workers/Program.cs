@@ -11,7 +11,7 @@ builder.Services.AddHostedService<Worker>();
 
 builder.Services.AddOpenTelemetry().WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
 
-builder.AddSqlServerDbContext<AdventEchoIdentityDbContext>(Names.DataBases.AdventEchoIdentityDataBase);
+builder.AddSqlServerDbContext<AdventEchoIdentityDbContext>(InfrastructureConstants.DataBases.AdventEchoIdentityDataBase);
 
 var host = builder.Build();
 host.Run();

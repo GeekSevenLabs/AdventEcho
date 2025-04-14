@@ -1,49 +1,64 @@
-using System.Net;
-using AdventEcho.Kernel.Exceptions;
-using AdventEcho.Kernel.Messages;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace AdventEcho.Kernel.Server.Extensions;
+// ReSharper disable once CheckNamespace
+namespace AdventEcho;
 
 public static class ResultExtensions
 {
-    public static async Task<IResult> ProcessResult(this Task<Result> resultTask)
+    private const string ErrorCodeDefault = "UnknownError";
+    private const string Type = "EchoResult";
+    
+    public static async Task<IResult> ProcessResult(this Task<Result> resultTask) => (await resultTask).Match(Ok, ErrorsToProblemDetails);
+    public static IResult ProcessResult(this Result result) => result.Match(Ok, ErrorsToProblemDetails);
+
+    public static async Task<IResult> ProcessResult<T>(this Task<Result<T>> resultTask) => (await resultTask).Match(Ok, ErrorsToProblemDetails);
+    public static IResult ProcessResult<T>(this Result<T> result) => result.Match(Ok, ErrorsToProblemDetails);
+
+    private static IResult Ok(IEnumerable<IEchoSuccess> successes) => Results.Ok(); // ? Fazer algo com os successes
+    private static Ok<TValue> Ok<TValue>(TValue value) => TypedResults.Ok(value);
+
+
+    private static IResult ErrorsToProblemDetails(IEnumerable<IEchoError> errors)
     {
-        var result = await resultTask;
-        return result.Match(Ok, ExceptionToResult);
+        var errorsDic = errors
+            .Select(ToErrorItem)
+            .GroupBy(item => item.Code)
+            .ToDictionary(grouping => grouping.Key, grouping => grouping.SelectMany(e => e.Messages).ToArray());
+        
+        return Results.ValidationProblem(errorsDic, type: Type);
     }
-    
-    private static IResult Ok() => Results.Ok();
-    
-    private static IResult ExceptionToResult(Exception exception)
+
+    private static ErrorItem ToErrorItem(IEchoError error)
     {
-        return exception switch
+        return error switch
         {
-            InvalidOperationException ex => TypedResults.ValidationProblem(ex.ToUniqueProblem(), type: nameof(InvalidOperationException)),
-            ArgumentNullException ex => TypedResults.ValidationProblem(ex.ToUniqueProblem(), type: nameof(ArgumentNullException)),
-            AdventEchoValidationException ex => TypedResults.ValidationProblem(ex.Problems, type: nameof(AdventEchoValidationException)),
-            
-            _ => TypedResults.InternalServerError(new InternalServerErrorMessage(exception.Message))
+            IExceptionalError exceptionalError => ExceptionalError(exceptionalError),
+            _ => Default(error)
         };
     }
 
-    public static RouteHandlerBuilder AddCommonProduces(this RouteHandlerBuilder builder)
+    private static ErrorItem Default(IEchoError error)
     {
-        return builder
-            .AddProduces<InternalServerErrorMessage>(HttpStatusCode.InternalServerError)
-            .ProducesValidationProblem();
-    }
-    
-    private static RouteHandlerBuilder AddProduces<TResult>(this RouteHandlerBuilder builder, HttpStatusCode statusCode)
-    {
-        return builder.Produces<TResult>((int)HttpStatusCode.BadRequest);
+        return new ErrorItem(GetErrorCodeOrDefault(error), [error.Message]);
     }
 
-    private static Dictionary<string, string[]> ToUniqueProblem(this Exception exception)
+    private static ErrorItem ExceptionalError(IExceptionalError error)
     {
-        return new Dictionary<string, string[]> { { exception.GetType().Name, [ exception.Message ] } };
+        return new ErrorItem(GetErrorCodeOrDefault(error), ExtractErrorMessageFromException(error.Exception));
     }
-    
-    private record InternalServerErrorMessage(string Message);
+
+    private static string[] ExtractErrorMessageFromException(Exception exception)
+    {
+        // TODO: Add more specific exception handling
+        return [exception.Message];
+    }
+
+    private static string GetErrorCodeOrDefault(IEchoError error)
+    {
+        return error.Metadata.GetValueOrDefault(ResultConstants.Metadata.ErrorCode)?.ToString() ?? ErrorCodeDefault;
+    }
+
+    private record ErrorItem(string Code, string[] Messages);
+
 }

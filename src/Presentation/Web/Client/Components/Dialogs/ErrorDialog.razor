@@ -1,0 +1,33 @@
+<MudDialog DefaultFocus="DefaultFocus.LastChild">
+    <DialogContent>
+        <div style="white-space: pre-line">
+            @if (IsProblemDetails())
+            {
+                <EchoStack Gap="EchoGap.Medium">
+                    @foreach (var problem in GetProblems())
+                    {
+                        <EchoStack Gap="EchoGap.Small">
+                            <strong>@problem.Key</strong>
+                            <EchoStack Gap="EchoGap.Small">
+                                @foreach(var error in problem.Value)
+                                {
+                                    <span>@error</span>
+                                }
+                            </EchoStack>
+                        </EchoStack>
+                    }
+                </EchoStack>
+            }
+            else
+            {
+                @foreach (var exception in Exceptions)
+                {
+                    @exception.Message 
+                }
+            }
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Close">Ok</MudButton>
+    </DialogActions>
+</MudDialog>

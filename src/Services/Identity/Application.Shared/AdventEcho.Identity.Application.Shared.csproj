@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Application.Shared\AdventEcho.Kernel.Application.Shared.csproj" />
+    <ProjectReference Include="..\Domain.Shared\AdventEcho.Identity.Domain.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,11 @@
+@inherits EchoComponentBase
+@typeparam TModel where TModel : class
+
+<EditForm Model="Model" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+
+    <BdkFluentValidator Validator="Validator"/>
+    <BdkFocusFirstFieldOnInvalidSubmit/>
+
+    @ChildContent
+
+</EditForm>

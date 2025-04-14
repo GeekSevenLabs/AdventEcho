@@ -1,0 +1,67 @@
+@page "/account/register"
+@attribute [AllowAnonymous]
+@layout AnonymousLayout
+
+<EchoPage Title="Register">
+    
+    <EchoPageSection>
+        
+        <EchoStack Gap="EchoGap.None">
+            <MudText Color="Color.Primary" Typo="Typo.h4" Class="tw:!font-thin">Let's go.</MudText>
+            <MudText Color="Color.Primary" Typo="Typo.h5" Class="tw:!font-bold">Create a new account</MudText>
+        </EchoStack>
+
+        <MudStack>
+            @* <StatusMessage Message="@Message"/> *@
+        </MudStack>
+
+        <EchoForm Model="_request" OnValidSubmit="HandleValidSubmitAsync" Validator="_validator">
+
+            <div class="tw:grid tw:grid-cols-1 tw:md:grid-cols-2 tw:gap-4">
+
+                <MudText Class="tw:col-span-full" Typo="Typo.body1" GutterBottom>
+                    Preencha as informações para criar uma conta.
+                </MudText>
+
+                <EchoTextField 
+                    @bind-Value="_request.FirstName" Label="Nome" Placeholder="Ellen" 
+                    autocomplete="first-name" aria-required="true"/>
+
+                <EchoTextField 
+                    @bind-Value="_request.LastName" Label="Sobrenome" Placeholder="Gould White" 
+                    autocomplete="last-name" aria-required="true"/>
+
+                <EchoTextField 
+                    @bind-Value="_request.PhoneNumber" Label="Número/Whatsapp" Placeholder="(00) 0 0000-0000"
+                    Mask="@(new PatternMask("(00) 0 0000-0000"))" autocomplete="phone-number" aria-required="true"/>
+
+                <EchoTextField 
+                    @bind-Value="_request.Email" Label="Email" Placeholder="name@example.com"
+                    autocomplete="email" aria-required="true"/>
+
+                <EchoTextField 
+                    @bind-Value="_request.Password" Label="Senha" InputType="InputType.Password" 
+                    Placeholder="password" autocomplete="new-password" aria-required="true" />
+
+                <EchoTextField 
+                    @bind-Value="_request.ConfirmPassword" Label="Confirmar senha" InputType="InputType.Password" 
+                    Placeholder="confirm password" autocomplete="confirm-password" aria-required="true"/>
+
+                <ValidationSummary class="tw:col-span-full"/>
+
+                <MudButton Class="tw:col-span-full" Variant="Variant.Filled" Color="Color.Primary" FullWidth ButtonType="ButtonType.Submit">
+                    Criar conta
+                </MudButton>
+            </div>
+        </EchoForm>
+
+        <MudDivider/>
+
+        <MudStack Spacing="0">
+            <MudLink Href="account/login">
+                Eu já tenho uma conta, quero entrar
+            </MudLink>
+        </MudStack>
+
+    </EchoPageSection>
+</EchoPage>
